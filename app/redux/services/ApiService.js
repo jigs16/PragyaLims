@@ -423,4 +423,85 @@ export const InwardRegisterReportExportApiCall = data => {
   }
 };
 
+export const GetProcessStatusReportExportApiCall = data => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post('Reports/GetProcessStatusReportExport', data)
+        .then(response => {
+          console.log('Response' + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const GetReportDispatchReportExportApiCall = data => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post('Reports/GetReportDispatchReportExport', data)
+        .then(response => {
+          console.log('Response' + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const GetReportDispatchMaterialExportApiCall = data => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post('Reports/GetReportDispatchMaterialExport', data)
+        .then(response => {
+          console.log('Response' + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const GetReportPendingTestingExportApiCall = data => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post('Reports/GetReportPendingTestingExport', data)
+        .then(response => {
+          console.log('Response' + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+
 // 
