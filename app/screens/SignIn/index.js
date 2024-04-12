@@ -137,7 +137,7 @@ const SignIn = ({navigation}) => {
 
           <Pressable
             onPress={() => {
-              navigation.navigate('ForgotPassword');
+              // navigation.navigate('ForgotPassword');
             }}>
             <Text subhead bold buttonGradient2>
               {'Forget the password?'}

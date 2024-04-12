@@ -5,7 +5,7 @@
 
 export const Images = {
   OnBoarding_1: require('../assets/images/OnBoarding_5.jpg'),
-  OnBoarding_2: require('../assets/images/OnBoarding_3.jpeg'),
+  OnBoarding_2: require('../assets/images/OnBoard_3.jpg'),
   OnBoarding_3: require('../assets/images/OnBoarding_3.png'),
   // OnBoarding_3: require('../assets/images/OnBoarding_3.png'),
   ic_google: require('../assets/images/ic_google.png'),

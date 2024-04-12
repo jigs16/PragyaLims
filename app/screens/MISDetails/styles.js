@@ -41,5 +41,16 @@ export default StyleSheet.create({
     fontSize: 16,
     color: BaseColor.mainTransp
   },
-
+  textInput: {
+    height: moderateScale(70),
+    borderRadius: 10,
+    borderWidth: 1.5,
+    borderColor: BaseColor.mainTransp,
+    paddingHorizontal: 10,
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: 10,
+  },
 });

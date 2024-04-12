@@ -6,6 +6,7 @@ import {
   ToastAndroid,
   Platform,
   Alert,
+  Pressable,
 } from "react-native";
 import styles from "./styles";
 import { BaseColor, Images } from "../../config";
@@ -18,7 +19,7 @@ import {
   Text,
   TextInput,
 } from "../../components";
-import { moderateScale } from "../../config/scaling";
+import { moderateScale, verticalScale } from "../../config/scaling";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Dropdown } from "react-native-element-dropdown";
 import DropdownSelected from "../../components/DropdownSelected/DropdownSelected";
@@ -36,20 +37,19 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import AlertModal from "../../components/AlertModal";
 import { PERMISSIONS, RESULTS, check, request } from "react-native-permissions";
 import RNFetchBlob from "rn-fetch-blob";
+import Toast from "react-native-simple-toast";
+import moment from "moment";
 
 const MISDetails = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
   const [alertModal, setAlertModal] = useState(false);
   const [msgModal, setMsgModal] = useState("");
 
-  const [FromDate, setFromDate] = useState("9-Jan-2024");
-  const [ToDate, setToDate] = useState("10-Apr-2024");
   const [TCNo, setTCNo] = useState("");
   const [InwardNo, setInwardNo] = useState("");
   const [LetterRef, setLetterRef] = useState("");
   const [WorkDetail, setWorkDetail] = useState("");
   const [DispatchNo, setDispatchNo] = useState("");
-  const [isFocus2, setIsFocus2] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const requestPermissions = async () => {
@@ -93,13 +93,6 @@ const MISDetails = ({ navigation, route }) => {
     hideDatePicker();
   };
 
-  const data = [
-    { label: "Item 1", value: "1" },
-    { label: "Item 2", value: "2" },
-    { label: "Item 3", value: "3" },
-    { label: "Item 4", value: "4" },
-    { label: "Item 5", value: "5" },
-  ];
   useEffect(() => {}, []);
 
   const checkPermission = async (FilePath) => {
@@ -241,6 +234,10 @@ const MISDetails = ({ navigation, route }) => {
       .fetch("GET", urlDownloadLink, {})
       .then((res) => {
         console.log("The file saved to ", res.path());
+        Toast.show(
+          route.params.screenType + " " + "Report Download Successfully.",
+          Toast.LONG
+        );
       })
       .catch((e) => {
         console.log(e);
@@ -597,13 +594,71 @@ const MISDetails = ({ navigation, route }) => {
 
   // -------------------------Pending Testing Api Call End-------------------------
 
+  const [FromDate, setFromDate] = useState("");
+  const [ToDate, setToDate] = useState("");
+
+  const [isFromDatePickerVisible, setIsFromDatePickerVisible] = useState(false);
+
+  const _showFromDatePickerStart = () => {
+    setIsFromDatePickerVisible(true);
+  };
+
+  const [StartDate, setStartDate] = useState("");
+  const [StartFrom, setStartFrom] = useState(new Date());
+  const [StartTo, setStartTo] = useState(new Date());
+
+  const onChangeFromDate = (date) => {
+    _hideFromDatePickerStart();
+    // console.log("sfsdf", date);
+    let temp = moment(date).format("DD-MMM-YYYY");
+    // console.log("temp", temp);
+    setStartFrom(moment(date).format("YYYY-MM-DD"));
+    setStartDate(moment(date).format("YYYY-MM-DD"));
+    setFromDate(temp);
+  };
+
+  const _hideFromDatePickerStart = () => {
+    setIsFromDatePickerVisible(false);
+  };
+
+  const [isToDatePickerVisible, setIsToDatePickerVisible] = useState(false);
+
+  const _showToDatePickerStart = () => {
+    setIsToDatePickerVisible(true);
+  };
+
+  const onChangeToDate = (date) => {
+    _hideToDatePickerStart();
+    // console.log("sfsdf", date);
+    let temp = moment(date).format("DD-MMM-YYYY");
+    // console.log("temp", temp);
+    setStartTo(moment(date).format("YYYY-MM-DD"));
+    setToDate(temp);
+  };
+
+  const _hideToDatePickerStart = () => {
+    setIsToDatePickerVisible(false);
+  };
+
   return (
     <>
       <DateTimePickerModal
-        isVisible={isDatePickerVisible}
+        isVisible={isFromDatePickerVisible}
         mode="date"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
+        date={new Date(moment(StartFrom).format())}
+        onConfirm={onChangeFromDate}
+        onCancel={_hideFromDatePickerStart}
+        maximumDate={new Date()}
+      />
+
+      <DateTimePickerModal
+        isVisible={isToDatePickerVisible}
+        mode="date"
+        date={new Date(moment(StartTo).format())}
+        onConfirm={onChangeToDate}
+        onCancel={_hideToDatePickerStart}
+        minimumDate={new Date(StartFrom)}
+        maximumDate={new Date()}
       />
 
       <Loader loading={loading} />
@@ -646,14 +701,27 @@ const MISDetails = ({ navigation, route }) => {
               >
                 {"From Date"}
               </Text>
-              <TextInput
-                style={{ marginTop: moderateScale(12) }}
-                value={FromDate}
-                onChangeText={(text) => setFromDate(text)}
-                iconLeft={Images.scheduleIcon}
-                placeholder={"Select your from date"}
-                keyboardType={"phone-pad"}
-              />
+              <Pressable
+                onPress={() => {
+                  _showFromDatePickerStart();
+                }}
+                style={[styles.textInput]}
+              >
+                <Text
+                  style={{
+                    color:
+                      FromDate == ""
+                        ? BaseColor.darkGraycolor
+                        : BaseColor.blackColor,
+                  }}
+                >
+                  {FromDate == "" ? "From Date" : FromDate}
+                </Text>
+                <Image
+                  source={Images.scheduleIcon}
+                  style={{ height: 16, width: 18 }}
+                ></Image>
+              </Pressable>
 
               <Text
                 subhead
@@ -663,13 +731,27 @@ const MISDetails = ({ navigation, route }) => {
               >
                 {"To Date"}
               </Text>
-              <TextInput
-                style={{ marginTop: moderateScale(12) }}
-                value={ToDate}
-                onChangeText={(text) => setToDate(text)}
-                iconLeft={Images.scheduleIcon}
-                placeholder={"Select your to date"}
-              />
+              <Pressable
+                onPress={() => {
+                  _showToDatePickerStart();
+                }}
+                style={[styles.textInput]}
+              >
+                <Text
+                  style={{
+                    color:
+                      ToDate == ""
+                        ? BaseColor.darkGraycolor
+                        : BaseColor.blackColor,
+                  }}
+                >
+                  {ToDate == "" ? "To Date" : ToDate}
+                </Text>
+                <Image
+                  source={Images.scheduleIcon}
+                  style={{ height: 16, width: 18 }}
+                ></Image>
+              </Pressable>
 
               <Text
                 subhead
@@ -793,14 +875,27 @@ const MISDetails = ({ navigation, route }) => {
               >
                 {"From Date"}
               </Text>
-              <TextInput
-                style={{ marginTop: moderateScale(12) }}
-                value={FromDate}
-                onChangeText={(text) => setFromDate(text)}
-                iconLeft={Images.scheduleIcon}
-                placeholder={"Select your from date"}
-                keyboardType={"phone-pad"}
-              />
+              <Pressable
+                onPress={() => {
+                  _showFromDatePickerStart();
+                }}
+                style={[styles.textInput]}
+              >
+                <Text
+                  style={{
+                    color:
+                      FromDate == ""
+                        ? BaseColor.darkGraycolor
+                        : BaseColor.blackColor,
+                  }}
+                >
+                  {FromDate == "" ? "From Date" : FromDate}
+                </Text>
+                <Image
+                  source={Images.scheduleIcon}
+                  style={{ height: 16, width: 18 }}
+                ></Image>
+              </Pressable>
 
               <Text
                 subhead
@@ -810,13 +905,27 @@ const MISDetails = ({ navigation, route }) => {
               >
                 {"To Date"}
               </Text>
-              <TextInput
-                style={{ marginTop: moderateScale(12) }}
-                value={ToDate}
-                onChangeText={(text) => setToDate(text)}
-                iconLeft={Images.scheduleIcon}
-                placeholder={"Select your to date"}
-              />
+              <Pressable
+                onPress={() => {
+                  _showToDatePickerStart();
+                }}
+                style={[styles.textInput]}
+              >
+                <Text
+                  style={{
+                    color:
+                      ToDate == ""
+                        ? BaseColor.darkGraycolor
+                        : BaseColor.blackColor,
+                  }}
+                >
+                  {ToDate == "" ? "To Date" : ToDate}
+                </Text>
+                <Image
+                  source={Images.scheduleIcon}
+                  style={{ height: 16, width: 18 }}
+                ></Image>
+              </Pressable>
 
               <Text darkColor bold style={{ marginTop: moderateScale(18) }}>
                 {"Customer"}
@@ -1026,14 +1135,27 @@ const MISDetails = ({ navigation, route }) => {
               >
                 {"From Date"}
               </Text>
-              <TextInput
-                style={{ marginTop: moderateScale(12) }}
-                value={FromDate}
-                onChangeText={(text) => setFromDate(text)}
-                iconLeft={Images.scheduleIcon}
-                placeholder={"Select your from date"}
-                keyboardType={"phone-pad"}
-              />
+              <Pressable
+                onPress={() => {
+                  _showFromDatePickerStart();
+                }}
+                style={[styles.textInput]}
+              >
+                <Text
+                  style={{
+                    color:
+                      FromDate == ""
+                        ? BaseColor.darkGraycolor
+                        : BaseColor.blackColor,
+                  }}
+                >
+                  {FromDate == "" ? "From Date" : FromDate}
+                </Text>
+                <Image
+                  source={Images.scheduleIcon}
+                  style={{ height: 16, width: 18 }}
+                ></Image>
+              </Pressable>
 
               <Text
                 subhead
@@ -1043,13 +1165,27 @@ const MISDetails = ({ navigation, route }) => {
               >
                 {"To Date"}
               </Text>
-              <TextInput
-                style={{ marginTop: moderateScale(12) }}
-                value={ToDate}
-                onChangeText={(text) => setToDate(text)}
-                iconLeft={Images.scheduleIcon}
-                placeholder={"Select your to date"}
-              />
+              <Pressable
+                onPress={() => {
+                  _showToDatePickerStart();
+                }}
+                style={[styles.textInput]}
+              >
+                <Text
+                  style={{
+                    color:
+                      ToDate == ""
+                        ? BaseColor.darkGraycolor
+                        : BaseColor.blackColor,
+                  }}
+                >
+                  {ToDate == "" ? "To Date" : ToDate}
+                </Text>
+                <Image
+                  source={Images.scheduleIcon}
+                  style={{ height: 16, width: 18 }}
+                ></Image>
+              </Pressable>
 
               <Text darkColor bold style={{ marginTop: moderateScale(18) }}>
                 {"Customer"}
@@ -1151,14 +1287,27 @@ const MISDetails = ({ navigation, route }) => {
               >
                 {"From Date"}
               </Text>
-              <TextInput
-                style={{ marginTop: moderateScale(12) }}
-                value={FromDate}
-                onChangeText={(text) => setFromDate(text)}
-                iconLeft={Images.scheduleIcon}
-                placeholder={"Select your from date"}
-                keyboardType={"phone-pad"}
-              />
+              <Pressable
+                onPress={() => {
+                  _showFromDatePickerStart();
+                }}
+                style={[styles.textInput]}
+              >
+                <Text
+                  style={{
+                    color:
+                      FromDate == ""
+                        ? BaseColor.darkGraycolor
+                        : BaseColor.blackColor,
+                  }}
+                >
+                  {FromDate == "" ? "From Date" : FromDate}
+                </Text>
+                <Image
+                  source={Images.scheduleIcon}
+                  style={{ height: 16, width: 18 }}
+                ></Image>
+              </Pressable>
 
               <Text
                 subhead
@@ -1168,13 +1317,27 @@ const MISDetails = ({ navigation, route }) => {
               >
                 {"To Date"}
               </Text>
-              <TextInput
-                style={{ marginTop: moderateScale(12) }}
-                value={ToDate}
-                onChangeText={(text) => setToDate(text)}
-                iconLeft={Images.scheduleIcon}
-                placeholder={"Select your to date"}
-              />
+              <Pressable
+                onPress={() => {
+                  _showToDatePickerStart();
+                }}
+                style={[styles.textInput]}
+              >
+                <Text
+                  style={{
+                    color:
+                      ToDate == ""
+                        ? BaseColor.darkGraycolor
+                        : BaseColor.blackColor,
+                  }}
+                >
+                  {ToDate == "" ? "To Date" : ToDate}
+                </Text>
+                <Image
+                  source={Images.scheduleIcon}
+                  style={{ height: 16, width: 18 }}
+                ></Image>
+              </Pressable>
 
               <Text darkColor bold style={{ marginTop: moderateScale(18) }}>
                 {"Customer"}
@@ -1276,14 +1439,27 @@ const MISDetails = ({ navigation, route }) => {
               >
                 {"From Date"}
               </Text>
-              <TextInput
-                style={{ marginTop: moderateScale(12) }}
-                value={FromDate}
-                onChangeText={(text) => setFromDate(text)}
-                iconLeft={Images.scheduleIcon}
-                placeholder={"Select your from date"}
-                keyboardType={"phone-pad"}
-              />
+              <Pressable
+                onPress={() => {
+                  _showFromDatePickerStart();
+                }}
+                style={[styles.textInput]}
+              >
+                <Text
+                  style={{
+                    color:
+                      FromDate == ""
+                        ? BaseColor.darkGraycolor
+                        : BaseColor.blackColor,
+                  }}
+                >
+                  {FromDate == "" ? "From Date" : FromDate}
+                </Text>
+                <Image
+                  source={Images.scheduleIcon}
+                  style={{ height: 16, width: 18 }}
+                ></Image>
+              </Pressable>
 
               <Text
                 subhead
@@ -1293,13 +1469,27 @@ const MISDetails = ({ navigation, route }) => {
               >
                 {"To Date"}
               </Text>
-              <TextInput
-                style={{ marginTop: moderateScale(12) }}
-                value={ToDate}
-                onChangeText={(text) => setToDate(text)}
-                iconLeft={Images.scheduleIcon}
-                placeholder={"Select your to date"}
-              />
+              <Pressable
+                onPress={() => {
+                  _showToDatePickerStart();
+                }}
+                style={[styles.textInput]}
+              >
+                <Text
+                  style={{
+                    color:
+                      ToDate == ""
+                        ? BaseColor.darkGraycolor
+                        : BaseColor.blackColor,
+                  }}
+                >
+                  {ToDate == "" ? "To Date" : ToDate}
+                </Text>
+                <Image
+                  source={Images.scheduleIcon}
+                  style={{ height: 16, width: 18 }}
+                ></Image>
+              </Pressable>
 
               <Text darkColor bold style={{ marginTop: moderateScale(18) }}>
                 {"Customer"}
