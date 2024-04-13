@@ -90,7 +90,7 @@ export default StyleSheet.create({
   contain: {
     height: 50,
     flexDirection: 'row',
-    backgroundColor: '#F5F5F5',
+    backgroundColor: BaseColor.Card,
     borderBottomWidth: 2,
     borderBottomColor: BaseColor.HeaderColor,
     paddingLeft:12,

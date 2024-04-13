@@ -1,8 +1,6 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { UserLogoutApiCall } from "../redux/services/ApiService";
-import { Platform } from "react-native";
-import Api from "./api";
+import { useNavigation } from "@react-navigation/native";
 
 const apiAxios = axios.create({
   baseURL: "http://124.123.122.224:814/api/",
@@ -54,6 +52,87 @@ apiAxios.interceptors.request.use(
   }
 );
 
+// Define the structure of a retry queue item
+const refreshAndRetryQueue = [];
+// Flag to prevent multiple token refresh requests
+let isRefreshing = false;
+
+apiAxios.interceptors.response.use(
+  (response) => {
+    // return response;
+    return { statusCode: response.status, body: response.data };
+  },
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      if (!isRefreshing) {
+        isRefreshing = true;
+        try {
+          const refreshToken = await AsyncStorage.getItem("RefreshToken");
+          const response = await axios.post(
+            "http://124.123.122.224:814/api/Authentication/RefreshToken",
+            {
+              RefreshToken: refreshToken,
+            }
+          );
+          console.log("Refresh token Responce =====>>> : ", res?.data);
+          if (response?.data?.IsSuccess) {
+            console.log("Refresh token Responce:", response);
+            const newToken = response.data.Token;
+            await AsyncStorage.setItem("Token", newToken);
+            const newRefreshToken = response.data.RefreshToken;
+            await AsyncStorage.setItem("RefreshToken", newRefreshToken);
+            apiAxios.defaults.headers.common.Authorization = `Bearer ${newToken}`;
+            originalRequest.headers.common.Authorization = `Bearer ${newToken}`;
+
+            // Retry all requests in the queue with the new token
+            refreshAndRetryQueue.forEach(({ config, resolve, reject }) => {
+              apiAxios
+                .request(config)
+                .then((response) => resolve(response))
+                .catch((err) => reject(err));
+            });
+
+            // Clear the queue
+            refreshAndRetryQueue.length = 0;
+
+            return apiAxios(originalRequest);
+          } else {
+            //logout & redirect to login screen
+            LogoutAndRedirectToLogin();
+          }
+        } catch (error) {
+          // Handle refresh token error
+          LogoutAndRedirectToLogin();
+          throw error;
+          // console.error("Refresh token error:", error);
+          // return Promise.reject(error);
+        } finally {
+          isRefreshing = false;
+        }
+      } else {
+        //user auth details not found then redirect to login screen
+        LogoutAndRedirectToLogin();
+      }
+      // Add the original request to the queue
+      return new Promise((resolve, reject) => {
+        refreshAndRetryQueue.push({ config: originalRequest, resolve, reject });
+      });
+    } else {
+      return Promise.reject(error);
+    }
+  }
+);
+
+export const LogoutAndRedirectToLogin = () => {
+  const navigation = useNavigation();
+
+  AsyncStorage.clear();
+  //navigate("/login");
+  navigation.navigate("AuthNavigator");
+};
+
 // apiAxios.interceptors.response.use(
 //   response => {
 //     // return response;
@@ -88,49 +167,5 @@ apiAxios.interceptors.request.use(
 //     }
 //   },
 // );
-
-apiAxios.interceptors.response.use(
-  (response) => {
-    return { statusCode: response.status, body: response.data };
-  },
-  async (error) => {
-    const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      const refreshToken = await AsyncStorage.getItem("RefreshToken");
-      if (!refreshToken) {
-        // Handle scenario where RefreshToken is not available
-        console.error("RefreshToken not found");
-        return Promise.reject(error);
-      }
-
-      try {
-        const response = await axios.post(
-          "http://124.123.122.224:814/api/Authentication/RefreshToken",
-          {
-            RefreshToken: refreshToken,
-          }
-        );
-
-        const newToken = response.data.Token;
-        await AsyncStorage.setItem("Token", newToken);
-        const newRefreshToken = response.data.RefreshToken;
-        await AsyncStorage.setItem("RefreshToken", newRefreshToken);
-
-        // Update the Authorization header with the new token
-        apiAxios.defaults.headers.common.Authorization = `Bearer ${newToken}`;
-
-        // Retry the original request
-        return apiAxios(originalRequest);
-      } catch (error) {
-        // Handle refresh token error
-        console.error("Refresh token error:", error);
-        return Promise.reject(error);
-      }
-    } else {
-      return Promise.reject(error);
-    }
-  }
-);
 
 export default NetworkUtils;

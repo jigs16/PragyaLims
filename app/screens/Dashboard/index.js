@@ -31,8 +31,6 @@ import Toast from "react-native-simple-toast";
 
 const Dashboard = ({ navigation }) => {
   useEffect(() => {}, []);
-  const [GetData, setGetData] = useState([]);
-  const screenWidth = Dimensions.get("window").width;
   const [loading, setLoading] = useState(false);
   const [alertModal, setAlertModal] = useState(false);
   const [msgModal, setMsgModal] = useState("");
@@ -766,6 +764,14 @@ const Dashboard = ({ navigation }) => {
 
   // ---------------------Activity Log Sidebar End---------------------
 
+  const TextWithEllipsis = ({ text }) => {
+    return (
+      <Text darkColor caption2>
+        {text.length > 18 ? text.substring(0, 18) + "" : text}
+      </Text>
+    );
+  };
+
   return (
     <>
       {isSidebarOpen && (
@@ -877,7 +883,7 @@ const Dashboard = ({ navigation }) => {
             justifyContent: "center",
             alignItems: "center",
             marginRight: 12,
-            width: "40%",
+            width: "44%",
           }}
         >
           <Image
@@ -895,9 +901,7 @@ const Dashboard = ({ navigation }) => {
             <Text darkColor bold style={{}}>
               {FirstName}
             </Text>
-            <Text darkColor caption2 style={{}}>
-              {DesignationName}
-            </Text>
+            <TextWithEllipsis text={DesignationName} />
           </View>
         </View>
       </View>
@@ -1716,7 +1720,8 @@ const Dashboard = ({ navigation }) => {
                   marginTop: 6,
                   marginBottom: 5,
                   paddingLeft: 10,
-                  paddingBottom: 6,
+                  paddingRight: 8,
+                  paddingBottom: 10,
                   borderRadius: 20,
                   backgroundColor: BaseColor.Card,
                   flexDirection: "row",
@@ -1727,7 +1732,7 @@ const Dashboard = ({ navigation }) => {
                 <PieChart
                   data={MachinePieData}
                   sectionAutoFocus
-                  radius={68}
+                  radius={65}
                   donut
                   showGradient
                   innerRadius={25}

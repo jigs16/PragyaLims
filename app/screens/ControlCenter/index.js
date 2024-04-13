@@ -1121,7 +1121,7 @@ const ControlCenter = ({navigation}) => {
                   {
                     paddingBottom: moderateScale(10),
                     borderRadius: 10,
-                    backgroundColor: '#F5F5F5',
+                    backgroundColor: BaseColor.Card,
                     marginBottom: 10,
                   },
                 ]}>
@@ -1153,7 +1153,10 @@ const ControlCenter = ({navigation}) => {
                         </Text>
                       </View>
                       <View style={{flexDirection: 'row'}}>
-                        <View
+                        <Pressable
+                        onPress={() =>{
+                          navigation.navigate('InwardApproval')
+                        }}
                           style={{
                             borderWidth: 1,
                             borderColor: '#ff5e5e',
@@ -1165,7 +1168,7 @@ const ControlCenter = ({navigation}) => {
                             marginRight: 7,
                           }}>
                           <Text style={{color: '#ff5e5e'}}>IA</Text>
-                        </View>
+                        </Pressable>
                         <View
                           style={{
                             borderWidth: 1,

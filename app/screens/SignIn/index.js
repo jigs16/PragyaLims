@@ -60,6 +60,8 @@ const SignIn = ({navigation}) => {
             );
             AsyncStorage.setItem('IsLogin', 'true');
             AsyncStorage.setItem('BranchName', res.BranchName);
+            AsyncStorage.setItem('InwardApprovalRequired', res.InwardApprovalRequired);
+            AsyncStorage.setItem('TestingApprovalRequired', res.TestingApprovalRequired);
             navigation.replace('BottomTabNavigator');
           } else {
             setLoading(false);

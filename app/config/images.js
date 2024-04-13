@@ -135,4 +135,18 @@ export const Images = {
   ControlCenter: require('../assets/images/ControlCenter.png'),
   Dashboard: require('../assets/images/Dashboard.png'),
   Profilee: require('../assets/images/Profilee.png'),
+  DownArrow: require('../assets/images/DownArrow.png'),
+
+  reload: require('../assets/images/reload.png'),
+  close: require('../assets/images/close.png'),
+  check: require('../assets/images/check.png'),
+  forbidden: require('../assets/images/forbidden.png'),
+  db: require('../assets/images/db.png'),
+  a_db: require('../assets/images/a_db.png'),
+  UserBottom: require('../assets/images/UserBottom.png'),
+  a_UserBottom: require('../assets/images/a_UserBottom.png'),//
+  a_cc: require('../assets/images/a_cc.png'),//
+  cc: require('../assets/images/cc.png'),//a_UserBottom
+  ms: require('../assets/images/ms.png'),//a_UserBottom
+  a_ms: require('../assets/images/a_ms.png'),//a_UserBottom
 }
