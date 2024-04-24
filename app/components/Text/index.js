@@ -90,6 +90,7 @@ export default function Index(props) {
     primaryColor,
     darkPrimaryColor,
     lightPrimaryColor,
+    darkGraycolor,
     accentColor,
     grayColor,
     buttonGradient1,
@@ -137,6 +138,7 @@ export default function Index(props) {
     buttonGradient1 && { color: BaseColor.buttonGradient1 },
     buttonGradient2 && { color: BaseColor.buttonGradient2 },
     grayColor && { color: BaseColor.grayColor },
+    darkGraycolor && { color: BaseColor.darkGraycolor },//darkGraycolor
     dividerColor && { color: BaseColor.dividerColor },
     fieldColor && { color: BaseColor.fieldColor },
     yellowColor && { color: BaseColor.yellowColor},

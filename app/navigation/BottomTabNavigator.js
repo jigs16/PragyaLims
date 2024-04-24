@@ -47,7 +47,7 @@ export function BottomTabNavigator() {
             <View
               style={{
                 backgroundColor: focused ? "#18a5942e" : BaseColor.whiteColor,
-                width: 52,
+                width: 50,
                 height: 28,
                 borderRadius: 20,
                 alignItems: "center",
@@ -60,7 +60,7 @@ export function BottomTabNavigator() {
                 }
                 style={{
                   resizeMode: "contain",
-                  width: focused ? 20 : 22,
+                  width: focused ? 16 : 22,
                   marginTop: -18,
                 }}
               />
@@ -79,7 +79,7 @@ export function BottomTabNavigator() {
             <View
               style={{
                 backgroundColor: focused ? "#18a5942e" : BaseColor.whiteColor,
-                width: 52,
+                width: 50,
                 height: 28,
                 borderRadius: 20,
                 alignItems: "center",
@@ -92,7 +92,7 @@ export function BottomTabNavigator() {
                 }
                 style={{
                   resizeMode: "contain",
-                  width: focused ? 20 : 22,
+                  width: focused ? 16 : 22,
                   marginTop: -18,
                 }}
               />
@@ -112,7 +112,7 @@ export function BottomTabNavigator() {
             <View
               style={{
                 backgroundColor: focused ? "#18a5942e" : BaseColor.whiteColor,
-                width: 52,
+                width: 50,
                 height: 28,
                 borderRadius: 20,
                 alignItems: "center",
@@ -125,7 +125,7 @@ export function BottomTabNavigator() {
                 }
                 style={{
                   resizeMode: "contain",
-                  width: focused ? 20 : 22,
+                  width: focused ? 16 : 22,
                   marginTop: -18,
                 }}
               />
@@ -145,7 +145,7 @@ export function BottomTabNavigator() {
             <View
               style={{
                 backgroundColor: focused ? "#18a5942e" : BaseColor.whiteColor,
-                width: 52,
+                width: 50,
                 height: 28,
                 borderRadius: 20,
                 alignItems: "center",
@@ -158,7 +158,7 @@ export function BottomTabNavigator() {
                 }
                 style={{
                   resizeMode: "contain",
-                  width: focused ? 20 : 22,
+                  width: focused ? 16 : 22,
                   marginTop: -18,
                 }}
               />

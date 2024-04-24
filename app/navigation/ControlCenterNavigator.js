@@ -4,6 +4,8 @@ import { View } from "react-native";
 import { BaseColor } from "../config";
 import ControlCenter from "../screens/ControlCenter";
 import InwardApproval from "../screens/InwardApproval";
+import TestingApproval from "../screens/TestingApproval";
+import Testing from "../screens/Testing";
 
 const Stack = createNativeStackNavigator();
 const ControlCenterNavigator = () => {
@@ -27,6 +29,22 @@ const ControlCenterNavigator = () => {
         <Stack.Screen
           name="InwardApproval"
           component={InwardApproval}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="TestingApproval"
+          component={TestingApproval}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="Testing"
+          component={Testing}
           options={{
             headerShown: false,
           }}

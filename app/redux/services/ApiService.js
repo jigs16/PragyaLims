@@ -503,5 +503,84 @@ export const GetReportPendingTestingExportApiCall = data => {
   }
 };
 
+export const GetInwardApprovalDetailByIDApiCall = data => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post('InwardApproval/GetInwardApprovalDetailByID', data)
+        .then(response => {
+          console.log('Response' + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
 
+
+export const InwardApprovalUpdateStatusApiCall = data => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post('InwardApproval/InwardApprovalUpdateStatus', data)
+        .then(response => {
+          console.log('Response' + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const GetTestingsApprovalDetailByIDApiCall = data => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post('Testing/GetTestingsApprovalDetailByID', data)
+        .then(response => {
+          console.log('Response' + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const TestingsApprovalInsertApiCall = data => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post('Testing/TestingsApprovalInsert', data)
+        .then(response => {
+          console.log('Response' + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
 // 

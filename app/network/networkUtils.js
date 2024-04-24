@@ -1,3 +1,4 @@
+import * as React from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
@@ -43,7 +44,7 @@ apiAxios.interceptors.request.use(
   async (config) => {
     const token = await AsyncStorage.getItem("Token");
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },
@@ -76,24 +77,28 @@ apiAxios.interceptors.response.use(
               RefreshToken: refreshToken,
             }
           );
-          console.log("Refresh token Responce =====>>> : ", res?.data);
+          console.log("Refresh token Responce =====>>> : ", response?.data);
           if (response?.data?.IsSuccess) {
             console.log("Refresh token Responce:", response);
             const newToken = response.data.Token;
             await AsyncStorage.setItem("Token", newToken);
             const newRefreshToken = response.data.RefreshToken;
             await AsyncStorage.setItem("RefreshToken", newRefreshToken);
-            apiAxios.defaults.headers.common.Authorization = `Bearer ${newToken}`;
-            originalRequest.headers.common.Authorization = `Bearer ${newToken}`;
-
+            console.log("Authorization Set Start 1==>>");
+            apiAxios.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${newToken}`;
+            console.log("Authorization Set Start 2==>>");
+            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+            console.log("Authorization Set Done==>>");
             // Retry all requests in the queue with the new token
             refreshAndRetryQueue.forEach(({ config, resolve, reject }) => {
               apiAxios
                 .request(config)
-                .then((response) => resolve(response))
+                .then((res) => resolve(res))
                 .catch((err) => reject(err));
             });
-
+            console.log("refreshAndRetryQueue Loop Done==>>");
             // Clear the queue
             refreshAndRetryQueue.length = 0;
 
@@ -111,9 +116,6 @@ apiAxios.interceptors.response.use(
         } finally {
           isRefreshing = false;
         }
-      } else {
-        //user auth details not found then redirect to login screen
-        LogoutAndRedirectToLogin();
       }
       // Add the original request to the queue
       return new Promise((resolve, reject) => {
@@ -125,47 +127,16 @@ apiAxios.interceptors.response.use(
   }
 );
 
+export const navigationRef = React.createRef();
+
+export function navigate(name, params) {
+  navigationRef.current?.navigate(name, params);
+}
+
 export const LogoutAndRedirectToLogin = () => {
-  const navigation = useNavigation();
-
+  console.log("Logout ===>>>");
   AsyncStorage.clear();
-  //navigate("/login");
-  navigation.navigate("AuthNavigator");
+  navigate("AuthNavigator");
 };
-
-// apiAxios.interceptors.response.use(
-//   response => {
-//     // return response;
-//     return {statusCode: response.status, body: response.data};
-//   },
-//   async error => {
-//     const originalRequest = error.config;
-//     if (error.response.status === 401 && !originalRequest._retry) {
-//       originalRequest._retry = true;
-//       try {
-//         const refreshToken = await AsyncStorage.getItem('RefreshToken');
-//         const response = await axios.post(
-//           'http://124.123.122.224:814/api/Authentication/RefreshToken',
-//           {
-//             RefreshToken: refreshToken,
-//           },
-//         );
-//         console.log('Refresh token Responce:', response);
-//         const newToken = response.data.Token;
-//         await AsyncStorage.setItem('Token', newToken);
-//         const newRefreshToken = response.data.RefreshToken;
-//         await AsyncStorage.setItem('RefreshToken', newRefreshToken);
-//         apiAxios.defaults.headers.common.Authorization = `Bearer ${newToken}`;
-//         return apiAxios(originalRequest);
-//       } catch (error) {
-//         // Handle refresh token error
-//         console.error('Refresh token error:', error);
-//         return Promise.reject(error);
-//       }
-//     } else {
-//       return Promise.reject(error);
-//     }
-//   },
-// );
 
 export default NetworkUtils;

@@ -27,7 +27,7 @@ export default function Button(props) {
       colors={
         outline
           ? ['#FFEDF0', '#FFEDF0']
-          : [BaseColor.buttonGradient1, BaseColor.buttonGradient2]
+          : [BaseColor.buttonGradient2, BaseColor.buttonGradient2]
       }
       start={{x: 0.1, y: 0.25}}
       end={{x: 0.5, y: 1.5}}

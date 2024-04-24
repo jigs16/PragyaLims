@@ -24,8 +24,9 @@ export default StyleSheet.create({
   },
   textDefault: {
     ...Typography.body2,
-    color: BaseColor.blackColor,
+    color: BaseColor.whiteColor,
     fontWeight: FontWeight.bold,
+    fontSize:15
   },
   outline: {
     borderWidth: 1,

@@ -25,6 +25,7 @@ import SpalshNavigator from './app/navigation/SpalshNavigator';
 import {BottomTabNavigator} from './app/navigation/BottomTabNavigator';
 import {BaseColor} from './app/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { navigationRef } from './app/network/networkUtils';
 
 const Stack = createNativeStackNavigator();
 LogBox.ignoreAllLogs();
@@ -38,7 +39,7 @@ const App = () => {
           animated={true}
           backgroundColor={BaseColor.backgroundGradient1}
         />
-        <NavigationContainer>
+        <NavigationContainer ref={navigationRef}>
           <Stack.Navigator>
             <Stack.Screen
               name="SpalshNavigator"

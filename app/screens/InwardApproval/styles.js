@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {moderateScale} from '../../config/scaling';
+import {moderateScale, verticalScale} from '../../config/scaling';
 import {BaseColor} from '../../config';
 
 export default StyleSheet.create({
@@ -54,4 +54,32 @@ export default StyleSheet.create({
     flexDirection: 'row',
     marginTop: 10,
   },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  modalView: {
+    backgroundColor: BaseColor.whiteColor,
+    borderRadius: 25,
+    position: 'absolute',
+    elevation: 5,
+    width: '92%',
+    padding: moderateScale(20),
+    paddingBottom: moderateScale(5),
+    // alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    maxHeight:verticalScale(1255)
+  },
+  modalCheckImg: {
+    width: moderateScale(35),
+    height: moderateScale(35),
+    // marginBottom: moderateScale(20),
+  },
+  btnExplore:{
+    width: '60%',
+    height: verticalScale(90),
+    marginTop: moderateScale(30),
+  }
 });

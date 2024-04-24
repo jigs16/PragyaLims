@@ -123,7 +123,8 @@ export const Images = {
   PendingTesting: require('../assets/images/PendingTesting.png'),
   InwardRegister: require('../assets/images/InwardRegister.png'),
   ProcessStatus: require('../assets/images/ProcessStatus.png'),
-  PLLOGO: require('../assets/images/PL-logo.png'),
+  PLLOGO: require('../assets/images/PL-logo.png'),//
+  logoLight: require('../assets/images/logoLight.png'),
   TTR: require('../assets/images/TTR.png'),
   TAP: require('../assets/images/TAP.png'),
   IAP: require('../assets/images/IAP.png'),
@@ -144,9 +145,13 @@ export const Images = {
   db: require('../assets/images/db.png'),
   a_db: require('../assets/images/a_db.png'),
   UserBottom: require('../assets/images/UserBottom.png'),
-  a_UserBottom: require('../assets/images/a_UserBottom.png'),//
-  a_cc: require('../assets/images/a_cc.png'),//
-  cc: require('../assets/images/cc.png'),//a_UserBottom
-  ms: require('../assets/images/ms.png'),//a_UserBottom
-  a_ms: require('../assets/images/a_ms.png'),//a_UserBottom
+  a_UserBottom: require('../assets/images/a_UserBottom.png'),
+  a_cc: require('../assets/images/a_cc.png'),
+  cc: require('../assets/images/cc.png'),
+  ms: require('../assets/images/ms.png'),
+  a_ms: require('../assets/images/a_ms.png'),
+  NABL: require('../assets/images/NABL.png'),
+  Normal: require('../assets/images/Normal.png'),
+  bgimg: require('../assets/images/bgimg.png'),
+  //
 }
