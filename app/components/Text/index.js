@@ -87,11 +87,7 @@ export default function Index(props) {
     heavy,
     black,
     //custom color
-    primaryColor,
-    darkPrimaryColor,
-    lightPrimaryColor,
     darkGraycolor,
-    accentColor,
     grayColor,
     buttonGradient1,
     buttonGradient2,

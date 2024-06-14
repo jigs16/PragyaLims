@@ -139,7 +139,7 @@ export function BottomTabNavigator() {
         component={ProfileNavigator}
         initialParams={{ screenType: 4 }}
         options={{
-          tabBarLabel: "Dashboard",
+          tabBarLabel: "Profile",
           unmountOnBlur: true,
           tabBarIcon: ({ color, size, focused }) => (
             <View

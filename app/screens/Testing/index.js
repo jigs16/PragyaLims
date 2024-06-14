@@ -92,19 +92,25 @@ const Testing = ({ navigation, route }) => {
               >
                 <View style={{ flex: 1, padding: 10, paddingBottom: 4 }}>
                   <Pressable
-                    // onPress={() => {
-                    //   navigation.navigate("TestingApproval", {
-                    //     InwardMaterialIDEncrypted:
-                    //       item.InwardMaterialIDEncrypted,
-                    //   });
-                    // }}
+                    onPress={() => {
+                      navigation.navigate("TestingApproval", {
+                        InwardMaterialIDEncrypted:
+                          item.InwardMaterialIDEncrypted,
+                      });
+                    }}
                     style={{
                       flexDirection: "row",
                       alignItems: "center",
                       marginBottom: 2,
                     }}
                   >
-                    <View style={{ flex: 1, flexDirection: "row",alignItems: "center", }}>
+                    <View
+                      style={{
+                        flex: 1,
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
+                    >
                       <Image
                         source={Images.check}
                         tintColor={BaseColor.grayColor}
@@ -120,17 +126,18 @@ const Testing = ({ navigation, route }) => {
                       </Text>
                     </View>
                     <Pressable
-                    onPress={() => {
-                      navigation.navigate("TestingApproval", {
-                        InwardMaterialIDEncrypted:
-                          item.InwardMaterialIDEncrypted,
-                      });
-                    }}>
-                    <Image
-                      source={Images.DownArrow}
-                      tintColor={BaseColor.darkColor}
-                      style={{ width: 12, height: 12 }}
-                    ></Image>
+                      onPress={() => {
+                        navigation.navigate("TestingApproval", {
+                          InwardMaterialIDEncrypted:
+                            item.InwardMaterialIDEncrypted,
+                        });
+                      }}
+                    >
+                      <Image
+                        source={Images.DownArrow}
+                        tintColor={BaseColor.darkColor}
+                        style={{ width: 12, height: 12 }}
+                      ></Image>
                     </Pressable>
                   </Pressable>
 

@@ -39,7 +39,7 @@ const Splash = ({ navigation }) => {
 
   return (
     <LinearGradient
-      colors={[BaseColor.backgroundGradient3, BaseColor.backgroundGradient4]}
+      colors={[BaseColor.whiteColor, BaseColor.whiteColor]}
       style={{
         flex: 1,
         alignItems: "center",
@@ -49,9 +49,9 @@ const Splash = ({ navigation }) => {
       <StatusBar hidden />
 
       <FastImage
-        style={{ width: "100%", height: "50%", left: 15 }}
-        source={require("../../assets/images/splash1.gif")}
-        resizeMode={"cover"}
+        style={{ width: "100%", height: "15%" }}
+        source={require("../../assets/images/logoIcon.png")}
+        resizeMode={"contain"}
         onLoad={async () => {
           const isLogin = await AsyncStorage.getItem("IsLogin");
           console.log("isLogin ===>>>", isLogin);

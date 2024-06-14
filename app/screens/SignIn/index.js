@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  StatusBar,
-  Pressable,
-  Platform,
-} from "react-native";
+import { View, StatusBar, Pressable, Platform } from "react-native";
 import styles from "./styles";
-import { Button, CheckBox, Image, Loader, Text, TextInput } from "../../components";
+import {
+  Button,
+  CheckBox,
+  Image,
+  Loader,
+  Text,
+  TextInput,
+} from "../../components";
 import { BaseColor, BaseStyle, Images } from "../../config";
 import { moderateScale } from "../../config/scaling";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -14,8 +16,8 @@ import AlertModal from "../../components/AlertModal";
 import { loginApiCall } from "../../redux/services/ApiService";
 
 const SignIn = ({ navigation }) => {
-  const [UserName, setUserName] = useState("9067407003");
-  const [Password, setPassword] = useState("123456");
+  const [UserName, setUserName] = useState("mayank");
+  const [Password, setPassword] = useState("Qwerty@123");
   const [PasswordSecurity, setPasswordSecurity] = useState(true);
   const [alertModal, setAlertModal] = useState(false);
   const [msgModal, setMsgModal] = useState("");
@@ -43,10 +45,10 @@ const SignIn = ({ navigation }) => {
       // setLoginParams(JSON.stringify(params));
       loginApiCall(params)
         .then((res) => {
-          setLoading(false);
           console.log("Response Login ", res);
           // setLoginRes(res);
           if (res.IsSuccess) {
+            setLoading(false);
             AsyncStorage.setItem("LoginDetails", JSON.stringify(res));
             AsyncStorage.setItem("LoginIDEncrypt", res.LoginIDEncrypt);
             AsyncStorage.setItem("CompanyIDEncrypt", res.CompanyIDEncrypt);
@@ -59,8 +61,14 @@ const SignIn = ({ navigation }) => {
             );
             AsyncStorage.setItem("IsLogin", "true");
             AsyncStorage.setItem("BranchName", res.BranchName);
-            // AsyncStorage.setItem('InwardApprovalRequired', res.InwardApprovalRequired);
-            // AsyncStorage.setItem('TestingApprovalRequired', res.TestingApprovalRequired.toString());
+            AsyncStorage.setItem(
+              "InwardApprovalRequired",
+              res.Permissions.InwardApprovalRequired == true ? "1" : "0"
+            );
+            AsyncStorage.setItem(
+              "TestingApprovalRequired",
+              res.Permissions.TestingApprovalRequired == true ? "1" : "0"
+            );
             navigation.replace("BottomTabNavigator");
           } else {
             setLoading(false);
@@ -101,7 +109,7 @@ const SignIn = ({ navigation }) => {
           bold
           darkGraycolor
           textAlign={"center"}
-          style={{ lineHeight: 34,fontSize:26 }}
+          style={{ lineHeight: 34, fontSize: 26 }}
         >
           {"Login to Your\nAccount"}
         </Text>
@@ -111,7 +119,7 @@ const SignIn = ({ navigation }) => {
           bold
           darkColor
           textAlign={"left"}
-          style={{ alignSelf: "flex-start", marginTop: moderateScale(50),}}
+          style={{ alignSelf: "flex-start", marginTop: moderateScale(50) }}
         >
           {"Enter your username and password."}
         </Text>
@@ -148,7 +156,11 @@ const SignIn = ({ navigation }) => {
             setPasswordSecurity(!PasswordSecurity);
           }}
         />
-        <CheckBox title="Remamber me" onPress={(isChecked) => setRememberMe(isChecked)} style={{alignSelf: "flex-start",marginTop:15}} ></CheckBox>
+        <CheckBox
+          title="Remamber me"
+          onPress={(isChecked) => setRememberMe(isChecked)}
+          style={{ alignSelf: "flex-start", marginTop: 15 }}
+        ></CheckBox>
 
         <Button
           onPress={() => {

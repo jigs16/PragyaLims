@@ -22,6 +22,7 @@ import {
   InwardApprovalUpdateStatusApiCall,
 } from "../../redux/services/ApiService";
 import Toast from "react-native-simple-toast";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const InwardApproval = ({ navigation, route }) => {
   useEffect(() => {
@@ -52,7 +53,13 @@ const InwardApproval = ({ navigation, route }) => {
     setListOfMaterialImages_ModalVisible,
   ] = useState(false);
   //
+  const [InwardApprovalRequired, setInwardApprovalRequired] = useState("");
+
   const GetInwardApprovalDetailByIDApi = async () => {
+    setInwardApprovalRequired(
+      await AsyncStorage.getItem("InwardApprovalRequired")
+    );
+
     setLoading(true);
     var params = {
       CurrentPage: 1,
@@ -94,7 +101,7 @@ const InwardApproval = ({ navigation, route }) => {
     setLoading(true);
     var params = {
       InwardIDEncrypt: route.params.InwardIDEncrypted,
-      InwardCurrentStatus: id, // Approved = 5, Rejected & Rectify = 6, Rejected = 7
+      InwardCurrentStatus: id, // Approved = 5, Rewise & Rectify = 6, Rejected = 7
       StatusRemarks: Remarks,
       ModifiedByEncrypted: "",
     };
@@ -325,11 +332,11 @@ const InwardApproval = ({ navigation, route }) => {
               borderRadius: 6,
               marginBottom: 10,
               flexDirection: "row",
-              borderColor: BaseColor.buttonGradient2,
+              borderColor: BaseColor.blackColor,
               backgroundColor:
                 expandedId1 == item?.TestMasterIDEncrypted
-                  ? BaseColor.buttonGradient2
-                  : "#eaf6f5",
+                  ? BaseColor.blackColor
+                  : "#00000025",
               borderWidth: 1,
               alignItems: "center",
             }}
@@ -342,7 +349,7 @@ const InwardApproval = ({ navigation, route }) => {
                 color:
                   expandedId1 == item?.TestMasterIDEncrypted
                     ? BaseColor.whiteColor
-                    : BaseColor.buttonGradient2,
+                    : BaseColor.blackColor,
               }}
             >
               {item?.TestName}
@@ -352,7 +359,7 @@ const InwardApproval = ({ navigation, route }) => {
               tintColor={
                 expandedId1 == item?.TestMasterIDEncrypted
                   ? BaseColor.whiteColor
-                  : BaseColor.buttonGradient2
+                  : BaseColor.blackColor
               }
               style={{ width: 10, height: 10 }}
             ></Image>
@@ -452,7 +459,7 @@ const InwardApproval = ({ navigation, route }) => {
             ></Image>
           );
         }}
-        title={"Inward Approval"}
+        title={route.params.ViewType == "ApprovalOnly" ? "Inward Approval" : 'Inward Details'}
       ></Header>
 
       <Loader loading={loading} />
@@ -622,9 +629,8 @@ const InwardApproval = ({ navigation, route }) => {
                         </Pressable>
                       )}
                       <Text caption1 darkColor>
-                        |{" "}
                         {InwardApprovalDetail.IsMaterialReturnable == true
-                          ? "Sample Returnable"
+                          ? "| Sample Returnable"
                           : ""}
                       </Text>
                     </View>
@@ -730,21 +736,31 @@ const InwardApproval = ({ navigation, route }) => {
                             borderBottomRightRadius: 6,
                           }}
                         >
-                          <Text caption1 darkColor>
-                            {"⦿ " + body.CustomerName}
-                          </Text>
-                          <Text caption1 darkColor>
-                            {"⦿ " + body.ProjectName}
-                          </Text>
-                          <Text caption1 darkColor>
-                            {"⦿ " + body.Address}
-                          </Text>
-                          <Text caption1 darkColor>
-                            {"⦿ " + body.ContactPersonMobileNo}
-                          </Text>
-                          <Text caption1 darkColor>
-                            {"⦿ " + body.ContactPersonEmailID}
-                          </Text>
+                          {body.CustomerName != "" && (
+                            <Text caption1 darkColor>
+                              {"⦿ " + body.CustomerName}
+                            </Text>
+                          )}
+                          {body.ProjectName != "" && (
+                            <Text caption1 darkColor>
+                              {"⦿ " + body.ProjectName}
+                            </Text>
+                          )}
+                          {body.Address != "" && (
+                            <Text caption1 darkColor>
+                              {"⦿ " + body.Address}
+                            </Text>
+                          )}
+                          {body.ContactPersonMobileNo != "" && (
+                            <Text caption1 darkColor>
+                              {"⦿ " + body.ContactPersonMobileNo}
+                            </Text>
+                          )}
+                          {body.ContactPersonEmailID != "" && (
+                            <Text caption1 darkColor>
+                              {"⦿ " + body.ContactPersonEmailID}
+                            </Text>
+                          )}
                         </View>
                       )}
                     />
@@ -773,21 +789,21 @@ const InwardApproval = ({ navigation, route }) => {
                     </Text>
 
                     <Text darkColor bold>
-                      Expected Date -{" "}
+                      Expected Date :{" "}
                       <Text caption1 darkColor>
                         {InwardApprovalDetail.ExpectedDateOfDelivery}
                       </Text>
                     </Text>
 
                     <Text darkColor bold>
-                      Material Taken By -{" "}
+                      Material Taken By :{" "}
                       <Text caption1 darkColor>
                         {InwardApprovalDetail.MaterialTakenByUserName}
                       </Text>
                     </Text>
 
                     <Text darkColor bold>
-                      Sample Received Via -{" "}
+                      Sample Received Via :{" "}
                       <Text caption1 darkColor>
                         {InwardApprovalDetail.MaterialReceiveVia}
                       </Text>
@@ -815,177 +831,188 @@ const InwardApproval = ({ navigation, route }) => {
                     </Text>
                   </View>
                 </View>
-
-                <View
-                  style={[
-                    styles.itemView,
-                    {
-                      paddingBottom: moderateScale(10),
-                      borderRadius: 10,
-                      //   backgroundColor: BaseColor.Card,
-                      marginBottom: 10,
-                    },
-                  ]}
-                >
-                  <View
-                    style={{
-                      flex: 1,
-                      padding: 10,
-                      paddingTop: 0,
-                      paddingBottom: 0,
-                      marginBottom: 10,
-                    }}
-                  >
-                    <Text
-                      subhead
-                      bold
-                      buttonGradient1
-                      style={{ marginBottom: 0, marginTop: 5 }}
-                    >
-                      Remarks
-                    </Text>
-                    <TextInput
-                      style={[
-                        styles.textInput,
-                        {
-                          height: 100,
-                          textAlignVertical: "top",
-                          borderColor: BaseColor.darkGraycolor,
-                        },
-                      ]}
-                      onChangeText={(text) => setRemarks(text)}
-                      placeholder={"Enter your Remarks"}
-                      value={Remarks}
-                      returnKeyType="next"
-                      multiline
-                    />
-                  </View>
-                  {InwardApprovalDetail.InwardCurrentStatus != 5 && (
-                    <View
-                      style={{
-                        flex: 1,
-                        flexDirection: "row",
-                        padding: 10,
-                        paddingBottom: 5,
-                        paddingTop: 5,
-                      }}
-                    >
-                      <View style={{ paddingHorizontal: 4, width: "50%" }}>
-                        <Pressable
-                          onPress={() => {
-                            InwardApprovalUpdateStatusApi(5);
-                          }}
+                {route.params.ViewType == "ApprovalOnly" && (
+                  <View>
+                    {InwardApprovalRequired == 1 && (
+                      <View
+                        style={[
+                          styles.itemView,
+                          {
+                            paddingBottom: moderateScale(10),
+                            borderRadius: 10,
+                            //   backgroundColor: BaseColor.Card,
+                            marginBottom: 10,
+                          },
+                        ]}
+                      >
+                        <View
                           style={{
-                            borderRadius: 8,
-                            height: moderateScale(60),
-                            backgroundColor: BaseColor.buttonGradient2,
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flexDirection: "row",
-                            // marginBottom: 10,
+                            flex: 1,
+                            padding: 10,
+                            paddingTop: 0,
+                            paddingBottom: 0,
+                            marginBottom: 10,
                           }}
                         >
-                          <Image
-                            source={Images.check}
-                            tintColor={BaseColor.whiteColor}
-                            style={{ width: 15, height: 15 }}
-                          ></Image>
-                          <Text bold footnote whiteColor>
-                            {" Approved"}
+                          <Text
+                            subhead
+                            bold
+                            buttonGradient1
+                            style={{ marginBottom: 0, marginTop: 5 }}
+                          >
+                            Remarks
                           </Text>
-                        </Pressable>
-                      </View>
-                      <View style={{ paddingHorizontal: 4, width: "50%" }}>
-                        <Pressable
-                          onPress={() => {
-                            InwardApprovalUpdateStatusApi(6);
-                          }}
+                          <TextInput
+                            style={[
+                              styles.textInput,
+                              {
+                                height: 100,
+                                textAlignVertical: "top",
+                                borderColor: BaseColor.darkGraycolor,
+                              },
+                            ]}
+                            onChangeText={(text) => setRemarks(text)}
+                            placeholder={"Enter your Remarks"}
+                            value={Remarks}
+                            returnKeyType="next"
+                            multiline
+                          />
+                        </View>
+                        {InwardApprovalDetail.InwardCurrentStatus != 5 && (
+                          <View
+                            style={{
+                              flex: 1,
+                              flexDirection: "row",
+                              padding: 10,
+                              paddingBottom: 5,
+                              paddingTop: 5,
+                            }}
+                          >
+                            <View
+                              style={{ paddingHorizontal: 4, width: "50%" }}
+                            >
+                              <Pressable
+                                onPress={() => {
+                                  InwardApprovalUpdateStatusApi(5);
+                                }}
+                                style={{
+                                  borderRadius: 8,
+                                  height: moderateScale(60),
+                                  backgroundColor: BaseColor.buttonGradient2,
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  flexDirection: "row",
+                                  // marginBottom: 10,
+                                }}
+                              >
+                                <Image
+                                  source={Images.check}
+                                  tintColor={BaseColor.whiteColor}
+                                  style={{ width: 15, height: 15 }}
+                                ></Image>
+                                <Text bold footnote whiteColor>
+                                  {" Approved"}
+                                </Text>
+                              </Pressable>
+                            </View>
+                            <View
+                              style={{ paddingHorizontal: 4, width: "50%" }}
+                            >
+                              <Pressable
+                                onPress={() => {
+                                  InwardApprovalUpdateStatusApi(6);
+                                }}
+                                style={{
+                                  borderRadius: 8,
+                                  height: moderateScale(60),
+                                  backgroundColor: BaseColor.buttonGradient2,
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  flexDirection: "row",
+                                  // marginBottom: 10,
+                                }}
+                              >
+                                <Image
+                                  source={Images.reload}
+                                  tintColor={BaseColor.whiteColor}
+                                  style={{ width: 15, height: 15 }}
+                                ></Image>
+                                <Text bold footnote whiteColor>
+                                  {" Rewise & Rectify"}
+                                </Text>
+                              </Pressable>
+                            </View>
+                          </View>
+                        )}
+                        <View
                           style={{
-                            borderRadius: 8,
-                            height: moderateScale(60),
-                            backgroundColor: BaseColor.buttonGradient2,
-                            alignItems: "center",
-                            justifyContent: "center",
+                            flex: 1,
                             flexDirection: "row",
-                            // marginBottom: 10,
+                            padding: 10,
+                            marginBottom: 0,
+                            paddingBottom: 0,
+                            paddingTop: 5,
                           }}
                         >
-                          <Image
-                            source={Images.reload}
-                            tintColor={BaseColor.whiteColor}
-                            style={{ width: 15, height: 15 }}
-                          ></Image>
-                          <Text bold footnote whiteColor>
-                            {" Rejected & Rectify"}
-                          </Text>
-                        </Pressable>
-                      </View>
-                    </View>
-                  )}
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "row",
-                      padding: 10,
-                      marginBottom: 0,
-                      paddingBottom: 0,
-                      paddingTop: 5,
-                    }}
-                  >
-                    {InwardApprovalDetail.InwardCurrentStatus != 5 && (
-                      <View style={{ paddingHorizontal: 4, width: "50%" }}>
-                        <Pressable
-                          onPress={() => {
-                            InwardApprovalUpdateStatusApi(7);
-                          }}
-                          style={{
-                            borderRadius: 8,
-                            height: moderateScale(60),
-                            backgroundColor: BaseColor.buttonGradient2,
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flexDirection: "row",
-                            marginBottom: 5,
-                          }}
-                        >
-                          <Image
-                            source={Images.close}
-                            tintColor={BaseColor.whiteColor}
-                            style={{ width: 15, height: 15 }}
-                          ></Image>
-                          <Text bold footnote whiteColor>
-                            {"  Rejected"}
-                          </Text>
-                        </Pressable>
+                          {InwardApprovalDetail.InwardCurrentStatus != 5 && (
+                            <View
+                              style={{ paddingHorizontal: 4, width: "50%" }}
+                            >
+                              <Pressable
+                                onPress={() => {
+                                  InwardApprovalUpdateStatusApi(7);
+                                }}
+                                style={{
+                                  borderRadius: 8,
+                                  height: moderateScale(60),
+                                  backgroundColor: BaseColor.buttonGradient2,
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  flexDirection: "row",
+                                  marginBottom: 5,
+                                }}
+                              >
+                                <Image
+                                  source={Images.close}
+                                  tintColor={BaseColor.whiteColor}
+                                  style={{ width: 15, height: 15 }}
+                                ></Image>
+                                <Text bold footnote whiteColor>
+                                  {"  Rejected"}
+                                </Text>
+                              </Pressable>
+                            </View>
+                          )}
+                          <View style={{ paddingHorizontal: 4, width: "50%" }}>
+                            <Pressable
+                              onPress={() => {
+                                navigation.goBack();
+                              }}
+                              style={{
+                                borderRadius: 8,
+                                height: moderateScale(60),
+                                backgroundColor: BaseColor.danger,
+                                alignItems: "center",
+                                justifyContent: "center",
+                                flexDirection: "row",
+                                marginBottom: 5,
+                              }}
+                            >
+                              <Image
+                                source={Images.forbidden}
+                                tintColor={BaseColor.whiteColor}
+                                style={{ width: 15, height: 15 }}
+                              ></Image>
+                              <Text bold footnote whiteColor>
+                                {" Cancel"}
+                              </Text>
+                            </Pressable>
+                          </View>
+                        </View>
                       </View>
                     )}
-                    <View style={{ paddingHorizontal: 4, width: "50%" }}>
-                      <Pressable
-                        onPress={() => {
-                          navigation.goBack();
-                        }}
-                        style={{
-                          borderRadius: 8,
-                          height: moderateScale(60),
-                          backgroundColor: BaseColor.danger,
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexDirection: "row",
-                          marginBottom: 5,
-                        }}
-                      >
-                        <Image
-                          source={Images.forbidden}
-                          tintColor={BaseColor.whiteColor}
-                          style={{ width: 15, height: 15 }}
-                        ></Image>
-                        <Text bold footnote whiteColor>
-                          {" Cancel"}
-                        </Text>
-                      </Pressable>
-                    </View>
                   </View>
-                </View>
+                )}
               </>
             )}
 
@@ -1123,14 +1150,14 @@ const InwardApproval = ({ navigation, route }) => {
                       paddingTop: 12,
                       paddingBottom: 12,
                       flexDirection: "row",
-                      // alignItems:'center'
+                      alignItems: "center",
                     }}
                   >
                     <Image
                       source={Images.ic_pass_show}
                       tintColor={BaseColor.darkColor}
                       resizeMode="contain"
-                      style={{ width: 20, height: 20, top: 1, marginRight: 5 }}
+                      style={{ width: 20, height: 20, top: 0, marginRight: 5 }}
                     ></Image>
 
                     <Text semibold darkColor style={{ flex: 1 }}>
@@ -1277,12 +1304,14 @@ const InwardApproval = ({ navigation, route }) => {
                       </Text>
                     </Text>
 
-                    <Text darkColor subhead bold>
-                      {"⦿ Status Remarks - "}
-                      <Text semibold darkColor>
-                        {item.StatusRemarks}
+                    {item.StatusRemarks != "" && (
+                      <Text darkColor subhead bold>
+                        {"⦿ Status Remarks - "}
+                        <Text semibold darkColor>
+                          {item.StatusRemarks}
+                        </Text>
                       </Text>
-                    </Text>
+                    )}
                   </View>
                 ))}
               </ScrollView>

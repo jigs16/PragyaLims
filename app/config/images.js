@@ -123,7 +123,8 @@ export const Images = {
   PendingTesting: require('../assets/images/PendingTesting.png'),
   InwardRegister: require('../assets/images/InwardRegister.png'),
   ProcessStatus: require('../assets/images/ProcessStatus.png'),
-  PLLOGO: require('../assets/images/PL-logo.png'),//
+  PLLOGO: require('../assets/images/PL-logo.png'),
+  logoIcon: require('../assets/images/logoIcon.png'),//
   logoLight: require('../assets/images/logoLight.png'),
   TTR: require('../assets/images/TTR.png'),
   TAP: require('../assets/images/TAP.png'),
@@ -153,5 +154,6 @@ export const Images = {
   NABL: require('../assets/images/NABL.png'),
   Normal: require('../assets/images/Normal.png'),
   bgimg: require('../assets/images/bgimg.png'),
+  ic_DataFound: require('../assets/images/DataFound.png'),
   //
 }

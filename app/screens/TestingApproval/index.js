@@ -21,6 +21,7 @@ import {
   GetTestingsApprovalDetailByIDApiCall,
 } from "../../redux/services/ApiService";
 import Toast from "react-native-simple-toast";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const TestingApproval = ({ navigation, route }) => {
   useEffect(() => {
@@ -31,6 +32,8 @@ const TestingApproval = ({ navigation, route }) => {
   const [msgModal, setMsgModal] = useState("");
   const [loading, setLoading] = useState(false);
   const [Remarks, setRemarks] = useState("");
+  const [Qty, setQty] = useState("");//
+  const [TestingApprovalRequired, setTestingApprovalRequired] = useState("");
   const [InwardApprovalDetail, setInwardApprovalDetail] = useState([]);
   const [ListOfMaterialInfo, setListOfMaterialInfo] = useState([]);
   const [ListOfMaterialTests, setListOfMaterialTests] = useState([]);
@@ -38,6 +41,9 @@ const TestingApproval = ({ navigation, route }) => {
     useState(false);
 
   const GetTestingsApprovalDetailByIDApi = async () => {
+    setTestingApprovalRequired(
+      await AsyncStorage.getItem("TestingApprovalRequired")
+    );
     setLoading(true);
     var params = {
       InwardMaterialIDEncrypted: route.params.InwardMaterialIDEncrypted,
@@ -220,6 +226,20 @@ const TestingApproval = ({ navigation, route }) => {
               </Text>
 
               <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                Material Group -{" "}
+                <Text subhead darkColor style={{ fontSize: 13 }}>
+                  {item.MaterialGroupName}
+                </Text>
+              </Text>
+
+              <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                Material Type -{" "}
+                <Text subhead darkColor style={{ fontSize: 13 }}>
+                  {item.MaterialType}
+                </Text>
+              </Text>
+
+              <Text subhead bold darkColor style={{ fontSize: 14 }}>
                 {"Machine : "}{" "}
                 <Text subhead darkColor style={{ fontSize: 13 }}>
                   {item.MachineName}
@@ -274,7 +294,7 @@ const TestingApproval = ({ navigation, route }) => {
 
               <TouchableOpacity
                 onPress={() => {
-                  toggleItem1(item?.TestingIDEncrypt), setRemarks("");
+                  toggleItem1(item?.TestingIDEncrypt), setRemarks(""), setQty(item.TestCount);
                 }}
               >
                 <View style={{}}>
@@ -285,11 +305,11 @@ const TestingApproval = ({ navigation, route }) => {
                       borderRadius: 6,
                       marginBottom: 10,
                       flexDirection: "row",
-                      borderColor: BaseColor.buttonGradient2,
+                      borderColor: BaseColor.blackColor,
                       backgroundColor:
                         expandedId1 == item?.TestingIDEncrypt
-                          ? BaseColor.buttonGradient2
-                          : "#eaf6f5",
+                          ? BaseColor.blackColor
+                          : "#00000025",
                       borderWidth: 1,
                       alignItems: "center",
                     }}
@@ -302,7 +322,7 @@ const TestingApproval = ({ navigation, route }) => {
                         color:
                           expandedId1 == item?.TestingIDEncrypt
                             ? BaseColor.whiteColor
-                            : BaseColor.buttonGradient2,
+                            : BaseColor.blackColor,
                       }}
                     >
                       {"Testing Parameters"}
@@ -312,7 +332,7 @@ const TestingApproval = ({ navigation, route }) => {
                       tintColor={
                         expandedId1 == item?.TestingIDEncrypt
                           ? BaseColor.whiteColor
-                          : BaseColor.buttonGradient2
+                          : BaseColor.blackColor
                       }
                       style={{ width: 10, height: 10 }}
                     ></Image>
@@ -632,9 +652,9 @@ const TestingApproval = ({ navigation, route }) => {
                                 subhead
                                 bold
                                 darkColor
-                                style={{ fontSize: 14, top: 2 }}
+                                style={{ fontSize: 14, top: 0 }}
                               >
-                                {"Value " + (index + 1) + " : "}{" "}
+                                {Qty == 1 ? "Value" + " :  " : "Value " + (index+1) + " :  "}
                                 <Text
                                   subhead
                                   darkColor
@@ -681,119 +701,127 @@ const TestingApproval = ({ navigation, route }) => {
                           ))}
                         </>
                       ))}
-
-                      <View
-                        style={{
-                          flex: 1,
-                          padding: 0,
-                          paddingTop: 15,
-                          paddingBottom: 0,
-                          marginBottom: 10,
-                        }}
-                      >
-                        <Text
-                          subhead
-                          bold
-                          buttonGradient1
-                          style={{ marginBottom: 0, marginTop: 5 }}
-                        >
-                          Approval Note
-                        </Text>
-                        <TextInput
-                          style={[
-                            styles.textInput,
-                            {
-                              //   height: 100,
-                              //   textAlignVertical: "top",
-                              borderColor: BaseColor.darkGraycolor,
-                            },
-                          ]}
-                          onChangeText={(text) => setRemarks(text)}
-                          placeholder={"Enter Approval Note ..."}
-                          value={Remarks}
-                          returnKeyType="next"
-                          multiline
-                        />
-                      </View>
-                      {/* {InwardApprovalDetail.InwardCurrentStatus != 5 && ( */}
-                      <View
-                        style={{
-                          flex: 1,
-                          flexDirection: "row",
-                          padding: 0,
-                          paddingBottom: 5,
-                          paddingTop: 5,
-                        }}
-                      >
-                        <View style={{ paddingHorizontal: 4, width: "50%" }}>
-                          <Pressable
-                            onPress={() => {
-                              TestingsApprovalInsertApi(
-                                1,
-                                4,
-                                item.TestingIDEncrypt
-                              );
-                            }}
+                      
+                      {TestingApprovalRequired == 1 && (
+                        <View>
+                          <View
                             style={{
-                              borderRadius: 8,
-                              height: moderateScale(60),
-                              backgroundColor: BaseColor.buttonGradient2,
-                              alignItems: "center",
-                              justifyContent: "center",
-                              flexDirection: "row",
-                              // marginBottom: 10,
+                              flex: 1,
+                              padding: 0,
+                              paddingTop: 15,
+                              paddingBottom: 0,
+                              marginBottom: 10,
                             }}
                           >
-                            {/* <Image
+                            <Text
+                              subhead
+                              bold
+                              buttonGradient1
+                              style={{ marginBottom: 0, marginTop: 5 }}
+                            >
+                              Approval Note
+                            </Text>
+                            <TextInput
+                              style={[
+                                styles.textInput,
+                                {
+                                  //   height: 100,
+                                  //   textAlignVertical: "top",
+                                  borderColor: BaseColor.darkGraycolor,
+                                },
+                              ]}
+                              onChangeText={(text) => setRemarks(text)}
+                              placeholder={"Enter Approval Note ..."}
+                              value={Remarks}
+                              returnKeyType="next"
+                              multiline
+                            />
+                          </View>
+                          {/* {InwardApprovalDetail.InwardCurrentStatus != 5 && ( */}
+                          <View
+                            style={{
+                              flex: 1,
+                              flexDirection: "row",
+                              padding: 0,
+                              paddingBottom: 5,
+                              paddingTop: 5,
+                            }}
+                          >
+                            <View
+                              style={{ paddingHorizontal: 4, width: "50%" }}
+                            >
+                              <Pressable
+                                onPress={() => {
+                                  TestingsApprovalInsertApi(
+                                    1,
+                                    4,
+                                    item.TestingIDEncrypt
+                                  );
+                                }}
+                                style={{
+                                  borderRadius: 8,
+                                  height: moderateScale(60),
+                                  backgroundColor: BaseColor.buttonGradient2,
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  flexDirection: "row",
+                                  // marginBottom: 10,
+                                }}
+                              >
+                                {/* <Image
                               source={Images.check}
                               tintColor={BaseColor.whiteColor}
                               style={{ width: 15, height: 15 }}
                             ></Image> */}
-                            <Text
-                              bold
-                              footnote
-                              whiteColor
-                              style={{ flex: 1, textAlign: "center" }}
+                                <Text
+                                  bold
+                                  footnote
+                                  whiteColor
+                                  style={{ flex: 1, textAlign: "center" }}
+                                >
+                                  {" Approved"}
+                                </Text>
+                              </Pressable>
+                            </View>
+                            <View
+                              style={{ paddingHorizontal: 4, width: "50%" }}
                             >
-                              {" Approved"}
-                            </Text>
-                          </Pressable>
-                        </View>
-                        <View style={{ paddingHorizontal: 4, width: "50%" }}>
-                          <Pressable
-                            onPress={() => {
-                              TestingsApprovalInsertApi(
-                                1,
-                                5,
-                                item.TestingIDEncrypt
-                              );
-                            }}
-                            style={{
-                              borderRadius: 8,
-                              height: moderateScale(60),
-                              backgroundColor: BaseColor.buttonGradient2,
-                              alignItems: "center",
-                              justifyContent: "center",
-                              flexDirection: "row",
-                              // marginBottom: 10,
-                            }}
-                          >
-                            {/* <Image
+                              <Pressable
+                                onPress={() => {
+                                  TestingsApprovalInsertApi(
+                                    1,
+                                    5,
+                                    item.TestingIDEncrypt
+                                  );
+                                }}
+                                style={{
+                                  borderRadius: 8,
+                                  height: moderateScale(60),
+                                  backgroundColor: BaseColor.buttonGradient2,
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  flexDirection: "row",
+                                  // marginBottom: 10,
+                                }}
+                              >
+                                {/* <Image
                               source={Images.reload}
                               tintColor={BaseColor.whiteColor}
                               style={{ width: 15, height: 15 }}
                             ></Image> */}
-                            <Text
-                              bold
-                              footnote
-                              whiteColor
-                              style={{ flex: 1, textAlign: "center" }}
-                            >
-                              {" Rejected & Rectify"}
-                            </Text>
-                          </Pressable>
+                                <Text
+                                  bold
+                                  footnote
+                                  whiteColor
+                                  style={{ flex: 1, textAlign: "center" }}
+                                >
+                                  {" Rewise & Rectify"}
+                                </Text>
+                              </Pressable>
+                            </View>
+                          </View>
                         </View>
-                      </View>
+                      )}
                     </View>
                   )}
                 </View>
@@ -885,8 +913,8 @@ const TestingApproval = ({ navigation, route }) => {
               <View style={{ flex: 1, padding: 10, paddingBottom: 4 }}>
                 <Pressable
                   onPress={() => {
-                    setApprovalHistory_ModalVisible(true);
-                    setRemarks('');
+                    TestingApprovalRequired == 1 &&
+                      (setApprovalHistory_ModalVisible(true), setRemarks(""));
                   }}
                   style={{
                     flexDirection: "row",
@@ -917,20 +945,6 @@ const TestingApproval = ({ navigation, route }) => {
                   EDD -{" "}
                   <Text caption1 darkColor>
                     {InwardApprovalDetail.ExpectedDateOfDelivery}
-                  </Text>
-                </Text>
-
-                <Text darkColor bold>
-                  Material Group -{" "}
-                  <Text caption1 darkColor>
-                    {InwardApprovalDetail.MaterialGroupName}
-                  </Text>
-                </Text>
-
-                <Text darkColor bold>
-                  Material Type -{" "}
-                  <Text caption1 darkColor>
-                    {InwardApprovalDetail.MaterialType}
                   </Text>
                 </Text>
 
@@ -1105,7 +1119,7 @@ const TestingApproval = ({ navigation, route }) => {
                           style={{ width: 15, height: 15 }}
                         ></Image>
                         <Text bold footnote whiteColor>
-                          {" Rejected & Rectify"}
+                          {" Rewise & Rectify"}
                         </Text>
                       </Pressable>
                     </View>

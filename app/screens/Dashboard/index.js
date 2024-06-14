@@ -88,10 +88,10 @@ const Dashboard = ({ navigation }) => {
   const GetTodaysSummaryDataApi = async () => {
     let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
     console.log("LoginDetails ===>>> ", LoginDetails);
+    setLoading(true);
     setFirstName(LoginDetails?.Name);
     setDesignationName(LoginDetails?.DesignationName);
     setPhoto(LoginDetails?.Photo);
-    setLoading(true);
     var params = {
       CompanyIDEncrypted: LoginDetails.CompanyIDEncrypt,
       BranchIDEncrypted: LoginDetails.BranchIDEncrypt,
@@ -101,7 +101,7 @@ const Dashboard = ({ navigation }) => {
       .then((res) => {
         console.log("res ---->>>>>> ", JSON.stringify(res));
         if (res.IsSuccess) {
-          setLoading(false);
+          // setLoading(false);
           setTodaysInwardCount(res?.TodaysInwardCount);
           setTodaysTestingCount(res?.TodaysTestingCount);
           setTodaysInwardApprovalPendingCount(
@@ -182,7 +182,7 @@ const Dashboard = ({ navigation }) => {
 
   const GetTopCustomersDataApi = async (TopCustomerCurrentPeriodType1) => {
     let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
-    setLoading(true);
+    // setLoading(true);
     var params = {
       CompanyIDEncrypted: LoginDetails.CompanyIDEncrypt,
       BranchIDEncrypted: LoginDetails.BranchIDEncrypt,
@@ -200,7 +200,7 @@ const Dashboard = ({ navigation }) => {
       .then((res) => {
         console.log("res ---->>>>>> ", JSON.stringify(res));
         if (res.IsSuccess) {
-          setLoading(false);
+          // setLoading(false);
           setTopCustomersDataNull(false);
           setGetTopCustomersData(res.List);
           console.log("res List---->>>>>> ", res.List);
@@ -294,7 +294,7 @@ const Dashboard = ({ navigation }) => {
 
   const GetTopTestDataApi = async (TopTestCurrentPeriodType1) => {
     let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
-    setLoading(true);
+    // setLoading(true);
     var params = {
       CompanyIDEncrypted: LoginDetails.CompanyIDEncrypt,
       BranchIDEncrypted: LoginDetails.BranchIDEncrypt,
@@ -312,7 +312,7 @@ const Dashboard = ({ navigation }) => {
       .then((res) => {
         console.log("GetTopTestDataApi res ---->>>>>> ", JSON.stringify(res));
         if (res.IsSuccess) {
-          setLoading(false);
+          // setLoading(false);
           setTopTestDataNull(false);
           setGetTopTestData(res.List);
         } else {
@@ -403,7 +403,7 @@ const Dashboard = ({ navigation }) => {
 
   const GetTopDepartmentDataApi = async (TopDepartmentCurrentPeriodType1) => {
     let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
-    setLoading(true);
+    // setLoading(true);
     var params = {
       CompanyIDEncrypted: LoginDetails.CompanyIDEncrypt,
       BranchIDEncrypted: LoginDetails.BranchIDEncrypt,
@@ -421,7 +421,7 @@ const Dashboard = ({ navigation }) => {
       .then((res) => {
         console.log("res ---->>>>>> ", JSON.stringify(res));
         if (res.IsSuccess) {
-          setLoading(false);
+          // setLoading(false);
           setTopDepartmentDataNull(false);
           setGetTopDepartmentData(res.List);
         } else {
@@ -514,7 +514,7 @@ const Dashboard = ({ navigation }) => {
 
   const GetTopMachinesDataApi = async (TopMachinesCurrentPeriodType1) => {
     let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
-    setLoading(true);
+    // setLoading(true);
     var params = {
       CompanyIDEncrypted: LoginDetails.CompanyIDEncrypt,
       BranchIDEncrypted: LoginDetails.BranchIDEncrypt,
@@ -535,7 +535,7 @@ const Dashboard = ({ navigation }) => {
           JSON.stringify(res)
         );
         if (res.IsSuccess) {
-          setLoading(false);
+          // setLoading(false);
           setTopMachinesDataNull(false);
           setGetTopMachinesData(res.List);
         } else {
@@ -685,9 +685,10 @@ const Dashboard = ({ navigation }) => {
 
   const GetActivityLogDataApi = async () => {
     let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
-    setLoading(true);
+    // setLoading(true);
     var params = {
       EmployeeIDEncrypted: LoginDetails.ReferenceIDEncrypt,
+      BranchIDEncrypted: LoginDetails.BranchIDEncrypt,
       SearchText: "",
     };
     console.log("GetActivityLogDataApi Params =====>>>>>>>>>>", params);
@@ -698,8 +699,8 @@ const Dashboard = ({ navigation }) => {
           JSON.stringify(res)
         );
         if (res.IsSuccess) {
-          setLoading(false);
           setActivityLogData(res.List);
+          setLoading(false);
         } else {
           console.log("Faild  >>>>>>>========");
           setLoading(false);
@@ -850,7 +851,7 @@ const Dashboard = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
             automaticallyAdjustKeyboardInsets={true}
             style={{
-              marginBottom: moderateScale(65),
+              marginBottom: moderateScale(80),
               marginTop: moderateScale(20),
             }}
           >

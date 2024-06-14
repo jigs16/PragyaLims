@@ -87,6 +87,7 @@ const ControlCenter = ({ navigation }) => {
   };
 
   const [ControlCenterData, setControlCenterData] = useState([]);
+  const [DataFound, setDataFound] = useState(0);
 
   const GetControlCenterDataApi = async () => {
     let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
@@ -130,9 +131,10 @@ const ControlCenter = ({ navigation }) => {
           JSON.stringify(res)
         );
         if (res.IsSuccess) {
-          setLoading(false);
           setControlCenterData(res?.controlCenterList);
+          setDataFound(res?.controlCenterList == "" ? 0 : 1);
           toggleSidebar();
+          setLoading(false);
         } else {
           console.log("Faild  >>>>>>>========");
           setLoading(false);
@@ -560,12 +562,15 @@ const ControlCenter = ({ navigation }) => {
           );
         }}
       ></Header>
+
       <Loader loading={loading} />
+
       <AlertModal
         showAlertModal={alertModal}
         setShowAlertModal={setAlertModal}
         message={msgModal}
       ></AlertModal>
+
       {isSidebarOpen && (
         <Pressable onPress={toggleSidebar} style={StyleSheet.absoluteFill}>
           <Animated.View
@@ -628,7 +633,7 @@ const ControlCenter = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
             automaticallyAdjustKeyboardInsets={true}
             style={{
-              marginBottom: moderateScale(65),
+              marginBottom: moderateScale(160),
               marginTop: moderateScale(20),
             }}
           >
@@ -1104,7 +1109,7 @@ const ControlCenter = ({ navigation }) => {
               {"Test Method"}
             </Text>
             <Dropdown
-              style={[styles.dropdown, isFocus8 && {}]}
+              style={[styles.dropdown, isFocus8 && { marginBottom: 20 }]}
               placeholderStyle={[
                 styles.placeholderStyle,
                 { color: BaseColor.borderColor },
@@ -1131,19 +1136,29 @@ const ControlCenter = ({ navigation }) => {
                 setIsFocus8(false);
               }}
             />
-
-            <Button
-              onPress={() => {
-                GetControlCenterDataApi();
-              }}
-              style={{ marginVertical: moderateScale(30), height: 44 }}
-              full
-            >
-              {"Filter"}
-            </Button>
           </KeyboardAwareScrollView>
+
+          <Button
+            onPress={() => {
+              GetControlCenterDataApi();
+            }}
+            style={{
+              marginVertical: moderateScale(30),
+              height: 44,
+              position: "absolute",
+              bottom: moderateScale(65),
+              alignSelf: "center",
+              borderRadius: 10,
+              borderWidth: 1,
+              borderColor: BaseColor.buttonGradient1,
+            }}
+            full
+          >
+            {"Filter"}
+          </Button>
         </Animated.View>
       )}
+
       <LinearGradient
         colors={[BaseColor.whiteColor, BaseColor.whiteColor]}
         locations={[0, 1]}
@@ -1176,9 +1191,15 @@ const ControlCenter = ({ navigation }) => {
         />
 
         <ScrollView>
-          <View style={{ flex: 1, marginBottom: 80 }}>
+          <View style={{ flex: 1, marginBottom: 65 }}>
             {ControlCenterData?.map((item, index) => (
-              <View
+              <Pressable
+                onPress={() => {
+                  navigation.navigate("InwardApproval", {
+                    InwardIDEncrypted: item.InwardIDEncrypted,
+                    ViewType: "ViewOnly",
+                  });
+                }}
                 style={[
                   styles.itemView,
                   {
@@ -1219,71 +1240,84 @@ const ControlCenter = ({ navigation }) => {
                         </Text>
                       </View>
                       <View style={{ flexDirection: "row" }}>
-                        {(item.InwardCurrentStatus === 4 ||
-                          item.InwardCurrentStatus > 4) &&
-                        IA ? (
+                        {
+                          // (item.InwardCurrentStatus === 4 ||
+                          //   item.InwardCurrentStatus > 4)
+                          item.TCAllocationActionStatus == 2 && IA ? (
+                            <Pressable
+                              onPress={() => {
+                                navigation.navigate("InwardApproval", {
+                                  InwardIDEncrypted: item.InwardIDEncrypted,
+                                  ViewType: "ApprovalOnly",
+                                });
+                              }}
+                              style={{
+                                borderWidth: 1,
+                                borderColor:
+                                  item.InwardCurrentStatus === 4 ||
+                                  item.InwardCurrentStatus < 4
+                                    ? BaseColor.red
+                                    : BaseColor.green,
+                                width: 35,
+                                height: 25,
+                                alignItems: "center",
+                                justifyContent: "center",
+                                borderRadius: 6,
+                                marginRight: 7,
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  color:
+                                    item.InwardCurrentStatus === 4 ||
+                                    item.InwardCurrentStatus < 4
+                                      ? BaseColor.red
+                                      : BaseColor.green,
+                                }}
+                              >
+                                IA
+                              </Text>
+                            </Pressable>
+                          ) : null
+                        }
+
+                        {item.TestingActionStatus > 1 && (
                           <Pressable
                             onPress={() => {
-                              navigation.navigate("InwardApproval", {
-                                InwardIDEncrypted: item.InwardIDEncrypted,
+                              navigation.navigate("Testing", {
+                                ListOfInwardMaterials:
+                                  item.ListOfInwardMaterials,
                               });
                             }}
                             style={{
                               borderWidth: 1,
                               borderColor:
-                                item.InwardCurrentStatus === 4 ||
-                                item.InwardCurrentStatus < 4
+                                item.TestingActionStatus === 1
                                   ? BaseColor.red
-                                  : BaseColor.green,
+                                  : item.TestingActionStatus === 2
+                                  ? BaseColor.green
+                                  : BaseColor.orange,
                               width: 35,
-                              height: 25,
+                              height: 24,
                               alignItems: "center",
                               justifyContent: "center",
                               borderRadius: 6,
-                              marginRight: 7,
                             }}
                           >
                             <Text
                               style={{
                                 color:
-                                  item.InwardCurrentStatus === 4 ||
-                                  item.InwardCurrentStatus < 4
+                                  item.TestingActionStatus === 1
                                     ? BaseColor.red
-                                    : BaseColor.green,
+                                    : item.TestingActionStatus === 2
+                                    ? BaseColor.green
+                                    : BaseColor.orange,
                               }}
                             >
-                              IA
+                              T
                             </Text>
                           </Pressable>
-                        ) : null}
-
-                        <Pressable
-                          onPress={() => {
-                            navigation.navigate("Testing", {
-                              ListOfInwardMaterials: item.ListOfInwardMaterials,
-                            });
-                          }}
-                          style={{
-                            borderWidth: 1,
-                            borderColor:
-                              item.TestingActionStatus === 1
-                                ? BaseColor.red
-                                : item.TestingActionStatus === 2
-                                ? BaseColor.green
-                                : BaseColor.orange,
-                            width: 35,
-                            height: 24,
-                            alignItems: "center",
-                            justifyContent: "center",
-                            borderRadius: 6,
-                          }}
-                        >
-                          <Text style={{ color:  item.TestingActionStatus === 1
-                                ? BaseColor.red
-                                : item.TestingActionStatus === 2
-                                ? BaseColor.green
-                                : BaseColor.orange,}}>T</Text>
-                        </Pressable>
+                        )}
                       </View>
                     </View>
 
@@ -1301,8 +1335,41 @@ const ControlCenter = ({ navigation }) => {
                     </Text>
                   </View>
                 </View>
-              </View>
+              </Pressable>
             ))}
+            {DataFound == 0 && (
+              <View style={styles.Found}>
+                <Image
+                  source={Images.ic_DataFound}
+                  style={{ width: 160, height: 160, marginBottom: 25 }}
+                />
+
+                <Text darkColor title3>
+                  Oops! No Data Found.
+                </Text>
+                <View style={{ flexDirection: "row" }}>
+                  <Text darkColor subhead style={{ marginTop: 10 }}>
+                    Please Change the filter{" "}
+                  </Text>
+                  <Pressable onPress={toggleSidebar}>
+                    <Text
+                      subhead
+                      buttonGradient1
+                      bold
+                      style={{
+                        marginTop: 0,
+                        borderBottomWidth: 1,
+                        borderBottomColor: BaseColor.buttonGradient1,
+                        paddingBottom: 2,
+                        marginTop: 10,
+                      }}
+                    >
+                      Click here
+                    </Text>
+                  </Pressable>
+                </View>
+              </View>
+            )}
           </View>
         </ScrollView>
       </LinearGradient>

@@ -8,13 +8,8 @@
 import React, {useEffect, useState} from 'react';
 import {
   LogBox,
-  SafeAreaView,
-  ScrollView,
   StatusBar,
-  StyleSheet,
-  Text,
   useColorScheme,
-  View,
 } from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
@@ -24,7 +19,6 @@ import AuthNavigator from './app/navigation/AuthNavigator';
 import SpalshNavigator from './app/navigation/SpalshNavigator';
 import {BottomTabNavigator} from './app/navigation/BottomTabNavigator';
 import {BaseColor} from './app/config';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { navigationRef } from './app/network/networkUtils';
 
 const Stack = createNativeStackNavigator();

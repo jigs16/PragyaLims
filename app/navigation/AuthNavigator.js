@@ -13,7 +13,7 @@ const AuthNavigator = () => {
   return (
     <>
       <View style={{flex: 1}}>
-        <Stack.Navigator initialRouteName="GetStarted">
+        <Stack.Navigator initialRouteName="SignIn">
           <Stack.Screen
             name="GetStarted"
             component={GetStarted}
