@@ -583,4 +583,145 @@ export const TestingsApprovalInsertApiCall = data => {
     reject(error);
   }
 };
-// 
+
+export const GetReportingsListApiCall = data => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post('Reportings/GetReportingsList', data)
+        .then(response => {
+          console.log('Response' + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const GetReportDispatchListApiCall = data => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post('ReportDispatch/GetReportDispatchList', data)
+        .then(response => {
+          console.log('Response' + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const GetReportDispatchPrintByIDApiCall = data => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post('ReportDispatch/GetReportDispatchPrintByID', data)
+        .then(response => {
+          console.log('Response' + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const GetReportDispatchPrintLabelApiCall = data => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post('ReportDispatch/GetReportDispatchPrintLabel', data)
+        .then(response => {
+          console.log('Response' + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const GetCourierDDLListApiCall = data => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post('Courier/GetCourierDDLList', data)
+        .then(response => {
+          console.log('Response' + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const GetMaterialDispatchListApiCall = data => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post('MaterialDispatch/GetMaterialDispatchList', data)
+        .then(response => {
+          console.log('Response' + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const GetMaterialDispatchPrintByIDApiCall = data => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post('MaterialDispatch/GetMaterialDispatchPrintByID', data)
+        .then(response => {
+          console.log('Response' + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+// Courier/GetCourierDDLList
+

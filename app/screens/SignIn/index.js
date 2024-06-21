@@ -16,8 +16,8 @@ import AlertModal from "../../components/AlertModal";
 import { loginApiCall } from "../../redux/services/ApiService";
 
 const SignIn = ({ navigation }) => {
-  const [UserName, setUserName] = useState("mayank");
-  const [Password, setPassword] = useState("Qwerty@123");
+  const [UserName, setUserName] = useState("krupa_pragya");
+  const [Password, setPassword] = useState("Appegic@123");
   const [PasswordSecurity, setPasswordSecurity] = useState(true);
   const [alertModal, setAlertModal] = useState(false);
   const [msgModal, setMsgModal] = useState("");
@@ -157,7 +157,7 @@ const SignIn = ({ navigation }) => {
           }}
         />
         <CheckBox
-          title="Remamber me"
+          title="Remember me"
           onPress={(isChecked) => setRememberMe(isChecked)}
           style={{ alignSelf: "flex-start", marginTop: 15 }}
         ></CheckBox>
@@ -179,7 +179,7 @@ const SignIn = ({ navigation }) => {
           }}
         >
           <Text subhead bold buttonGradient2>
-            {"Forget the password?"}
+            {"Forgot password?"}
           </Text>
         </Pressable>
       </View>

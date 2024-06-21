@@ -61,7 +61,7 @@ export default StyleSheet.create({
   },
   modalView: {
     backgroundColor: BaseColor.whiteColor,
-    borderRadius: 25,
+    borderRadius: 14,
     position: 'absolute',
     elevation: 5,
     width: '92%',
@@ -73,8 +73,8 @@ export default StyleSheet.create({
     maxHeight:verticalScale(1255)
   },
   modalCheckImg: {
-    width: moderateScale(35),
-    height: moderateScale(35),
+    width: moderateScale(24),
+    height: moderateScale(24),
     // marginBottom: moderateScale(20),
   },
   btnExplore:{

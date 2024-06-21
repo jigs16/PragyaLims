@@ -34,7 +34,7 @@ const Profile = ({navigation}) => {
   const [msgModal0, setMsgModal0] = useState('');
   const [Name, setName] = useState('');
   const [DesignationName, setDesignationName] = useState('');
-  const [Photo, setPhoto] = useState('');
+  const [Photo, setPhoto] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -134,7 +134,7 @@ const Profile = ({navigation}) => {
                       height: moderateScale(100),
                       borderRadius: moderateScale(140 / 2),
                     }}
-                    source={{uri: Photo}}
+                    source={Photo != null ? { uri: Photo } : Images.ic_avtar}
                   />
                 </View>
 
@@ -175,6 +175,21 @@ const Profile = ({navigation}) => {
                   source={Images.ic_right_arrow_new}
                 />
               </View>
+
+              <Pressable
+                onPress={() => {
+                  navigation.navigate('Operation');
+                }}
+                style={styles.itemView}>
+                <Image style={styles.itemImg} source={Images.ic_logout1} />
+                <Text body2 darkColor style={{flex: 1}}>
+                  {'Operation'}
+                </Text>
+                <Image
+                  style={styles.rightArrow}
+                  source={Images.ic_right_arrow_new}
+                />
+              </Pressable>
 
               <Pressable
                 onPress={() => {

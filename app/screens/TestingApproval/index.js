@@ -32,7 +32,7 @@ const TestingApproval = ({ navigation, route }) => {
   const [msgModal, setMsgModal] = useState("");
   const [loading, setLoading] = useState(false);
   const [Remarks, setRemarks] = useState("");
-  const [Qty, setQty] = useState("");//
+  const [Qty, setQty] = useState(""); //
   const [TestingApprovalRequired, setTestingApprovalRequired] = useState("");
   const [InwardApprovalDetail, setInwardApprovalDetail] = useState([]);
   const [ListOfMaterialInfo, setListOfMaterialInfo] = useState([]);
@@ -140,11 +140,20 @@ const TestingApproval = ({ navigation, route }) => {
               borderRadius: 6,
               marginBottom: 10,
               flexDirection: "row",
-              borderColor: BaseColor.buttonGradient2,
+              borderColor:
+                item.TestingStatusName == "Approved"
+                  ? BaseColor.approved
+                  : item.TestingStatusName == "Unapproved"
+                  ? BaseColor.unapproved
+                  : BaseColor.pending,
               backgroundColor:
-                expandedId == item?.TestingIDEncrypt
-                  ? BaseColor.buttonGradient2
-                  : "#eaf6f5",
+                // expandedId == item?.TestingIDEncrypt
+                //   ? BaseColor.buttonGradient2 :
+                item.TestingStatusName == "Approved"
+                  ? BaseColor.approved
+                  : item.TestingStatusName == "Unapproved"
+                  ? BaseColor.unapproved
+                  : BaseColor.pending,
               borderWidth: 1,
               alignItems: "center",
             }}
@@ -162,7 +171,8 @@ const TestingApproval = ({ navigation, route }) => {
                   color:
                     expandedId == item?.TestingIDEncrypt
                       ? BaseColor.whiteColor
-                      : BaseColor.buttonGradient2,
+                      : BaseColor.whiteColor,
+                  fontSize: 13.5,
                 }}
               >
                 {item.TestName}
@@ -173,395 +183,292 @@ const TestingApproval = ({ navigation, route }) => {
               tintColor={
                 expandedId == item?.TestingIDEncrypt
                   ? BaseColor.whiteColor
-                  : BaseColor.buttonGradient2
+                  : BaseColor.whiteColor
               }
               style={{ width: 10, height: 10 }}
             ></Image>
           </View>
           {isExpanded && (
-            <View
-              style={{
-                padding: 10,
-                paddingRight: 10,
-                marginTop: -10,
-                marginBottom: 0,
-                borderBottomLeftRadius: 6,
-                borderBottomRightRadius: 6,
-              }}
-            >
-              <Text subhead bold darkColor style={{ fontSize: 14 }}>
-                {"Test Name : "}
-                <Text subhead darkColor style={{ fontSize: 13 }}>
-                  {item?.TestName}
-                </Text>
-              </Text>
-
-              <Text subhead bold darkColor style={{ fontSize: 14 }}>
-                {"Department : "}{" "}
-                <Text subhead darkColor style={{ fontSize: 13 }}>
-                  {item?.DepartmentName}
-                </Text>
-              </Text>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Text subhead bold darkColor style={{ fontSize: 14, flex: 1 }}>
-                  {"Test Date : "}{" "}
-                  <Text subhead darkColor style={{ fontSize: 13 }}>
-                    {item.TestingDate}
+            <>
+              {item.TestingStatusName != "Pending" ? (
+                <View
+                  style={{
+                    padding: 10,
+                    paddingRight: 10,
+                    marginTop: -10,
+                    marginBottom: 0,
+                    borderBottomLeftRadius: 6,
+                    borderBottomRightRadius: 6,
+                  }}
+                >
+                  <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                    {"Test Name : "}
+                    <Text subhead darkColor style={{ fontSize: 13 }}>
+                      {item?.TestName}
+                    </Text>
                   </Text>
-                </Text>
 
-                <Text subhead bold darkColor style={{ fontSize: 14 }}>
-                  {"Qty : "}{" "}
-                  <Text subhead darkColor style={{ fontSize: 13 }}>
-                    {item.TestCount}
+                  <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                    {"Department : "}{" "}
+                    <Text subhead darkColor style={{ fontSize: 13 }}>
+                      {item?.DepartmentName}
+                    </Text>
                   </Text>
-                </Text>
-              </View>
-
-              <Text subhead bold darkColor style={{ fontSize: 14, flex: 1 }}>
-                {"Test Method : "}{" "}
-                <Text subhead darkColor style={{ fontSize: 13 }}>
-                  {item.TestMethod}
-                </Text>
-              </Text>
-
-              <Text subhead bold darkColor style={{ fontSize: 14 }}>
-                Material Group -{" "}
-                <Text subhead darkColor style={{ fontSize: 13 }}>
-                  {item.MaterialGroupName}
-                </Text>
-              </Text>
-
-              <Text subhead bold darkColor style={{ fontSize: 14 }}>
-                Material Type -{" "}
-                <Text subhead darkColor style={{ fontSize: 13 }}>
-                  {item.MaterialType}
-                </Text>
-              </Text>
-
-              <Text subhead bold darkColor style={{ fontSize: 14 }}>
-                {"Machine : "}{" "}
-                <Text subhead darkColor style={{ fontSize: 13 }}>
-                  {item.MachineName}
-                </Text>
-              </Text>
-
-              <Text subhead bold darkColor style={{ fontSize: 14 }}>
-                {"Reference Standard : "}{" "}
-                <Text subhead darkColor style={{ fontSize: 13 }}>
-                  {item.ReferenceStandard}
-                </Text>
-              </Text>
-
-              <Text subhead bold darkColor style={{ fontSize: 14 }}>
-                {"Tested By : "}{" "}
-                <Text subhead darkColor style={{ fontSize: 13 }}>
-                  {item.TestedBy}
-                </Text>
-              </Text>
-
-              <Text subhead bold darkColor style={{ fontSize: 14 }}>
-                {"Result : "}{" "}
-                <Text subhead darkColor style={{ fontSize: 13 }}>
-                  {item.Result}
-                </Text>
-              </Text>
-
-              <Text subhead bold darkColor style={{ fontSize: 14 }}>
-                {"Remarks : "}{" "}
-                <Text subhead darkColor style={{ fontSize: 13 }}>
-                  {item.Remarks}
-                </Text>
-              </Text>
-              {item.TestingStatusName === "Approved" ||
-                (item.TestingStatusName === "Reject & Rectify" && (
-                  <>
-                    <Text subhead bold darkColor style={{ fontSize: 14 }}>
-                      {"Testing Status : "}{" "}
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Text
+                      subhead
+                      bold
+                      darkColor
+                      style={{ fontSize: 14, flex: 1 }}
+                    >
+                      {"Test Date : "}{" "}
                       <Text subhead darkColor style={{ fontSize: 13 }}>
-                        {item.TestingStatusName}
+                        {item.TestingDate}
                       </Text>
                     </Text>
 
                     <Text subhead bold darkColor style={{ fontSize: 14 }}>
-                      {"Approval Note : "}{" "}
+                      {"Qty : "}{" "}
                       <Text subhead darkColor style={{ fontSize: 13 }}>
-                        {item.ApprovalNote}
+                        {item.TestCount}
                       </Text>
                     </Text>
-                  </>
-                ))}
+                  </View>
 
-              <TouchableOpacity
-                onPress={() => {
-                  toggleItem1(item?.TestingIDEncrypt), setRemarks(""), setQty(item.TestCount);
-                }}
-              >
-                <View style={{}}>
-                  <View
-                    style={{
-                      marginTop: 10,
-                      padding: 10,
-                      borderRadius: 6,
-                      marginBottom: 10,
-                      flexDirection: "row",
-                      borderColor: BaseColor.blackColor,
-                      backgroundColor:
-                        expandedId1 == item?.TestingIDEncrypt
-                          ? BaseColor.blackColor
-                          : "#00000025",
-                      borderWidth: 1,
-                      alignItems: "center",
+                  <Text
+                    subhead
+                    bold
+                    darkColor
+                    style={{ fontSize: 14, flex: 1 }}
+                  >
+                    {"Test Method : "}{" "}
+                    <Text subhead darkColor style={{ fontSize: 13 }}>
+                      {item.TestMethod}
+                    </Text>
+                  </Text>
+
+                  <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                    Material Group -{" "}
+                    <Text subhead darkColor style={{ fontSize: 13 }}>
+                      {item.MaterialGroupName}
+                    </Text>
+                  </Text>
+
+                  <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                    Material Type -{" "}
+                    <Text subhead darkColor style={{ fontSize: 13 }}>
+                      {item.MaterialType}
+                    </Text>
+                  </Text>
+
+                  <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                    {"Machine : "}{" "}
+                    <Text subhead darkColor style={{ fontSize: 13 }}>
+                      {item.MachineName}
+                    </Text>
+                  </Text>
+
+                  <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                    {"Reference Standard : "}{" "}
+                    <Text subhead darkColor style={{ fontSize: 13 }}>
+                      {item.ReferenceStandard}
+                    </Text>
+                  </Text>
+
+                  <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                    {"Tested By : "}{" "}
+                    <Text subhead darkColor style={{ fontSize: 13 }}>
+                      {item.TestedBy}
+                    </Text>
+                  </Text>
+
+                  <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                    {"Result : "}{" "}
+                    <Text subhead darkColor style={{ fontSize: 13 }}>
+                      {item.Result}
+                    </Text>
+                  </Text>
+
+                  <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                    {"Remarks : "}{" "}
+                    <Text subhead darkColor style={{ fontSize: 13 }}>
+                      {item.Remarks}
+                    </Text>
+                  </Text>
+                  {item.TestingStatusName == "Unapproved" && (
+                  <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                    {"Testing Status : "}
+                    <Text subhead darkColor style={{ fontSize: 14 }}>
+                      {item?.TestingStatusName}
+                    </Text>
+                  </Text>
+)}
+                  {item.TestingStatusName == "Approved" && (
+                    <>
+                      <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                        {"Testing Status : "}{" "}
+                        <Text subhead darkColor style={{ fontSize: 14 }}>
+                          {item.TestingStatusName}
+                        </Text>
+                      </Text>
+
+                      <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                        {"Approval Note : "}{" "}
+                        <Text subhead darkColor style={{ fontSize: 13 }}>
+                          {item.ApprovalNote}
+                        </Text>
+                      </Text>
+                    </>
+                  )}
+
+                  {item.TestingStatusName === "Approved" ||
+                    (item.TestingStatusName === "Reject & Rectify" && (
+                      <>
+                        <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                          {"Testing Status : "}{" "}
+                          <Text subhead darkColor style={{ fontSize: 13 }}>
+                            {item.TestingStatusName}
+                          </Text>
+                        </Text>
+
+                        <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                          {"Approval Note : "}{" "}
+                          <Text subhead darkColor style={{ fontSize: 13 }}>
+                            {item.ApprovalNote}
+                          </Text>
+                        </Text>
+                      </>
+                    ))}
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      toggleItem1(item?.TestingIDEncrypt),
+                        setRemarks(""),
+                        setQty(item.TestCount);
                     }}
                   >
-                    <Text
-                      buttonGradient1
-                      bold
-                      style={{
-                        flex: 2,
-                        color:
-                          expandedId1 == item?.TestingIDEncrypt
-                            ? BaseColor.whiteColor
-                            : BaseColor.blackColor,
-                      }}
-                    >
-                      {"Testing Parameters"}
-                    </Text>
-                    <Image
-                      source={Images.DownArrow}
-                      tintColor={
-                        expandedId1 == item?.TestingIDEncrypt
-                          ? BaseColor.whiteColor
-                          : BaseColor.blackColor
-                      }
-                      style={{ width: 10, height: 10 }}
-                    ></Image>
-                  </View>
-                  {isExpanded1 && (
-                    <View
-                      style={{
-                        padding: 5,
-                        paddingRight: 10,
-                        // paddingLeft: 5,
-                        marginTop: -10,
-                        marginBottom: 10,
-                        borderBottomLeftRadius: 6,
-                        borderBottomRightRadius: 6,
-                      }}
-                    >
+                    <View style={{}}>
                       <View
                         style={{
+                          marginTop: 10,
+                          padding: 10,
+                          borderRadius: 6,
+                          marginBottom: 10,
                           flexDirection: "row",
-                          marginTop: 5,
-                          marginBottom: 5,
+                          borderColor: BaseColor.blackColor,
+                          backgroundColor:
+                            expandedId1 == item?.TestingIDEncrypt
+                              ? BaseColor.blackColor
+                              : "#00000025",
+                          borderWidth: 1,
                           alignItems: "center",
                         }}
                       >
                         <Text
-                          subhead
+                          buttonGradient1
                           bold
-                          buttonGradient2
-                          style={{ fontSize: 15, paddingTop: 5, flex: 1 }}
+                          style={{
+                            flex: 2,
+                            color:
+                              expandedId1 == item?.TestingIDEncrypt
+                                ? BaseColor.whiteColor
+                                : BaseColor.blackColor,
+                          }}
                         >
-                          {"Group"}
-                          {" : "}
-                          <Text subhead bold darkColor style={{ fontSize: 15 }}>
-                            {item?.ReferenceSubGroup}
-                          </Text>
-                          {"  "}
+                          {"Testing Parameters"}
                         </Text>
-
-                        <Text
-                          subhead
-                          bold
-                          buttonGradient2
-                          style={{ fontSize: 15, paddingTop: 5 }}
-                        >
-                          {"Merge Same Value"}
-                          {" : "}
-                          <Text subhead bold darkColor style={{ fontSize: 15 }}>
-                            {item?.MergeSameValue == true ? "Yes" : "No"}
-                          </Text>
-                          {"  "}
-                        </Text>
+                        <Image
+                          source={Images.DownArrow}
+                          tintColor={
+                            expandedId1 == item?.TestingIDEncrypt
+                              ? BaseColor.whiteColor
+                              : BaseColor.blackColor
+                          }
+                          style={{ width: 10, height: 10 }}
+                        ></Image>
                       </View>
-
-                      <Text
-                        subhead
-                        bold
-                        buttonGradient2
-                        style={{ fontSize: 15, paddingTop: 5 }}
-                      >
-                        {"Parameter"}
-                        {" : "}
-                        <Text subhead bold darkColor style={{ fontSize: 15 }}>
-                          {item?.ParameterWith == 1
-                            ? "None"
-                            : item?.ParameterWith == 2
-                            ? "Print Min/Max"
-                            : "Print Requirement"}
-                        </Text>
-                        {"  "}
-                      </Text>
-
-                      <View
-                        style={{
-                          borderTopWidth: 1,
-                          borderTopColor: BaseColor.grayColor,
-                          marginBottom: 15,
-                          marginTop: 15,
-                        }}
-                      ></View>
-
-                      <Text
-                        subhead
-                        bold
-                        buttonGradient2
-                        style={{ fontSize: 15, marginBottom: 6 }}
-                      >
-                        {"Normal Range"}
-                        {"  "}
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          alignItems: "center",
-                          marginBottom: 12,
-                        }}
-                      >
+                      {isExpanded1 && (
                         <View
                           style={{
-                            flex: 1,
-                            flexDirection: "row",
-                            alignItems: "center",
+                            padding: 5,
+                            paddingRight: 10,
+                            // paddingLeft: 5,
+                            marginTop: -10,
+                            marginBottom: 10,
+                            borderBottomLeftRadius: 6,
+                            borderBottomRightRadius: 6,
                           }}
                         >
-                          <Image
-                            source={Images.Normal}
-                            tintColor={BaseColor.green}
-                            resizeMode="contain"
-                            style={{ width: 14, height: 14, marginRight: 8 }}
-                          ></Image>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              marginTop: 5,
+                              marginBottom: 5,
+                              alignItems: "center",
+                            }}
+                          >
+                            <Text
+                              subhead
+                              bold
+                              buttonGradient2
+                              style={{ fontSize: 15, paddingTop: 5, flex: 1 }}
+                            >
+                              {"Group"}
+                              {" : "}
+                              <Text
+                                subhead
+                                bold
+                                darkColor
+                                style={{ fontSize: 15 }}
+                              >
+                                {item?.ReferenceSubGroup}
+                              </Text>
+                              {"  "}
+                            </Text>
 
-                          <Text darkColor bold>
-                            Valid{" "}
+                            <Text
+                              subhead
+                              bold
+                              buttonGradient2
+                              style={{ fontSize: 15, paddingTop: 5 }}
+                            >
+                              {"Merge Same Value"}
+                              {" : "}
+                              <Text
+                                subhead
+                                bold
+                                darkColor
+                                style={{ fontSize: 15 }}
+                              >
+                                {item?.MergeSameValue == true ? "Yes" : "No"}
+                              </Text>
+                              {"  "}
+                            </Text>
+                          </View>
+
+                          <Text
+                            subhead
+                            bold
+                            buttonGradient2
+                            style={{ fontSize: 15, paddingTop: 5 }}
+                          >
+                            {"Parameter"}
+                            {" : "}
+                            <Text
+                              subhead
+                              bold
+                              darkColor
+                              style={{ fontSize: 15 }}
+                            >
+                              {item?.ParameterWith == 1
+                                ? "None"
+                                : item?.ParameterWith == 2
+                                ? "Print Min/Max"
+                                : "Print Requirement"}
+                            </Text>
+                            {"  "}
                           </Text>
-                        </View>
 
-                        <View
-                          style={{
-                            flex: 1,
-                            flexDirection: "row",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Image
-                            source={Images.Normal}
-                            tintColor={BaseColor.red}
-                            resizeMode="contain"
-                            style={{ width: 14, height: 14, marginRight: 8 }}
-                          ></Image>
-
-                          <Text darkColor bold>
-                            Invalid{" "}
-                          </Text>
-                        </View>
-
-                        <View
-                          style={{
-                            flex: 1,
-                            flexDirection: "row",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Image
-                            source={Images.Normal}
-                            tintColor={BaseColor.orange}
-                            resizeMode="contain"
-                            style={{ width: 14, height: 14, marginRight: 8 }}
-                          ></Image>
-
-                          <Text darkColor bold>
-                            Unidentified{" "}
-                          </Text>
-                        </View>
-                      </View>
-
-                      <Text
-                        subhead
-                        bold
-                        buttonGradient2
-                        style={{ fontSize: 15, marginBottom: 6 }}
-                      >
-                        {"NABL Range"}
-                        {"  "}
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          alignItems: "center",
-                          marginBottom: 5,
-                        }}
-                      >
-                        <View
-                          style={{
-                            flex: 1,
-                            flexDirection: "row",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Image
-                            source={Images.NABL}
-                            tintColor={BaseColor.green}
-                            resizeMode="contain"
-                            style={{ width: 14, height: 14, marginRight: 8 }}
-                          ></Image>
-
-                          <Text darkColor bold>
-                            Valid{" "}
-                          </Text>
-                        </View>
-
-                        <View
-                          style={{
-                            flex: 1,
-                            flexDirection: "row",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Image
-                            source={Images.NABL}
-                            tintColor={BaseColor.red}
-                            resizeMode="contain"
-                            style={{ width: 14, height: 14, marginRight: 8 }}
-                          ></Image>
-
-                          <Text darkColor bold>
-                            Invalid{" "}
-                          </Text>
-                        </View>
-
-                        <View
-                          style={{
-                            flex: 1,
-                            flexDirection: "row",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Image
-                            source={Images.NABL}
-                            tintColor={BaseColor.orange}
-                            resizeMode="contain"
-                            style={{ width: 14, height: 14, marginRight: 8 }}
-                          ></Image>
-
-                          <Text darkColor bold>
-                            Unidentified{" "}
-                          </Text>
-                        </View>
-                      </View>
-                      {item.ListOfParameter?.map((item, index) => (
-                        <>
                           <View
                             style={{
                               borderTopWidth: 1,
@@ -571,262 +478,504 @@ const TestingApproval = ({ navigation, route }) => {
                             }}
                           ></View>
 
-                          <Text subhead bold darkColor style={{ fontSize: 14 }}>
-                            {"Name : "}{" "}
-                            <Text subhead darkColor style={{ fontSize: 13 }}>
-                              {item.ParameterName}
-                              {item.DisplayCode.length > 0 && "  -  "}
-                              {item.DisplayCode}
-                            </Text>
+                          <Text
+                            subhead
+                            bold
+                            buttonGradient2
+                            style={{ fontSize: 15, marginBottom: 6 }}
+                          >
+                            {"Normal Range"}
+                            {"  "}
                           </Text>
-
                           <View
                             style={{
                               flexDirection: "row",
                               alignItems: "center",
+                              marginBottom: 12,
                             }}
                           >
-                            <Text
-                              subhead
-                              bold
-                              darkColor
-                              style={{ fontSize: 14, flex: 1 }}
-                            >
-                              {"Min : "}{" "}
-                              <Text subhead darkColor style={{ fontSize: 13 }}>
-                                {item.MinValue}
-                              </Text>
-                            </Text>
-
-                            <Text
-                              subhead
-                              bold
-                              darkColor
-                              style={{ fontSize: 14, flex: 1 }}
-                            >
-                              {"Max : "}{" "}
-                              <Text subhead darkColor style={{ fontSize: 13 }}>
-                                {item.MaxValue}
-                              </Text>
-                            </Text>
-                          </View>
-
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              alignItems: "center",
-                            }}
-                          >
-                            <Text
-                              subhead
-                              bold
-                              darkColor
-                              style={{ fontSize: 14, flex: 1 }}
-                            >
-                              {"Range : "}{" "}
-                              <Text subhead darkColor style={{ fontSize: 13 }}>
-                                {item.RangeValue}
-                              </Text>
-                            </Text>
-
-                            <Text
-                              subhead
-                              bold
-                              darkColor
-                              style={{ fontSize: 14, flex: 1 }}
-                            >
-                              {"NABL : "}{" "}
-                              <Text subhead darkColor style={{ fontSize: 13 }}>
-                                {item.IsNABLParameter == true ? "Yes" : "No"}
-                              </Text>
-                            </Text>
-                          </View>
-                          {item.ListOfTestingResult?.map((item, index) => (
                             <View
                               style={{
+                                flex: 1,
                                 flexDirection: "row",
                                 alignItems: "center",
                               }}
                             >
+                              <Image
+                                source={Images.Normal}
+                                tintColor={BaseColor.green}
+                                resizeMode="contain"
+                                style={{
+                                  width: 14,
+                                  height: 14,
+                                  marginRight: 8,
+                                }}
+                              ></Image>
+
+                              <Text darkColor bold>
+                                Valid{" "}
+                              </Text>
+                            </View>
+
+                            <View
+                              style={{
+                                flex: 1,
+                                flexDirection: "row",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Image
+                                source={Images.Normal}
+                                tintColor={BaseColor.red}
+                                resizeMode="contain"
+                                style={{
+                                  width: 14,
+                                  height: 14,
+                                  marginRight: 8,
+                                }}
+                              ></Image>
+
+                              <Text darkColor bold>
+                                Invalid{" "}
+                              </Text>
+                            </View>
+
+                            <View
+                              style={{
+                                flex: 1,
+                                flexDirection: "row",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Image
+                                source={Images.Normal}
+                                tintColor={BaseColor.orange}
+                                resizeMode="contain"
+                                style={{
+                                  width: 14,
+                                  height: 14,
+                                  marginRight: 8,
+                                }}
+                              ></Image>
+
+                              <Text darkColor bold>
+                                Unidentified{" "}
+                              </Text>
+                            </View>
+                          </View>
+
+                          <Text
+                            subhead
+                            bold
+                            buttonGradient2
+                            style={{ fontSize: 15, marginBottom: 6 }}
+                          >
+                            {"NABL Range"}
+                            {"  "}
+                          </Text>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              alignItems: "center",
+                              marginBottom: 5,
+                            }}
+                          >
+                            <View
+                              style={{
+                                flex: 1,
+                                flexDirection: "row",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Image
+                                source={Images.NABL}
+                                tintColor={BaseColor.green}
+                                resizeMode="contain"
+                                style={{
+                                  width: 14,
+                                  height: 14,
+                                  marginRight: 8,
+                                }}
+                              ></Image>
+
+                              <Text darkColor bold>
+                                Valid{" "}
+                              </Text>
+                            </View>
+
+                            <View
+                              style={{
+                                flex: 1,
+                                flexDirection: "row",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Image
+                                source={Images.NABL}
+                                tintColor={BaseColor.red}
+                                resizeMode="contain"
+                                style={{
+                                  width: 14,
+                                  height: 14,
+                                  marginRight: 8,
+                                }}
+                              ></Image>
+
+                              <Text darkColor bold>
+                                Invalid{" "}
+                              </Text>
+                            </View>
+
+                            <View
+                              style={{
+                                flex: 1,
+                                flexDirection: "row",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Image
+                                source={Images.NABL}
+                                tintColor={BaseColor.orange}
+                                resizeMode="contain"
+                                style={{
+                                  width: 14,
+                                  height: 14,
+                                  marginRight: 8,
+                                }}
+                              ></Image>
+
+                              <Text darkColor bold>
+                                Unidentified{" "}
+                              </Text>
+                            </View>
+                          </View>
+                          {item.ListOfParameter?.map((item, index) => (
+                            <>
+                              <View
+                                style={{
+                                  borderTopWidth: 1,
+                                  borderTopColor: BaseColor.grayColor,
+                                  marginBottom: 15,
+                                  marginTop: 15,
+                                }}
+                              ></View>
+
                               <Text
                                 subhead
                                 bold
                                 darkColor
-                                style={{ fontSize: 14, top: 0 }}
+                                style={{ fontSize: 14 }}
                               >
-                                {Qty == 1 ? "Value" + " :  " : "Value " + (index+1) + " :  "}
+                                {"Name : "}{" "}
                                 <Text
                                   subhead
                                   darkColor
                                   style={{ fontSize: 13 }}
                                 >
-                                  {item.ResultValue}{" "}
+                                  {item.ParameterName}
+                                  {item.DisplayCode.length > 0 && "  -  "}
+                                  {item.DisplayCode}
                                 </Text>
                               </Text>
-                              <>
-                                <Image
-                                  source={Images.Normal}
-                                  tintColor={
-                                    item.ConsiderResult == -1
-                                      ? BaseColor.orange
-                                      : item.ConsiderResult == 0
-                                      ? BaseColor.red
-                                      : BaseColor.green
-                                  }
-                                  resizeMode="contain"
-                                  style={{
-                                    width: 14,
-                                    height: 14,
-                                    marginRight: 3,
-                                  }}
-                                ></Image>
-                                <Image
-                                  source={Images.NABL}
-                                  tintColor={
-                                    item.ConsiderNABLResult == -1
-                                      ? BaseColor.orange
-                                      : item.ConsiderNABLResult == 0
-                                      ? BaseColor.red
-                                      : BaseColor.green
-                                  }
-                                  resizeMode="contain"
-                                  style={{
-                                    width: 14,
-                                    height: 14,
-                                    marginRight: 3,
-                                  }}
-                                ></Image>
-                              </>
-                            </View>
-                          ))}
-                        </>
-                      ))}
-                      
-                      {TestingApprovalRequired == 1 && (
-                        <View>
-                          <View
-                            style={{
-                              flex: 1,
-                              padding: 0,
-                              paddingTop: 15,
-                              paddingBottom: 0,
-                              marginBottom: 10,
-                            }}
-                          >
-                            <Text
-                              subhead
-                              bold
-                              buttonGradient1
-                              style={{ marginBottom: 0, marginTop: 5 }}
-                            >
-                              Approval Note
-                            </Text>
-                            <TextInput
-                              style={[
-                                styles.textInput,
-                                {
-                                  //   height: 100,
-                                  //   textAlignVertical: "top",
-                                  borderColor: BaseColor.darkGraycolor,
-                                },
-                              ]}
-                              onChangeText={(text) => setRemarks(text)}
-                              placeholder={"Enter Approval Note ..."}
-                              value={Remarks}
-                              returnKeyType="next"
-                              multiline
-                            />
-                          </View>
-                          {/* {InwardApprovalDetail.InwardCurrentStatus != 5 && ( */}
-                          <View
-                            style={{
-                              flex: 1,
-                              flexDirection: "row",
-                              padding: 0,
-                              paddingBottom: 5,
-                              paddingTop: 5,
-                            }}
-                          >
-                            <View
-                              style={{ paddingHorizontal: 4, width: "50%" }}
-                            >
-                              <Pressable
-                                onPress={() => {
-                                  TestingsApprovalInsertApi(
-                                    1,
-                                    4,
-                                    item.TestingIDEncrypt
-                                  );
-                                }}
+
+                              <View
                                 style={{
-                                  borderRadius: 8,
-                                  height: moderateScale(60),
-                                  backgroundColor: BaseColor.buttonGradient2,
-                                  alignItems: "center",
-                                  justifyContent: "center",
                                   flexDirection: "row",
-                                  // marginBottom: 10,
+                                  alignItems: "center",
                                 }}
                               >
-                                {/* <Image
+                                <Text
+                                  subhead
+                                  bold
+                                  darkColor
+                                  style={{ fontSize: 14, flex: 1 }}
+                                >
+                                  {"Min : "}{" "}
+                                  <Text
+                                    subhead
+                                    darkColor
+                                    style={{ fontSize: 13 }}
+                                  >
+                                    {item.MinValue}
+                                  </Text>
+                                </Text>
+
+                                <Text
+                                  subhead
+                                  bold
+                                  darkColor
+                                  style={{ fontSize: 14, flex: 1 }}
+                                >
+                                  {"Max : "}{" "}
+                                  <Text
+                                    subhead
+                                    darkColor
+                                    style={{ fontSize: 13 }}
+                                  >
+                                    {item.MaxValue}
+                                  </Text>
+                                </Text>
+                              </View>
+
+                              <View
+                                style={{
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <Text
+                                  subhead
+                                  bold
+                                  darkColor
+                                  style={{ fontSize: 14, flex: 1 }}
+                                >
+                                  {"Range : "}{" "}
+                                  <Text
+                                    subhead
+                                    darkColor
+                                    style={{ fontSize: 13 }}
+                                  >
+                                    {item.RangeValue}
+                                  </Text>
+                                </Text>
+
+                                <Text
+                                  subhead
+                                  bold
+                                  darkColor
+                                  style={{ fontSize: 14, flex: 1 }}
+                                >
+                                  {"NABL : "}{" "}
+                                  <Text
+                                    subhead
+                                    darkColor
+                                    style={{ fontSize: 13 }}
+                                  >
+                                    {item.IsNABLParameter == true
+                                      ? "Yes"
+                                      : "No"}
+                                  </Text>
+                                </Text>
+                              </View>
+                              {item.ListOfTestingResult?.map((item, index) => (
+                                <View
+                                  style={{
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <Text
+                                    subhead
+                                    bold
+                                    darkColor
+                                    style={{ fontSize: 14, top: 0 }}
+                                  >
+                                    {Qty == 1
+                                      ? "Value" + " :  "
+                                      : "Value " + (index + 1) + " :  "}
+                                    <Text
+                                      subhead
+                                      darkColor
+                                      style={{ fontSize: 13, }}
+                                    >
+                                      {item.ResultValue}{" "}
+                                    </Text>
+                                  </Text>
+                                  <>
+                                    <Image
+                                      source={Images.Normal}
+                                      tintColor={
+                                        item.ConsiderResult == -1
+                                          ? BaseColor.orange
+                                          : item.ConsiderResult == 0
+                                          ? BaseColor.red
+                                          : BaseColor.green
+                                      }
+                                      resizeMode="contain"
+                                      style={{
+                                        width: 14,
+                                        height: 14,
+                                        marginLeft: 10,
+                                      }}
+                                    ></Image>
+                                    {item.IsNABLParameter &&
+                                    <Image
+                                      source={Images.NABL}
+                                      tintColor={
+                                        item.ConsiderNABLResult == -1
+                                          ? BaseColor.orange
+                                          : item.ConsiderNABLResult == 0
+                                          ? BaseColor.red
+                                          : BaseColor.green
+                                      }
+                                      resizeMode="contain"
+                                      style={{
+                                        width: 14,
+                                        height: 14,
+                                        marginLeft: 4,
+                                      }}
+                                    ></Image>
+                                  }
+                                  </>
+                                </View>
+                              ))}
+                            </>
+                          ))}
+
+                          {item.TestingStatusName != "Approved" && (
+                            <View>
+                              <View
+                                style={{
+                                  flex: 1,
+                                  padding: 0,
+                                  paddingTop: 15,
+                                  paddingBottom: 0,
+                                  marginBottom: 10,
+                                }}
+                              >
+                                <Text
+                                  subhead
+                                  bold
+                                  buttonGradient1
+                                  style={{ marginBottom: 0, marginTop: 5 }}
+                                >
+                                  Approval Note
+                                </Text>
+                                <TextInput
+                                  style={[
+                                    styles.textInput,
+                                    {
+                                      //   height: 100,
+                                      //   textAlignVertical: "top",
+                                      borderColor: BaseColor.darkGraycolor,
+                                    },
+                                  ]}
+                                  onChangeText={(text) => setRemarks(text)}
+                                  placeholder={"Enter Approval Note ..."}
+                                  value={Remarks}
+                                  returnKeyType="next"
+                                  multiline
+                                />
+                              </View>
+                              {/* {InwardApprovalDetail.InwardCurrentStatus != 5 && ( */}
+                              <View
+                                style={{
+                                  flex: 1,
+                                  flexDirection: "row",
+                                  padding: 0,
+                                  paddingBottom: 5,
+                                  paddingTop: 5,
+                                }}
+                              >
+                                <View
+                                  style={{ paddingHorizontal: 4, width: "50%" }}
+                                >
+                                  <Pressable
+                                    onPress={() => {
+                                      TestingsApprovalInsertApi(
+                                        1,
+                                        4,
+                                        item.TestingIDEncrypt
+                                      );
+                                    }}
+                                    style={{
+                                      borderRadius: 8,
+                                      height: moderateScale(60),
+                                      backgroundColor:
+                                        BaseColor.buttonGradient2,
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      flexDirection: "row",
+                                      // marginBottom: 10,
+                                    }}
+                                  >
+                                    {/* <Image
                               source={Images.check}
                               tintColor={BaseColor.whiteColor}
                               style={{ width: 15, height: 15 }}
                             ></Image> */}
-                                <Text
-                                  bold
-                                  footnote
-                                  whiteColor
-                                  style={{ flex: 1, textAlign: "center" }}
+                                    <Text
+                                      bold
+                                      footnote
+                                      whiteColor
+                                      style={{ flex: 1, textAlign: "center" }}
+                                    >
+                                      {" Approved"}
+                                    </Text>
+                                  </Pressable>
+                                </View>
+                                <View
+                                  style={{ paddingHorizontal: 4, width: "50%" }}
                                 >
-                                  {" Approved"}
-                                </Text>
-                              </Pressable>
-                            </View>
-                            <View
-                              style={{ paddingHorizontal: 4, width: "50%" }}
-                            >
-                              <Pressable
-                                onPress={() => {
-                                  TestingsApprovalInsertApi(
-                                    1,
-                                    5,
-                                    item.TestingIDEncrypt
-                                  );
-                                }}
-                                style={{
-                                  borderRadius: 8,
-                                  height: moderateScale(60),
-                                  backgroundColor: BaseColor.buttonGradient2,
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  flexDirection: "row",
-                                  // marginBottom: 10,
-                                }}
-                              >
-                                {/* <Image
+                                  <Pressable
+                                    onPress={() => {
+                                      TestingsApprovalInsertApi(
+                                        1,
+                                        5,
+                                        item.TestingIDEncrypt
+                                      );
+                                    }}
+                                    style={{
+                                      borderRadius: 8,
+                                      height: moderateScale(60),
+                                      backgroundColor:
+                                        BaseColor.buttonGradient2,
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      flexDirection: "row",
+                                      // marginBottom: 10,
+                                    }}
+                                  >
+                                    {/* <Image
                               source={Images.reload}
                               tintColor={BaseColor.whiteColor}
                               style={{ width: 15, height: 15 }}
                             ></Image> */}
-                                <Text
-                                  bold
-                                  footnote
-                                  whiteColor
-                                  style={{ flex: 1, textAlign: "center" }}
-                                >
-                                  {" Rewise & Rectify"}
-                                </Text>
-                              </Pressable>
+                                    <Text
+                                      bold
+                                      footnote
+                                      whiteColor
+                                      style={{ flex: 1, textAlign: "center" }}
+                                    >
+                                      {" Rewise & Rectify"}
+                                    </Text>
+                                  </Pressable>
+                                </View>
+                              </View>
                             </View>
-                          </View>
+                          )}
                         </View>
                       )}
                     </View>
-                  )}
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
-            </View>
+              ) : (
+                <View
+                  style={{
+                    padding: 10,
+                    paddingRight: 10,
+                    marginTop: -10,
+                    marginBottom: 0,
+                    borderBottomLeftRadius: 6,
+                    borderBottomRightRadius: 6,
+                  }}
+                >
+                  <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                    {"Test Name : "}
+                    <Text subhead darkColor style={{ fontSize: 13 }}>
+                      {item?.TestName}
+                    </Text>
+                  </Text>
+
+                  <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                    {"Testing Status : "}
+                    <Text subhead darkColor style={{ fontSize: 13 }}>
+                      {item?.TestingStatusName}
+                    </Text>
+                  </Text>
+                </View>
+              )}
+            </>
           )}
         </View>
       </TouchableOpacity>
@@ -949,6 +1098,20 @@ const TestingApproval = ({ navigation, route }) => {
                 </Text>
 
                 <Text darkColor bold>
+                  Condition -{" "}
+                  <Text caption1 darkColor>
+                    {InwardApprovalDetail.Condition}
+                  </Text>
+                </Text>
+
+                <Text darkColor bold>
+                  Size -{" "}
+                  <Text caption1 darkColor>
+                    {InwardApprovalDetail.Size}
+                  </Text>
+                </Text>
+
+                <Text darkColor bold>
                   Sample Detail :{" "}
                   <Text caption1 darkColor style={{ lineHeight: 18 }}>
                     {InwardApprovalDetail.SampleDetail}
@@ -1010,7 +1173,7 @@ const TestingApproval = ({ navigation, route }) => {
                   <Image
                     style={styles.modalCheckImg}
                     resizeMode="contain"
-                    source={Images.closed}
+                    source={Images.ic_close}
                   ></Image>
                 </Pressable>
               </View>
@@ -1028,7 +1191,7 @@ const TestingApproval = ({ navigation, route }) => {
                   </Text>
                   <Text semibold darkColor style={{ marginBottom: 10 }}>
                     {
-                      "⦿ Selected TC included all test should be approve / reject & rectify. \n\n⦿ Approval note should be apply to all test of selected TC. \n\n⦿ Only Unapproved Test should be approve / reject & rectify. Pending or Draft test status remains as it is."
+                      "⦿ Selected TC included all test should be approve / reject & rectify. \n\n⦿ Approval note should be apply to all test of selected TC. \n\n⦿ Only Unapproved Test should be approve / reject & rectify. Other remains as it is."
                     }
                   </Text>
                   {/* {ListOfMaterialTests?.TestingStatusName === "Unapproved" || ListOfMaterialTests?.TestingStatusName === 'Reject & Rectify' && (

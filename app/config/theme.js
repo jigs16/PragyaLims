@@ -36,4 +36,7 @@ export const BaseColor = {
   green: "#008000",
   red: "#ff0000",
   orange: "#ffa500",
+  approved : '#3f984b',
+  unapproved: '#47a493',
+  pending: '#d9807c'
 };

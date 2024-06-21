@@ -35,7 +35,7 @@ const Dashboard = ({ navigation }) => {
   const [alertModal, setAlertModal] = useState(false);
   const [msgModal, setMsgModal] = useState("");
   const [FirstName, setFirstName] = useState("");
-  const [Photo, setPhoto] = useState("");
+  const [Photo, setPhoto] = useState(null);
   const [DesignationName, setDesignationName] = useState("");
   const [TodaysInwardCount, setTodaysInwardCount] = useState(0);
   const [TodaysTestingCount, setTodaysTestingCount] = useState(0);
@@ -88,10 +88,10 @@ const Dashboard = ({ navigation }) => {
   const GetTodaysSummaryDataApi = async () => {
     let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
     console.log("LoginDetails ===>>> ", LoginDetails);
-    setLoading(true);
     setFirstName(LoginDetails?.Name);
     setDesignationName(LoginDetails?.DesignationName);
     setPhoto(LoginDetails?.Photo);
+    setLoading(true);
     var params = {
       CompanyIDEncrypted: LoginDetails.CompanyIDEncrypt,
       BranchIDEncrypted: LoginDetails.BranchIDEncrypt,
@@ -118,16 +118,14 @@ const Dashboard = ({ navigation }) => {
             datasets: [{ data: newData }],
           }));
         } else {
-          console.log("Faild  >>>>>>>========");
           setLoading(false);
-          setMsgModal(res.Message);
-          setAlertModal(true);
+          // setMsgModal(res.Message);
+          // setAlertModal(true);
         }
       })
       .catch((error) => {
         setLoading(false);
-        setMsgModal(error.message);
-        setAlertModal(true);
+        Toast.show(error.Message, Toast.LONG);
       });
   };
 
@@ -207,7 +205,7 @@ const Dashboard = ({ navigation }) => {
         } else {
           console.log("Faild  >>>>>>>========");
           setLoading(false);
-          Toast.show(res.Message, Toast.LONG);
+          // Toast.show(res.Message, Toast.LONG);
           setGetTopCustomersData([
             {
               CustomerName: "",
@@ -220,8 +218,7 @@ const Dashboard = ({ navigation }) => {
       })
       .catch((error) => {
         setLoading(false);
-        setMsgModal(error.message);
-        setAlertModal(true);
+        Toast.show(error.Message, Toast.LONG);
       });
   };
 
@@ -318,7 +315,7 @@ const Dashboard = ({ navigation }) => {
         } else {
           console.log("Faild  >>>>>>>========");
           setLoading(false);
-          Toast.show(res.Message, Toast.LONG);
+          // Toast.show(res.Message, Toast.LONG);
           setGetTopTestData([
             {
               SrNo: 1,
@@ -331,8 +328,9 @@ const Dashboard = ({ navigation }) => {
       })
       .catch((error) => {
         setLoading(false);
-        setMsgModal(error.message);
-        setAlertModal(true);
+        Toast.show(error.Message, Toast.LONG);
+        // setMsgModal(error.message);
+        // setAlertModal(true);
       });
   };
 
@@ -427,7 +425,7 @@ const Dashboard = ({ navigation }) => {
         } else {
           console.log("Faild  >>>>>>>========");
           setLoading(false);
-          Toast.show(res.Message, Toast.LONG);
+          // Toast.show(res.Message, Toast.LONG);
           setGetTopDepartmentData([
             {
               SrNo: 1,
@@ -440,8 +438,9 @@ const Dashboard = ({ navigation }) => {
       })
       .catch((error) => {
         setLoading(false);
-        setMsgModal(error.message);
-        setAlertModal(true);
+        Toast.show(error.Message, Toast.LONG);
+        // setMsgModal(error.message);
+        // setAlertModal(true);
       });
   };
 
@@ -541,7 +540,7 @@ const Dashboard = ({ navigation }) => {
         } else {
           console.log("Faild  >>>>>>>========");
           setLoading(false);
-          Toast.show(res.Message, Toast.LONG);
+          // Toast.show(res.Message, Toast.LONG);
           setGetTopMachinesData([
             {
               SrNo: 1,
@@ -554,8 +553,7 @@ const Dashboard = ({ navigation }) => {
       })
       .catch((error) => {
         setLoading(false);
-        setMsgModal(error.message);
-        setAlertModal(true);
+        Toast.show(error.Message, Toast.LONG);
       });
   };
 
@@ -704,14 +702,12 @@ const Dashboard = ({ navigation }) => {
         } else {
           console.log("Faild  >>>>>>>========");
           setLoading(false);
-          setMsgModal(res.Message);
-          setAlertModal(true);
+          // Toast.show(res.Message, Toast.LONG);
         }
       })
       .catch((error) => {
         setLoading(false);
-        setMsgModal(error.message);
-        setAlertModal(true);
+        Toast.show(error.Message, Toast.LONG);
       });
   };
 
@@ -790,6 +786,7 @@ const Dashboard = ({ navigation }) => {
           />
         </Pressable>
       )}
+
       {isSidebarOpen && (
         <Animated.View
           style={[
@@ -826,7 +823,7 @@ const Dashboard = ({ navigation }) => {
             </Text>
             <Pressable onPress={toggleSidebar}>
               <Image
-                source={Images.closed}
+                source={Images.ic_close}
                 tintColor={BaseColor.blackColor}
                 style={styles.cardImage}
               />
@@ -866,7 +863,9 @@ const Dashboard = ({ navigation }) => {
           </KeyboardAwareScrollView>
         </Animated.View>
       )}
+
       <Loader loading={loading} />
+
       <AlertModal
         showAlertModal={alertModal}
         setShowAlertModal={setAlertModal}
@@ -884,7 +883,7 @@ const Dashboard = ({ navigation }) => {
             justifyContent: "center",
             alignItems: "center",
             marginRight: 12,
-            width: "44%",
+            // width: "44%",
           }}
         >
           <Image
@@ -895,10 +894,10 @@ const Dashboard = ({ navigation }) => {
               borderRadius: 50,
               right: 6,
             }}
-            source={Photo == "" ? Images.ic_avtar : { uri: Photo }}
+            source={Photo != "" ? { uri: Photo } : Images.ic_avtar}
           ></Image>
 
-          <View style={{ flex: 1 }}>
+          <View>
             <Text darkColor bold style={{}}>
               {FirstName}
             </Text>

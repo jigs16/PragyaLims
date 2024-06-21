@@ -38,6 +38,7 @@ const InwardApproval = ({ navigation, route }) => {
   const [ModesSections, setModesSections] = useState([]);
   const [ListOfMaterialInfo, setListOfMaterialInfo] = useState([]);
   const [ListOfMaterialTests, setListOfMaterialTests] = useState([]);
+  const [ListOfMachiningDetails, setListOfMachiningDetails] = useState([]);
   const [ListOfInwardTPI, setListOfInwardTPI] = useState([]);
   const [ListOfInwardLetterRefImages, setListOfInwardLetterRefImages] =
     useState([]);
@@ -51,6 +52,11 @@ const InwardApproval = ({ navigation, route }) => {
   const [
     ListOfMaterialImages_ModalVisible,
     setListOfMaterialImages_ModalVisible,
+  ] = useState(false);
+
+  const [
+    ListOfMachiningDetails_ModalVisible,
+    setListOfMachiningDetails_ModalVisible,
   ] = useState(false);
   //
   const [InwardApprovalRequired, setInwardApprovalRequired] = useState("");
@@ -143,14 +149,15 @@ const InwardApproval = ({ navigation, route }) => {
   const [expandedId, setExpandedId] = useState(null);
 
   const renderItem = ({ item }) => {
-    const isExpanded = expandedId === item?.TCNo;
+    const isExpanded = expandedId === item?.InwardMaterialIDEncrypted;
 
     return (
       <TouchableOpacity
         onPress={() =>
           toggleItem(
-            item?.TCNo,
+            item?.InwardMaterialIDEncrypted,
             item?.ListOfMaterialTests,
+            item?.ListOfMachiningDetails,
             item?.ListOfMaterialImages
           )
         }
@@ -164,7 +171,7 @@ const InwardApproval = ({ navigation, route }) => {
               flexDirection: "row",
               borderColor: BaseColor.buttonGradient2,
               backgroundColor:
-                expandedId == item?.TCNo
+                expandedId == item?.InwardMaterialIDEncrypted
                   ? BaseColor.buttonGradient2
                   : "#eaf6f5",
               borderWidth: 1,
@@ -182,7 +189,7 @@ const InwardApproval = ({ navigation, route }) => {
                 bold
                 style={{
                   color:
-                    expandedId == item?.TCNo
+                    expandedId == item?.InwardMaterialIDEncrypted
                       ? BaseColor.whiteColor
                       : BaseColor.buttonGradient2,
                 }}
@@ -191,12 +198,12 @@ const InwardApproval = ({ navigation, route }) => {
               </Text>
 
               <Text
-                buttonGradient1
+                buttonGradient2
                 footnote
                 style={{
                   top: 1,
                   color:
-                    expandedId == item?.TCNo
+                    expandedId == item?.InwardMaterialIDEncrypted
                       ? BaseColor.whiteColor
                       : BaseColor.buttonGradient2,
                 }}
@@ -207,7 +214,7 @@ const InwardApproval = ({ navigation, route }) => {
             <Image
               source={Images.DownArrow}
               tintColor={
-                expandedId == item?.TCNo
+                expandedId == item?.InwardMaterialIDEncrypted
                   ? BaseColor.whiteColor
                   : BaseColor.buttonGradient2
               }
@@ -268,18 +275,31 @@ const InwardApproval = ({ navigation, route }) => {
                 >
                   <Text subhead bold darkColor style={{ fontSize: 14.5 }}>
                     {"⦿ Images : "}{" "}
-                    <Text subhead buttonGradient1 style={{ fontSize: 14 }}>
+                    <Text subhead buttonGradient2 style={{ fontSize: 14 }}>
                       {"View"}
                     </Text>
                   </Text>
                 </Pressable>
-
-                <Text subhead bold darkColor style={{ fontSize: 14.5 }}>
-                  {"⦿ Machining : "}{" "}
-                  <Text subhead darkColor style={{ fontSize: 14 }}>
-                    {item?.IsMachining == true ? "Yes" : "No"}
+                <View style={{ flexDirection: "row" }}>
+                  <Text subhead bold darkColor style={{ fontSize: 14.5 }}>
+                    {"⦿ Machining : "}{" "}
                   </Text>
-                </Text>
+                  {item?.IsMachining == true ? (
+                    <Pressable
+                      onPress={() => {
+                        setListOfMachiningDetails_ModalVisible(true);
+                      }}
+                    >
+                      <Text subhead buttonGradient2 style={{ fontSize: 14.5 }}>
+                        {"Yes"}
+                      </Text>
+                    </Pressable>
+                  ) : (
+                    <Text subhead darkColor style={{ fontSize: 14 }}>
+                      {"No"}
+                    </Text>
+                  )}
+                </View>
               </View>
 
               <Text
@@ -306,12 +326,18 @@ const InwardApproval = ({ navigation, route }) => {
     );
   };
 
-  const toggleItem = (id, ListOfMaterialTests, ListOfMaterialImages) => {
+  const toggleItem = (
+    id,
+    ListOfMaterialTests,
+    ListOfMachiningDetails,
+    ListOfMaterialImages
+  ) => {
     if (expandedId === id) {
       setExpandedId(null);
     } else {
       setExpandedId(id);
       setListOfMaterialTests(ListOfMaterialTests);
+      setListOfMachiningDetails(ListOfMachiningDetails);
       setListOfMaterialImages(ListOfMaterialImages);
     }
   };
@@ -342,7 +368,7 @@ const InwardApproval = ({ navigation, route }) => {
             }}
           >
             <Text
-              buttonGradient1
+              buttonGradient2
               bold
               style={{
                 flex: 2,
@@ -459,7 +485,11 @@ const InwardApproval = ({ navigation, route }) => {
             ></Image>
           );
         }}
-        title={route.params.ViewType == "ApprovalOnly" ? "Inward Approval" : 'Inward Details'}
+        title={
+          route.params.ViewType == "ApprovalOnly"
+            ? "Inward Approval"
+            : "Inward Details"
+        }
       ></Header>
 
       <Loader loading={loading} />
@@ -566,7 +596,7 @@ const InwardApproval = ({ navigation, route }) => {
                         style={{ width: 20, height: 20, marginRight: 8 }}
                       ></Image>
 
-                      <Text buttonGradient1 subhead bold>
+                      <Text buttonGradient2 subhead bold>
                         Approval History
                       </Text>
                     </Pressable>
@@ -584,7 +614,7 @@ const InwardApproval = ({ navigation, route }) => {
                   ]}
                 >
                   <View style={{ flex: 1, padding: 10, paddingBottom: 4 }}>
-                    <Text buttonGradient1 bold style={{ marginBottom: 2 }}>
+                    <Text buttonGradient2 bold style={{ marginBottom: 2 }}>
                       {InwardApprovalDetail.InwardNo} |{" "}
                       {InwardApprovalDetail.InwardDate}
                     </Text>
@@ -634,10 +664,8 @@ const InwardApproval = ({ navigation, route }) => {
                           : ""}
                       </Text>
                     </View>
-                    <Pressable
-                      onPress={() => {
-                        setTPI_ModalVisible(true);
-                      }}
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
                     >
                       <Text darkColor bold>
                         TPI Required :{" "}
@@ -645,30 +673,44 @@ const InwardApproval = ({ navigation, route }) => {
                           {InwardApprovalDetail.IsTPIRequired == true
                             ? "Yes"
                             : "No"}
-                          {" | "}
-                        </Text>
-                        <Text caption1 buttonGradient2 bold>
-                          View TPI
+                          {ListOfInwardTPI?.length > 0 && " | "}
                         </Text>
                       </Text>
-                    </Pressable>
+                      {ListOfInwardTPI?.length > 0 && (
+                        <Pressable
+                          onPress={() => {
+                            setTPI_ModalVisible(true);
+                          }}
+                        >
+                          <Text caption1 buttonGradient2 bold>
+                            View TPI
+                          </Text>
+                        </Pressable>
+                      )}
+                    </View>
 
-                    <Pressable
-                      onPress={() => {
-                        setLetterRefImages_ModalVisible(true);
-                      }}
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
                     >
                       <Text darkColor bold>
                         Letter Ref No :{" "}
                         <Text caption1 darkColor>
                           {InwardApprovalDetail.LetterRefNo}
-                          {" | "}
-                        </Text>
-                        <Text caption1 buttonGradient2 bold>
-                          View
+                          {ListOfInwardLetterRefImages?.length > 0 && " | "}
                         </Text>
                       </Text>
-                    </Pressable>
+                      {ListOfInwardLetterRefImages?.length > 0 && (
+                        <Pressable
+                          onPress={() => {
+                            setLetterRefImages_ModalVisible(true);
+                          }}
+                        >
+                          <Text caption1 buttonGradient2 bold>
+                            View LR No
+                          </Text>
+                        </Pressable>
+                      )}
+                    </View>
                     <Text darkColor bold>
                       Work Detail :{" "}
                       <Text caption1 darkColor style={{ lineHeight: 18 }}>
@@ -693,7 +735,7 @@ const InwardApproval = ({ navigation, route }) => {
                     <Text
                       body1
                       bold
-                      buttonGradient1
+                      buttonGradient2
                       style={{ marginBottom: 12 }}
                     >
                       Modes
@@ -714,11 +756,17 @@ const InwardApproval = ({ navigation, route }) => {
                           }}
                         >
                           <Text darkColor bold style={{ flex: 1 }}>
-                            {header.ModeDetailName +
-                              " by " +
-                              header.ModeTypeName +
-                              " to " +
-                              header.ContactPerson}
+                            {header.ModeDetailName}
+                            {header.ModeTypeName == "Email" && " by "}
+                            {header.ModeTypeName == "Hand to Hand" && " by "}
+                            {header.ModeTypeName == "Courier" && " by "}
+                            {header.ModeTypeName == "Post" && " by "}
+                            {header.ModeTypeName}
+                            {header.ModeTypeName == "Email" && " to "}
+                            {header.ModeTypeName == "Hand to Hand" && " to "}
+                            {header.ModeTypeName == "Post" && " to "}
+                            {header.ModeTypeName == "Courier" && " to "}{" "}
+                            {header.ContactPerson}
                           </Text>
                           <Image
                             source={Images.DownArrow}
@@ -782,7 +830,7 @@ const InwardApproval = ({ navigation, route }) => {
                     <Text
                       body1
                       bold
-                      buttonGradient1
+                      buttonGradient2
                       style={{ marginBottom: 12 }}
                     >
                       Other Information
@@ -845,104 +893,107 @@ const InwardApproval = ({ navigation, route }) => {
                           },
                         ]}
                       >
-                        <View
-                          style={{
-                            flex: 1,
-                            padding: 10,
-                            paddingTop: 0,
-                            paddingBottom: 0,
-                            marginBottom: 10,
-                          }}
-                        >
-                          <Text
-                            subhead
-                            bold
-                            buttonGradient1
-                            style={{ marginBottom: 0, marginTop: 5 }}
-                          >
-                            Remarks
-                          </Text>
-                          <TextInput
-                            style={[
-                              styles.textInput,
-                              {
-                                height: 100,
-                                textAlignVertical: "top",
-                                borderColor: BaseColor.darkGraycolor,
-                              },
-                            ]}
-                            onChangeText={(text) => setRemarks(text)}
-                            placeholder={"Enter your Remarks"}
-                            value={Remarks}
-                            returnKeyType="next"
-                            multiline
-                          />
-                        </View>
-                        {InwardApprovalDetail.InwardCurrentStatus != 5 && (
-                          <View
-                            style={{
-                              flex: 1,
-                              flexDirection: "row",
-                              padding: 10,
-                              paddingBottom: 5,
-                              paddingTop: 5,
-                            }}
-                          >
+                        {InwardApprovalDetail.InwardRewiseAndRectifyActionStatus && InwardApprovalDetail.InwardCurrentStatus != 5 && (
+                          <>
                             <View
-                              style={{ paddingHorizontal: 4, width: "50%" }}
+                              style={{
+                                flex: 1,
+                                padding: 10,
+                                paddingTop: 0,
+                                paddingBottom: 0,
+                                marginBottom: 10,
+                              }}
                             >
-                              <Pressable
-                                onPress={() => {
-                                  InwardApprovalUpdateStatusApi(5);
-                                }}
-                                style={{
-                                  borderRadius: 8,
-                                  height: moderateScale(60),
-                                  backgroundColor: BaseColor.buttonGradient2,
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  flexDirection: "row",
-                                  // marginBottom: 10,
-                                }}
+                              <Text
+                                subhead
+                                bold
+                                buttonGradient2
+                                style={{ marginBottom: 0, marginTop: 5 }}
                               >
-                                <Image
-                                  source={Images.check}
-                                  tintColor={BaseColor.whiteColor}
-                                  style={{ width: 15, height: 15 }}
-                                ></Image>
-                                <Text bold footnote whiteColor>
-                                  {" Approved"}
-                                </Text>
-                              </Pressable>
+                                Remarks
+                              </Text>
+                              <TextInput
+                                style={[
+                                  styles.textInput,
+                                  {
+                                    height: 100,
+                                    textAlignVertical: "top",
+                                    borderColor: BaseColor.darkGraycolor,
+                                  },
+                                ]}
+                                onChangeText={(text) => setRemarks(text)}
+                                placeholder={"Enter your Remarks"}
+                                value={Remarks}
+                                returnKeyType="next"
+                                multiline
+                              />
                             </View>
+
                             <View
-                              style={{ paddingHorizontal: 4, width: "50%" }}
+                              style={{
+                                flex: 1,
+                                flexDirection: "row",
+                                padding: 10,
+                                paddingBottom: 5,
+                                paddingTop: 5,
+                              }}
                             >
-                              <Pressable
-                                onPress={() => {
-                                  InwardApprovalUpdateStatusApi(6);
-                                }}
-                                style={{
-                                  borderRadius: 8,
-                                  height: moderateScale(60),
-                                  backgroundColor: BaseColor.buttonGradient2,
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  flexDirection: "row",
-                                  // marginBottom: 10,
-                                }}
+                              <View
+                                style={{ paddingHorizontal: 4, width: "50%" }}
                               >
-                                <Image
-                                  source={Images.reload}
-                                  tintColor={BaseColor.whiteColor}
-                                  style={{ width: 15, height: 15 }}
-                                ></Image>
-                                <Text bold footnote whiteColor>
-                                  {" Rewise & Rectify"}
-                                </Text>
-                              </Pressable>
+                                <Pressable
+                                  onPress={() => {
+                                    InwardApprovalUpdateStatusApi(5);
+                                  }}
+                                  style={{
+                                    borderRadius: 8,
+                                    height: moderateScale(60),
+                                    backgroundColor: BaseColor.buttonGradient2,
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    flexDirection: "row",
+                                    // marginBottom: 10,
+                                  }}
+                                >
+                                  <Image
+                                    source={Images.check}
+                                    tintColor={BaseColor.whiteColor}
+                                    style={{ width: 15, height: 15 }}
+                                  ></Image>
+                                  <Text bold footnote whiteColor>
+                                    {" Approved"}
+                                  </Text>
+                                </Pressable>
+                              </View>
+                              <View
+                                style={{ paddingHorizontal: 4, width: "50%" }}
+                              >
+                                <Pressable
+                                  onPress={() => {
+                                    InwardApprovalUpdateStatusApi(6);
+                                  }}
+                                  style={{
+                                    borderRadius: 8,
+                                    height: moderateScale(60),
+                                    backgroundColor: BaseColor.buttonGradient2,
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    flexDirection: "row",
+                                    // marginBottom: 10,
+                                  }}
+                                >
+                                  <Image
+                                    source={Images.reload}
+                                    tintColor={BaseColor.whiteColor}
+                                    style={{ width: 15, height: 15 }}
+                                  ></Image>
+                                  <Text bold footnote whiteColor>
+                                    {" Rewise & Rectify"}
+                                  </Text>
+                                </Pressable>
+                              </View>
                             </View>
-                          </View>
+                          </>
                         )}
                         <View
                           style={{
@@ -973,7 +1024,7 @@ const InwardApproval = ({ navigation, route }) => {
                                 }}
                               >
                                 <Image
-                                  source={Images.close}
+                                  source={Images.ic_close}
                                   tintColor={BaseColor.whiteColor}
                                   style={{ width: 15, height: 15 }}
                                 ></Image>
@@ -983,6 +1034,7 @@ const InwardApproval = ({ navigation, route }) => {
                               </Pressable>
                             </View>
                           )}
+
                           <View style={{ paddingHorizontal: 4, width: "50%" }}>
                             <Pressable
                               onPress={() => {
@@ -1032,7 +1084,7 @@ const InwardApproval = ({ navigation, route }) => {
                 <FlatList
                   data={ListOfMaterialInfo}
                   renderItem={renderItem}
-                  keyExtractor={(item) => item?.TCNo}
+                  keyExtractor={(item) => item?.InwardMaterialIDEncrypted}
                 />
               </View>
             )}
@@ -1067,7 +1119,7 @@ const InwardApproval = ({ navigation, route }) => {
                   <Image
                     style={styles.modalCheckImg}
                     resizeMode="contain"
-                    source={Images.closed}
+                    source={Images.ic_close}
                   ></Image>
                 </Pressable>
               </View>
@@ -1103,6 +1155,11 @@ const InwardApproval = ({ navigation, route }) => {
                     </Text>
                   </View>
                 ))}
+                {ListOfInwardTPI == "" && (
+                  <Text darkColor style={{ marginBottom: 10 }}>
+                    Oops! No Data Found.
+                  </Text>
+                )}
               </ScrollView>
             </View>
           </View>
@@ -1136,7 +1193,7 @@ const InwardApproval = ({ navigation, route }) => {
                   <Image
                     style={styles.modalCheckImg}
                     resizeMode="contain"
-                    source={Images.closed}
+                    source={Images.ic_close}
                   ></Image>
                 </Pressable>
               </View>
@@ -1154,10 +1211,10 @@ const InwardApproval = ({ navigation, route }) => {
                     }}
                   >
                     <Image
-                      source={Images.ic_pass_show}
+                      source={Images.ic_download}
                       tintColor={BaseColor.darkColor}
                       resizeMode="contain"
-                      style={{ width: 20, height: 20, top: 0, marginRight: 5 }}
+                      style={{ width: 28, height: 28, top: 0, marginRight: 5 }}
                     ></Image>
 
                     <Text semibold darkColor style={{ flex: 1 }}>
@@ -1166,6 +1223,12 @@ const InwardApproval = ({ navigation, route }) => {
                     </Text>
                   </Pressable>
                 ))}
+
+                {ListOfInwardLetterRefImages == "" && (
+                  <Text darkColor style={{ marginBottom: 10 }}>
+                    Oops! No Data Found.
+                  </Text>
+                )}
               </ScrollView>
             </View>
           </View>
@@ -1199,7 +1262,7 @@ const InwardApproval = ({ navigation, route }) => {
                   <Image
                     style={styles.modalCheckImg}
                     resizeMode="contain"
-                    source={Images.closed}
+                    source={Images.ic_close}
                   ></Image>
                 </Pressable>
               </View>
@@ -1236,6 +1299,12 @@ const InwardApproval = ({ navigation, route }) => {
                     ></Image>
                   </Pressable>
                 ))}
+
+                {ListOfMaterialImages == "" && (
+                  <Text darkColor style={{ marginBottom: 10 }}>
+                    Oops! No Data Found.
+                  </Text>
+                )}
               </ScrollView>
             </View>
           </View>
@@ -1269,7 +1338,7 @@ const InwardApproval = ({ navigation, route }) => {
                   <Image
                     style={styles.modalCheckImg}
                     resizeMode="contain"
-                    source={Images.closed}
+                    source={Images.ic_close}
                   ></Image>
                 </Pressable>
               </View>
@@ -1314,6 +1383,102 @@ const InwardApproval = ({ navigation, route }) => {
                     )}
                   </View>
                 ))}
+
+                {ListOfInwardApprovalHist == "" && (
+                  <Text darkColor style={{ marginBottom: 10 }}>
+                    Oops! No Data Found.
+                  </Text>
+                )}
+              </ScrollView>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        // animationType="slide"
+        transparent={true}
+        visible={ListOfMachiningDetails_ModalVisible}
+        onRequestClose={() => {}}
+      >
+        <View style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.8)" }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  paddingBottom: 15,
+                }}
+              >
+                <Text darkColor callout bold style={{ flex: 1 }}>
+                  {"Machining Details"}
+                </Text>
+                <Pressable
+                  onPress={() => {
+                    setListOfMachiningDetails_ModalVisible(false);
+                  }}
+                >
+                  <Image
+                    style={styles.modalCheckImg}
+                    resizeMode="contain"
+                    source={Images.ic_close}
+                  ></Image>
+                </Pressable>
+              </View>
+              <ScrollView>
+                {ListOfMachiningDetails?.map((item, index) => (
+                  <View
+                    style={{
+                      borderTopWidth: 1,
+                      borderTopColor: BaseColor.grayColor,
+                      paddingTop: 15,
+                      paddingBottom: 15,
+                    }}
+                  >
+                    <Text darkColor subhead bold>
+                      {"⦿ Process Name - "}
+                      <Text semibold darkColor>
+                        {item.ProcessName}
+                      </Text>
+                    </Text>
+
+                    <Text darkColor subhead bold>
+                      {"⦿ Process Note - "}
+                      <Text semibold darkColor>
+                        {item.MachiningNote}
+                      </Text>
+                    </Text>
+
+                    <Text darkColor subhead bold>
+                      {"⦿ Qty - "}
+                      <Text semibold darkColor>
+                        {item.Qty}
+                      </Text>
+                    </Text>
+
+                    <View style={{ flexDirection: "row" }}>
+                      <Text darkColor subhead bold style={{ flex: 1 }}>
+                        {"⦿ Length - "}
+                        <Text semibold darkColor>
+                          {item.Length}
+                        </Text>
+                      </Text>
+
+                      <Text darkColor subhead bold>
+                        {"⦿ Thickness - "}
+                        <Text semibold darkColor>
+                          {item.Thickness}
+                        </Text>
+                      </Text>
+                    </View>
+                  </View>
+                ))}
+                {ListOfMachiningDetails == "" && (
+                  <Text darkColor style={{ marginBottom: 10 }}>
+                    Oops! No Data Found.
+                  </Text>
+                )}
               </ScrollView>
             </View>
           </View>

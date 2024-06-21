@@ -141,6 +141,8 @@ export const Images = {
 
   reload: require('../assets/images/reload.png'),
   close: require('../assets/images/close.png'),
+  close1: require('../assets/images/close1.png'),
+  ic_close: require('../assets/images/ic_close.png'),
   check: require('../assets/images/check.png'),
   forbidden: require('../assets/images/forbidden.png'),
   db: require('../assets/images/db.png'),
@@ -155,5 +157,8 @@ export const Images = {
   Normal: require('../assets/images/Normal.png'),
   bgimg: require('../assets/images/bgimg.png'),
   ic_DataFound: require('../assets/images/DataFound.png'),
+  ic_Print: require('../assets/images/Print.png'),
+  ic_PrintLabel: require('../assets/images/PrintLabel.png'),
+  ic_ScanCopy: require('../assets/images/ScanCopy.png'),
   //
 }

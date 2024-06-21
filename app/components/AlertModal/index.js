@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
 
   btnView: {
     marginTop: moderateScale(30),
-    backgroundColor: BaseColor.modelBtn1,
+    backgroundColor: BaseColor.Btn1,
     height: verticalScale(70),
     width: "50%",
     alignSelf: "center",

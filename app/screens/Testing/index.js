@@ -24,19 +24,23 @@ import {
   InwardApprovalUpdateStatusApiCall,
 } from "../../redux/services/ApiService";
 import Toast from "react-native-simple-toast";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Testing = ({ navigation, route }) => {
   useEffect(() => {
     // GetInwardApprovalDetailByIDApi();
+    getData();
   }, []);
-
+  const [TA, setTA] = useState(false);
   const [alertModal, setAlertModal] = useState(false);
   const [msgModal, setMsgModal] = useState("");
   const [loading, setLoading] = useState(false);
   const [ListOfMaterialTests, setListOfMaterialTests] = useState(
     route.params.ListOfInwardMaterials
   );
-
+  const getData = async () => {
+    setTA(await AsyncStorage.getItem("TestingApprovalRequired"));
+  };
   return (
     <>
       <Header
@@ -111,12 +115,12 @@ const Testing = ({ navigation, route }) => {
                         alignItems: "center",
                       }}
                     >
-                      <Image
+                      {/* <Image
                         source={Images.check}
                         tintColor={BaseColor.grayColor}
                         resizeMode="contain"
                         style={{ width: 18, height: 18, marginRight: 8 }}
-                      ></Image>
+                      ></Image> */}
 
                       <Text darkColor bold>
                         TC No -{" "}
@@ -125,20 +129,48 @@ const Testing = ({ navigation, route }) => {
                         </Text>
                       </Text>
                     </View>
-                    <Pressable
-                      onPress={() => {
-                        navigation.navigate("TestingApproval", {
-                          InwardMaterialIDEncrypted:
-                            item.InwardMaterialIDEncrypted,
-                        });
-                      }}
-                    >
-                      <Image
+                    {item.tcTestingActionStatus > 1 && (
+                      <Pressable
+                        onPress={() => {
+                          navigation.navigate("TestingApproval", {
+                            InwardMaterialIDEncrypted:
+                              item.InwardMaterialIDEncrypted,
+                          });
+                        }}
+                        style={{
+                          borderWidth: 1,
+                          borderColor:
+                            item.tcTestingApprovedActionStatus === 1
+                              ? BaseColor.red
+                              : item.tcTestingApprovedActionStatus === 2
+                              ? BaseColor.green
+                              : BaseColor.orange,
+                          width: 35,
+                          height: 24,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderRadius: 6,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color:
+                              item.tcTestingApprovedActionStatus === 1
+                                ? BaseColor.red
+                                : item.tcTestingApprovedActionStatus === 2
+                                ? BaseColor.green
+                                : BaseColor.orange,
+                          }}
+                        >
+                          TA
+                        </Text>
+                        {/* <Image
                         source={Images.DownArrow}
                         tintColor={BaseColor.darkColor}
                         style={{ width: 12, height: 12 }}
-                      ></Image>
-                    </Pressable>
+                      ></Image> */}
+                      </Pressable>
+                    )}
                   </Pressable>
 
                   <Text darkColor bold style={{ marginBottom: 6 }}>

@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.12",
     "@react-native-clipboard/clipboard": "^1.11.2",
+    "@react-native-community/cli": "^13.6.9",
     "@react-native-community/cli-platform-ios": "^13.6.9",
     "@react-native-community/cli-tools": "^13.6.9",
     "@react-native-community/datetimepicker": "^7.6.2",
@@ -32,6 +33,7 @@
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.15.0",
     "react-native-gifted-charts": "^1.4.7",
+    "react-native-html-to-pdf": "^0.12.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-localize": "^2.2.6",

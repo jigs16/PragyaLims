@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const apiAxios = axios.create({
   baseURL: "http://124.123.122.224:814/api/",
+  // baseURL: "http://192.168.0.200:814/api/",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",

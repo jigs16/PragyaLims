@@ -43,8 +43,6 @@ import moment from "moment";
 
 const ControlCenter = ({ navigation }) => {
   useEffect(() => {
-    setInwardFromDate("");
-    setInwardToDate("");
     GetCustomerDDLListAJAXApi();
     GetProcessFormListDDLApi();
     GetDepartmentDropDownListApi();
@@ -63,8 +61,8 @@ const ControlCenter = ({ navigation }) => {
   const [SampleDetail, setSampleDetail] = useState("");
   const [ULRNO, setULRNO] = useState("");
   const [Page, setPage] = useState(1);
-  const [IA, setIA] = useState(false);
-  const [TA, setTA] = useState(false);
+  const [IA, setIA] = useState(0);
+  const [TA, setTA] = useState(0);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const sidebarWidth = Dimensions.get("window").width * 0.8; // Adjust the width as needed
@@ -91,11 +89,11 @@ const ControlCenter = ({ navigation }) => {
 
   const GetControlCenterDataApi = async () => {
     let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
-    setIA(LoginDetails?.Permissions?.InwardApprovalRequired);
-    setTA(LoginDetails?.Permissions?.TestingApprovalRequired);
+    setIA(await AsyncStorage.getItem("InwardApprovalRequired"));
+    setTA(await AsyncStorage.getItem("TestingApprovalRequired"));
     console.log(
       "InwardApprovalRequired ===>>>",
-      LoginDetails.InwardApprovalRequired
+      await AsyncStorage.getItem("InwardApprovalRequired")
     );
     setLoading(true);
     var params = {
@@ -132,7 +130,7 @@ const ControlCenter = ({ navigation }) => {
         );
         if (res.IsSuccess) {
           setControlCenterData(res?.controlCenterList);
-          setDataFound(res?.controlCenterList == "" ? 0 : 1);
+          setDataFound(res?.controlCenterList == "" ? 2 : 1);
           toggleSidebar();
           setLoading(false);
         } else {
@@ -487,8 +485,16 @@ const ControlCenter = ({ navigation }) => {
   };
   // ---------------------Activity Log Sidebar End---------------------
 
-  const [InwardFromDate, setInwardFromDate] = useState("");
-  const [InwardToDate, setInwardToDate] = useState("");
+  const getCurrentDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  const [InwardFromDate, setInwardFromDate] = useState(getCurrentDate());
+  const [InwardToDate, setInwardToDate] = useState(getCurrentDate());
 
   const [isFromDatePickerVisible, setIsFromDatePickerVisible] = useState(false);
 
@@ -622,7 +628,7 @@ const ControlCenter = ({ navigation }) => {
             </Text>
             <Pressable onPress={toggleSidebar}>
               <Image
-                source={Images.closed}
+                source={Images.ic_close}
                 tintColor={BaseColor.blackColor}
                 style={styles.cardImage}
               />
@@ -1146,11 +1152,9 @@ const ControlCenter = ({ navigation }) => {
               marginVertical: moderateScale(30),
               height: 44,
               position: "absolute",
-              bottom: moderateScale(65),
+              bottom: moderateScale(74),
               alignSelf: "center",
               borderRadius: 10,
-              borderWidth: 1,
-              borderColor: BaseColor.buttonGradient1,
             }}
             full
           >
@@ -1226,12 +1230,18 @@ const ControlCenter = ({ navigation }) => {
                       }}
                     >
                       <View style={{ flex: 1 }}>
+                        {item.InwardCurrentStatus == 1 ? (
                         <Text darkColor bold>
+                          Draft Saved
+                        </Text>
+                        ):(
+                          <Text darkColor bold>
                           Inward No -{" "}
                           <Text caption1 darkColor>
                             {item.InwardNo}
                           </Text>
                         </Text>
+                        )}
                         <Text darkColor bold>
                           Inward Date -{" "}
                           <Text caption1 darkColor>
@@ -1243,7 +1253,7 @@ const ControlCenter = ({ navigation }) => {
                         {
                           // (item.InwardCurrentStatus === 4 ||
                           //   item.InwardCurrentStatus > 4)
-                          item.TCAllocationActionStatus == 2 && IA ? (
+                          IA == 1 && item.TCAllocationActionStatus == 2 ? (
                             <Pressable
                               onPress={() => {
                                 navigation.navigate("InwardApproval", {
@@ -1254,10 +1264,15 @@ const ControlCenter = ({ navigation }) => {
                               style={{
                                 borderWidth: 1,
                                 borderColor:
-                                  item.InwardCurrentStatus === 4 ||
-                                  item.InwardCurrentStatus < 4
+                                  item.InwardApprovedActionStatus === 1
                                     ? BaseColor.red
-                                    : BaseColor.green,
+                                    : item.InwardApprovedActionStatus === 2
+                                    ? BaseColor.green
+                                    : BaseColor.orange,
+                                // item.InwardCurrentStatus === 4 ||
+                                // item.InwardCurrentStatus < 4
+                                //   ? BaseColor.red
+                                //   : BaseColor.green,
                                 width: 35,
                                 height: 25,
                                 alignItems: "center",
@@ -1269,10 +1284,15 @@ const ControlCenter = ({ navigation }) => {
                               <Text
                                 style={{
                                   color:
-                                    item.InwardCurrentStatus === 4 ||
-                                    item.InwardCurrentStatus < 4
+                                    item.InwardApprovedActionStatus === 1
                                       ? BaseColor.red
-                                      : BaseColor.green,
+                                      : item.InwardApprovedActionStatus === 2
+                                      ? BaseColor.green
+                                      : BaseColor.orange,
+                                  // item.InwardCurrentStatus === 4 ||
+                                  // item.InwardCurrentStatus < 4
+                                  //   ? BaseColor.red
+                                  //   : BaseColor.green,
                                 }}
                               >
                                 IA
@@ -1281,7 +1301,7 @@ const ControlCenter = ({ navigation }) => {
                           ) : null
                         }
 
-                        {item.TestingActionStatus > 1 && (
+                        {TA == 1 && item.TestingActionStatus > 1 && (
                           <Pressable
                             onPress={() => {
                               navigation.navigate("Testing", {
@@ -1337,18 +1357,22 @@ const ControlCenter = ({ navigation }) => {
                 </View>
               </Pressable>
             ))}
-            {DataFound == 0 && (
+            {DataFound == 2 && (
               <View style={styles.Found}>
                 <Image
                   source={Images.ic_DataFound}
-                  style={{ width: 160, height: 160, marginBottom: 25 }}
+                  style={{ width: 125, height: 125, marginBottom: 20 }}
                 />
 
-                <Text darkColor title3>
+                <Text darkColor headline style={{ fontSize: 18 }}>
                   Oops! No Data Found.
                 </Text>
                 <View style={{ flexDirection: "row" }}>
-                  <Text darkColor subhead style={{ marginTop: 10 }}>
+                  <Text
+                    darkColor
+                    subhead
+                    style={{ marginTop: 10, fontSize: 14 }}
+                  >
                     Please Change the filter{" "}
                   </Text>
                   <Pressable onPress={toggleSidebar}>

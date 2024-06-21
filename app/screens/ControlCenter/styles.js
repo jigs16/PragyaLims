@@ -43,8 +43,8 @@ export default StyleSheet.create({
   },
 
   cardImage: {
-    width: moderateScale(34),
-    height: moderateScale(34),
+    width: moderateScale(24),
+    height: moderateScale(24),
     marginTop: 0,
   },
 
@@ -99,6 +99,6 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    height: verticalScale(1150),
+    height: verticalScale(1130),
   },
 });
