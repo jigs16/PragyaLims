@@ -5,7 +5,6 @@ import Text from "../Text";
 import { BaseColor, BaseStyle, Images } from "../../config";
 import { moderateScale, verticalScale } from "../../config/scaling";
 import { BookModal, Button, TextInput } from "..";
-import GridList from "../GridList";
 
 const AlertModal = (props) => {
   const {

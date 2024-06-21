@@ -2,8 +2,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useState, useEffect } from "react";
 import { View } from "react-native";
 import { BaseColor } from "../config";
-import EditProfile from "../screens/EditProfile";
-import MyAccount from "../screens/MyAccount";
 import Profile from "../screens/Profile";
 import Operation from "../screens/Operation";
 import ReportPrinting from "../screens/ReportPrinting";
@@ -18,20 +16,6 @@ const ProfileNavigator = () => {
         <Stack.Screen
           name="Profile"
           component={Profile}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="EditProfile"
-          component={EditProfile}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="MyAccount"
-          component={MyAccount}
           options={{
             headerShown: false,
           }}
