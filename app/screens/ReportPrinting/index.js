@@ -654,7 +654,7 @@ const ReportPrinting = ({ navigation }) => {
                         </Text>
                       </View>
                       <View style={{ flexDirection: "row" }}>
-                        {item.ReportingStatusName == "Print" && (
+                        {/* {item.ReportingStatusName == "Print" && (
                           <Pressable
                             onPress={() => {
                               setMsgModal("Coming Soon");
@@ -668,7 +668,7 @@ const ReportPrinting = ({ navigation }) => {
                               source={Images.ic_Print}
                             ></Image>
                           </Pressable>
-                        )}
+                        )} */}
                         {item.ScanCopyFilePath != "" && (
                           <Pressable
                             onPress={() => {
@@ -676,10 +676,10 @@ const ReportPrinting = ({ navigation }) => {
                             }}
                           >
                             <Image
-                              style={{ width: 22, height: 22 }}
+                              style={{ width: 26, height: 26,top:-3 }}
                               resizeMode="contain"
                               tintColor={BaseColor.navyBlue}
-                              source={Images.ic_ScanCopy}
+                              source={Images.ic_download}
                             ></Image>
                           </Pressable>
                         )}
@@ -713,11 +713,11 @@ const ReportPrinting = ({ navigation }) => {
               <View style={styles.Found}>
                 <Image
                   source={Images.ic_DataFound}
-                  style={{ width: 125, height: 125, marginBottom: 20 }}
+                  style={{ width: 165, height: 165, marginBottom: 10 }}
                 />
 
                 <Text darkColor headline style={{ fontSize: 18 }}>
-                  Oops! No Data Found.
+                  No Data Found !
                 </Text>
                 <View style={{ flexDirection: "row" }}>
                   <Text

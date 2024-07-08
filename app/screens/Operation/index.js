@@ -14,7 +14,7 @@ const Operation = ({ navigation }) => {
     <>
       <Loader loading={loading} />
 
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
         <View
           style={{
             flex: 1,
@@ -45,17 +45,45 @@ const Operation = ({ navigation }) => {
             >
               <Pressable
                 onPress={() => {
+                  navigation.navigate("TestingList");
+                }}
+                style={styles.itemView}
+              >
+                <Image
+                  style={styles.itemImg}
+                  source={Images.OT_Testing}
+                  tintColor={BaseColor.buttonGradient2}
+                  resizeMode={"contain"}
+                />
+                <Text body2 darkColor style={{ flex: 1 }}>
+                  {"Testing"}
+                </Text>
+                <Image
+                  style={styles.rightArrow}
+                  tintColor={BaseColor.buttonGradient2}
+                  source={Images.listRightArrow}
+                />
+              </Pressable>
+
+              <Pressable
+                onPress={() => {
                   navigation.navigate("ReportPrinting");
                 }}
                 style={styles.itemView}
               >
-                <Image style={styles.itemImg} source={Images.ic_help} />
+                <Image
+                  style={styles.itemImg}
+                  source={Images.OT_ReportPrinting}
+                  tintColor={BaseColor.buttonGradient2}
+                  resizeMode={"contain"}
+                />
                 <Text body2 darkColor style={{ flex: 1 }}>
                   {"Report Printing"}
                 </Text>
                 <Image
                   style={styles.rightArrow}
-                  source={Images.ic_right_arrow_new}
+                  tintColor={BaseColor.buttonGradient2}
+                  source={Images.listRightArrow}
                 />
               </Pressable>
 
@@ -67,14 +95,17 @@ const Operation = ({ navigation }) => {
               >
                 <Image
                   style={styles.itemImg}
-                  source={Images.ic_privacy_policy}
+                  source={Images.OT_DispatchReport}
+                  tintColor={BaseColor.buttonGradient2}
+                  resizeMode={"contain"}
                 />
                 <Text body2 darkColor style={{ flex: 1 }}>
-                  {"Report Dispatch"}
+                  {"Dispatch Report"}
                 </Text>
                 <Image
                   style={styles.rightArrow}
-                  source={Images.ic_right_arrow_new}
+                  tintColor={BaseColor.buttonGradient2}
+                  source={Images.listRightArrow}
                 />
               </Pressable>
 
@@ -84,13 +115,41 @@ const Operation = ({ navigation }) => {
                 }}
                 style={styles.itemView}
               >
-                <Image style={styles.itemImg} source={Images.ic_logout1} />
+                <Image
+                  style={styles.itemImg}
+                  source={Images.OT_DispatchMaterial}
+                  tintColor={BaseColor.buttonGradient2}
+                  resizeMode={"contain"}
+                />
                 <Text body2 darkColor style={{ flex: 1 }}>
-                  {"Material Dispatch"}
+                  {"Dispatch Material"}
                 </Text>
                 <Image
                   style={styles.rightArrow}
-                  source={Images.ic_right_arrow_new}
+                  tintColor={BaseColor.buttonGradient2}
+                  source={Images.listRightArrow}
+                />
+              </Pressable>
+
+              <Pressable
+                onPress={() => {
+                  // navigation.navigate("");
+                }}
+                style={styles.itemView}
+              >
+                <Image
+                  style={styles.itemImg}
+                  source={Images.OT_UplodeScanCopy}
+                  tintColor={BaseColor.buttonGradient2}
+                  resizeMode={"contain"}
+                />
+                <Text body2 darkColor style={{ flex: 1 }}>
+                  {"Upload Scan Copy"}
+                </Text>
+                <Image
+                  style={styles.rightArrow}
+                  tintColor={BaseColor.buttonGradient2}
+                  source={Images.listRightArrow}
                 />
               </Pressable>
             </ScrollView>

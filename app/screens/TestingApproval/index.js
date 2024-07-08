@@ -81,6 +81,7 @@ const TestingApproval = ({ navigation, route }) => {
     TestingStatus,
     TestingIDEncrypt
   ) => {
+    let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
     setLoading(true);
     var params = {
       TestingIDEncrypted: TestingApprovalType == 2 ? "" : TestingIDEncrypt,
@@ -88,7 +89,7 @@ const TestingApproval = ({ navigation, route }) => {
       StatusRemarks: Remarks,
       TestingApprovalType: TestingApprovalType,
       TestingStatus: TestingStatus,
-      CreatedByEncrypted: "",
+      CreatedByEncrypted: LoginDetails.ReferenceIDEncrypt,
     };
     console.log("TestingsApprovalInsertApi Params =====>>>>>>>>>>", params);
     TestingsApprovalInsertApiCall(params)
@@ -296,13 +297,13 @@ const TestingApproval = ({ navigation, route }) => {
                     </Text>
                   </Text>
                   {item.TestingStatusName == "Unapproved" && (
-                  <Text subhead bold darkColor style={{ fontSize: 14 }}>
-                    {"Testing Status : "}
-                    <Text subhead darkColor style={{ fontSize: 14 }}>
-                      {item?.TestingStatusName}
+                    <Text subhead bold darkColor style={{ fontSize: 14 }}>
+                      {"Testing Status : "}
+                      <Text subhead darkColor style={{ fontSize: 14 }}>
+                        {item?.TestingStatusName}
+                      </Text>
                     </Text>
-                  </Text>
-)}
+                  )}
                   {item.TestingStatusName == "Approved" && (
                     <>
                       <Text subhead bold darkColor style={{ fontSize: 14 }}>
@@ -343,8 +344,8 @@ const TestingApproval = ({ navigation, route }) => {
                   <TouchableOpacity
                     onPress={() => {
                       toggleItem1(item?.TestingIDEncrypt),
-                        setRemarks(""),
-                        setQty(item.TestCount);
+                      setRemarks(""),
+                      setQty(item.TestCount);
                     }}
                   >
                     <View style={{}}>
@@ -355,11 +356,11 @@ const TestingApproval = ({ navigation, route }) => {
                           borderRadius: 6,
                           marginBottom: 10,
                           flexDirection: "row",
-                          borderColor: BaseColor.blackColor,
+                          borderColor: BaseColor.grayColor,
                           backgroundColor:
                             expandedId1 == item?.TestingIDEncrypt
-                              ? BaseColor.blackColor
-                              : "#00000025",
+                              ? BaseColor.grayColor
+                              : BaseColor.grayColor,
                           borderWidth: 1,
                           alignItems: "center",
                         }}
@@ -370,9 +371,9 @@ const TestingApproval = ({ navigation, route }) => {
                           style={{
                             flex: 2,
                             color:
-                              expandedId1 == item?.TestingIDEncrypt
+                              expandedId1 == item?.MachiningConfigurationIDEncrypt
                                 ? BaseColor.whiteColor
-                                : BaseColor.blackColor,
+                                : BaseColor.whiteColor,
                           }}
                         >
                           {"Testing Parameters"}
@@ -382,7 +383,7 @@ const TestingApproval = ({ navigation, route }) => {
                           tintColor={
                             expandedId1 == item?.TestingIDEncrypt
                               ? BaseColor.whiteColor
-                              : BaseColor.blackColor
+                              : BaseColor.whiteColor
                           }
                           style={{ width: 10, height: 10 }}
                         ></Image>
@@ -776,7 +777,7 @@ const TestingApproval = ({ navigation, route }) => {
                                     <Text
                                       subhead
                                       darkColor
-                                      style={{ fontSize: 13, }}
+                                      style={{ fontSize: 13 }}
                                     >
                                       {item.ResultValue}{" "}
                                     </Text>
@@ -798,24 +799,24 @@ const TestingApproval = ({ navigation, route }) => {
                                         marginLeft: 10,
                                       }}
                                     ></Image>
-                                    {item.IsNABLParameter &&
-                                    <Image
-                                      source={Images.NABL}
-                                      tintColor={
-                                        item.ConsiderNABLResult == -1
-                                          ? BaseColor.orange
-                                          : item.ConsiderNABLResult == 0
-                                          ? BaseColor.red
-                                          : BaseColor.green
-                                      }
-                                      resizeMode="contain"
-                                      style={{
-                                        width: 14,
-                                        height: 14,
-                                        marginLeft: 4,
-                                      }}
-                                    ></Image>
-                                  }
+                                    {item.IsNABLParameter && (
+                                      <Image
+                                        source={Images.NABL}
+                                        tintColor={
+                                          item.ConsiderNABLResult == -1
+                                            ? BaseColor.orange
+                                            : item.ConsiderNABLResult == 0
+                                            ? BaseColor.red
+                                            : BaseColor.green
+                                        }
+                                        resizeMode="contain"
+                                        style={{
+                                          width: 14,
+                                          height: 14,
+                                          marginLeft: 4,
+                                        }}
+                                      ></Image>
+                                    )}
                                   </>
                                 </View>
                               ))}

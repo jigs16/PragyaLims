@@ -1157,7 +1157,7 @@ const InwardApproval = ({ navigation, route }) => {
                 ))}
                 {ListOfInwardTPI == "" && (
                   <Text darkColor style={{ marginBottom: 10 }}>
-                    Oops! No Data Found.
+                    No Data Found !
                   </Text>
                 )}
               </ScrollView>
@@ -1226,7 +1226,7 @@ const InwardApproval = ({ navigation, route }) => {
 
                 {ListOfInwardLetterRefImages == "" && (
                   <Text darkColor style={{ marginBottom: 10 }}>
-                    Oops! No Data Found.
+                    No Data Found !
                   </Text>
                 )}
               </ScrollView>
@@ -1302,7 +1302,7 @@ const InwardApproval = ({ navigation, route }) => {
 
                 {ListOfMaterialImages == "" && (
                   <Text darkColor style={{ marginBottom: 10 }}>
-                    Oops! No Data Found.
+                    No Data Found !
                   </Text>
                 )}
               </ScrollView>
@@ -1386,7 +1386,7 @@ const InwardApproval = ({ navigation, route }) => {
 
                 {ListOfInwardApprovalHist == "" && (
                   <Text darkColor style={{ marginBottom: 10 }}>
-                    Oops! No Data Found.
+                    No Data Found !
                   </Text>
                 )}
               </ScrollView>
@@ -1476,7 +1476,7 @@ const InwardApproval = ({ navigation, route }) => {
                 ))}
                 {ListOfMachiningDetails == "" && (
                   <Text darkColor style={{ marginBottom: 10 }}>
-                    Oops! No Data Found.
+                    No Data Found !
                   </Text>
                 )}
               </ScrollView>

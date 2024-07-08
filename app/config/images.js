@@ -5,6 +5,7 @@
 
 export const Images = {
   a_cc: require('../assets/images/a_cc.png'),
+  a_chat: require('../assets/images/a_chat.png'),
   a_db: require('../assets/images/a_db.png'),
   a_ms: require('../assets/images/a_ms.png'),
   a_UserBottom: require('../assets/images/a_UserBottom.png'),
@@ -13,6 +14,7 @@ export const Images = {
   bgimg: require('../assets/images/bgimg.png'),
   cc: require('../assets/images/cc.png'),
   check: require('../assets/images/check.png'),
+  chat: require('../assets/images/chat.png'),
   close: require('../assets/images/close.png'),
   close1: require('../assets/images/close1.png'),
   closed: require('../assets/images/closed.png'),
@@ -71,4 +73,22 @@ export const Images = {
   TAP: require('../assets/images/TAP.png'),
   TTR: require('../assets/images/TTR.png'),
   UserBottom: require('../assets/images/UserBottom.png'),
+  activityLog: require('../assets/images/log.png'),
+  a_Activitylog: require('../assets/images/a_log.png'),
+  Dasignation: require('../assets/images/Dasignation.png'),
+  EmailID: require('../assets/images/EmailID.png'),
+  PhoneNo: require('../assets/images/PhoneNo.png'),
+  listRightArrow: require('../assets/images/listRightArrow.png'),
+
+  WP_Inward: require('../assets/images/WP_Inward.png'),
+  WP_MachingOutward: require('../assets/images/WP_MachingOutward.png'),
+  WP_Operation: require('../assets/images/WP_Operation.png'),
+  IW_MaterialInward: require('../assets/images/IW_MaterialInward.png'),
+  IW_TCAllocation: require('../assets/images/IW_TCAllocation.png'),
+  OT_DispatchMaterial: require('../assets/images/OT_DispatchMaterial.png'),
+  OT_DispatchReport: require('../assets/images/OT_DispatchReport.png'),
+  OT_ReportPrinting: require('../assets/images/OT_ReportPrinting.png'),
+  OT_Testing: require('../assets/images/OT_Testing.png'),
+  OT_UplodeScanCopy: require('../assets/images/OT_UplodeScanCopy.png'),
 }
+// listRightArrow

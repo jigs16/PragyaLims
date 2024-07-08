@@ -1,7 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { reject } from 'lodash'
-import { Alert } from 'react-native'
-import api from '../../network/api'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { reject } from "lodash";
+import { Alert } from "react-native";
+import api from "../../network/api";
 
 export const loginApiCall = (data) => {
   try {
@@ -31,17 +31,17 @@ export const GetTodaysSummaryDataApiCall = (data) => {
         .then((response) => {
           console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
-            console.log('response body IsSuccess ---- TRUE');
+            console.log("response body IsSuccess ---- TRUE");
             resolve(response.body);
           } else {
-            console.log('response body IsSuccess ---- FALSE');
+            console.log("response body IsSuccess ---- FALSE");
             resolve(response.body);
           }
         })
         .catch(reject);
     });
   } catch (error) {
-    console.log('error ===>>>> ', error);
+    console.log("error ===>>>> ", error);
     reject(error);
   }
 };
@@ -54,21 +54,20 @@ export const GetTopCustomersDataApiCall = (data) => {
         .then((response) => {
           console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
-            console.log('response body IsSuccess ---- TRUE');
+            console.log("response body IsSuccess ---- TRUE");
             resolve(response.body);
           } else {
-            console.log('response body IsSuccess ---- FALSE');
+            console.log("response body IsSuccess ---- FALSE");
             resolve(response.body);
           }
         })
         .catch(reject);
     });
   } catch (error) {
-    console.log('error ===>>>> ', error);
+    console.log("error ===>>>> ", error);
     reject(error);
   }
 };
-
 
 export const GetTopDepartmentDataApiCall = (data) => {
   try {
@@ -78,17 +77,17 @@ export const GetTopDepartmentDataApiCall = (data) => {
         .then((response) => {
           console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
-            console.log('response body IsSuccess ---- TRUE');
+            console.log("response body IsSuccess ---- TRUE");
             resolve(response.body);
           } else {
-            console.log('response body IsSuccess ---- FALSE');
+            console.log("response body IsSuccess ---- FALSE");
             resolve(response.body);
           }
         })
         .catch(reject);
     });
   } catch (error) {
-    console.log('error ===>>>> ', error);
+    console.log("error ===>>>> ", error);
     reject(error);
   }
 };
@@ -102,17 +101,17 @@ export const GetTopTestDataApiCall = (data) => {
         .then((response) => {
           console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
-            console.log('response body IsSuccess ---- TRUE');
+            console.log("response body IsSuccess ---- TRUE");
             resolve(response.body);
           } else {
-            console.log('response body IsSuccess ---- FALSE');
+            console.log("response body IsSuccess ---- FALSE");
             resolve(response.body);
           }
         })
         .catch(reject);
     });
   } catch (error) {
-    console.log('error ===>>>> ', error);
+    console.log("error ===>>>> ", error);
     reject(error);
   }
 };
@@ -125,17 +124,17 @@ export const GetTopMachinesDataApiCall = (data) => {
         .then((response) => {
           console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
-            console.log('response body IsSuccess ---- TRUE');
+            console.log("response body IsSuccess ---- TRUE");
             resolve(response.body);
           } else {
-            console.log('response body IsSuccess ---- FALSE');
+            console.log("response body IsSuccess ---- FALSE");
             resolve(response.body);
           }
         })
         .catch(reject);
     });
   } catch (error) {
-    console.log('error ===>>>> ', error);
+    console.log("error ===>>>> ", error);
     reject(error);
   }
 };
@@ -148,28 +147,28 @@ export const GetActivityLogDataApiCall = (data) => {
         .then((response) => {
           console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
-            console.log('response body IsSuccess ---- TRUE');
+            console.log("response body IsSuccess ---- TRUE");
             resolve(response.body);
           } else {
-            console.log('response body IsSuccess ---- FALSE');
+            console.log("response body IsSuccess ---- FALSE");
             resolve(response.body);
           }
         })
         .catch(reject);
     });
   } catch (error) {
-    console.log('error ===>>>> ', error);
+    console.log("error ===>>>> ", error);
     reject(error);
   }
 };
 
-export const UserLogoutApiCall = data => {
+export const UserLogoutApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('Authentication/LogoutUser', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("Authentication/LogoutUser", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -183,13 +182,13 @@ export const UserLogoutApiCall = data => {
   }
 };
 
-export const RefreshTokenApiCall = data => {
+export const RefreshTokenApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('Authentication/RefreshToken', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("Authentication/RefreshToken", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -203,13 +202,13 @@ export const RefreshTokenApiCall = data => {
   }
 };
 
-export const GetControlCenterDataApiCall = data => {
+export const GetControlCenterDataApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('ControlCenter/GetControlCenterList', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("ControlCenter/GetControlCenterList", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -223,13 +222,13 @@ export const GetControlCenterDataApiCall = data => {
   }
 };
 
-export const GetCustomerDDLListAJAXApiCall = data => {
+export const GetCustomerDDLListAJAXApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('Customer/GetCustomerDDLListAJAX', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("Customer/GetCustomerDDLListAJAX", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -243,13 +242,13 @@ export const GetCustomerDDLListAJAXApiCall = data => {
   }
 };
 
-export const GetCustomerProjectDDLListApiCall = data => {
+export const GetVendorsDDLListApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('Customer/GetCustomerProjectDDLList', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("Vendors/GetVendorsDDLList", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -263,13 +262,13 @@ export const GetCustomerProjectDDLListApiCall = data => {
   }
 };
 
-export const GetProcessFormListDDLApiCall = data => {
+export const GetCustomerProjectDDLListApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('ControlCenter/GetProcessFormListDDL', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("Customer/GetCustomerProjectDDLList", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -283,13 +282,13 @@ export const GetProcessFormListDDLApiCall = data => {
   }
 };
 
-export const GetProcessFormStatusListDDLApiCall = data => {
+export const GetProcessFormListDDLApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('ControlCenter/GetProcessFormStatusListDDL', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("ControlCenter/GetProcessFormListDDL", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -303,13 +302,13 @@ export const GetProcessFormStatusListDDLApiCall = data => {
   }
 };
 
-export const GetDepartmentDropDownListApiCall = data => {
+export const GetProcessFormStatusListDDLApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('Department/GetDepartmentDropDownList', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("ControlCenter/GetProcessFormStatusListDDL", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -323,13 +322,13 @@ export const GetDepartmentDropDownListApiCall = data => {
   }
 };
 
-export const ProductGroupDropDownListByDepartmentIDApiCall = data => {
+export const GetDepartmentDropDownListApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('ProductGroups/ProductGroupDropDownListByDepartmentID', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("Department/GetDepartmentDropDownList", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -343,13 +342,13 @@ export const ProductGroupDropDownListByDepartmentIDApiCall = data => {
   }
 };
 
-export const GetMaterialTypeDDLListByDepartment_ProductGroupApiApiCall = data => {
+export const ProductGroupDropDownListByDepartmentIDApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('Parameter/GetMaterialTypeDDLListByDepartment_ProductGroup', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("ProductGroups/ProductGroupDropDownListByDepartmentID", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -363,13 +362,15 @@ export const GetMaterialTypeDDLListByDepartment_ProductGroupApiApiCall = data =>
   }
 };
 
-export const DDLGetTestMasterByCompanyIDApiApiCall = data => {
+export const GetMaterialTypeDDLListByDepartment_ProductGroupApiApiCall = (
+  data
+) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('RefStandardTestMap/DDLGetTestMasterByCompanyID', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("Parameter/GetMaterialTypeDDLListByDepartment_ProductGroup", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -383,13 +384,13 @@ export const DDLGetTestMasterByCompanyIDApiApiCall = data => {
   }
 };
 
-export const GetDDLTestMethodsByCompanyIDApiCall = data => {
+export const DDLGetTestMasterByCompanyIDApiApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('Parameter/GetDDLTestMethodsByCompanyID', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("RefStandardTestMap/DDLGetTestMasterByCompanyID", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -403,13 +404,13 @@ export const GetDDLTestMethodsByCompanyIDApiCall = data => {
   }
 };
 
-export const InwardRegisterReportExportApiCall = data => {
+export const GetDDLTestMethodsByCompanyIDApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('Reports/InwardRegisterReportExport', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("Parameter/GetDDLTestMethodsByCompanyID", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -423,13 +424,13 @@ export const InwardRegisterReportExportApiCall = data => {
   }
 };
 
-export const GetProcessStatusReportExportApiCall = data => {
+export const InwardRegisterReportExportApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('Reports/GetProcessStatusReportExport', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("Reports/InwardRegisterReportExport", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -443,13 +444,13 @@ export const GetProcessStatusReportExportApiCall = data => {
   }
 };
 
-export const GetReportDispatchReportExportApiCall = data => {
+export const GetProcessStatusReportExportApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('Reports/GetReportDispatchReportExport', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("Reports/GetProcessStatusReportExport", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -463,13 +464,13 @@ export const GetReportDispatchReportExportApiCall = data => {
   }
 };
 
-export const GetReportDispatchMaterialExportApiCall = data => {
+export const GetReportDispatchReportExportApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('Reports/GetReportDispatchMaterialExport', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("Reports/GetReportDispatchReportExport", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -483,13 +484,13 @@ export const GetReportDispatchMaterialExportApiCall = data => {
   }
 };
 
-export const GetReportPendingTestingExportApiCall = data => {
+export const GetReportDispatchMaterialExportApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('Reports/GetReportPendingTestingExport', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("Reports/GetReportDispatchMaterialExport", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -503,13 +504,13 @@ export const GetReportPendingTestingExportApiCall = data => {
   }
 };
 
-export const GetInwardApprovalDetailByIDApiCall = data => {
+export const GetReportPendingTestingExportApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('InwardApproval/GetInwardApprovalDetailByID', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("Reports/GetReportPendingTestingExport", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -523,14 +524,13 @@ export const GetInwardApprovalDetailByIDApiCall = data => {
   }
 };
 
-
-export const InwardApprovalUpdateStatusApiCall = data => {
+export const GetInwardApprovalDetailByIDApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('InwardApproval/InwardApprovalUpdateStatus', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("InwardApproval/GetInwardApprovalDetailByID", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -544,13 +544,13 @@ export const InwardApprovalUpdateStatusApiCall = data => {
   }
 };
 
-export const GetTestingsApprovalDetailByIDApiCall = data => {
+export const InwardApprovalUpdateStatusApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('Testing/GetTestingsApprovalDetailByID', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("InwardApproval/InwardApprovalUpdateStatus", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -564,13 +564,13 @@ export const GetTestingsApprovalDetailByIDApiCall = data => {
   }
 };
 
-export const TestingsApprovalInsertApiCall = data => {
+export const GetTestingsApprovalDetailByIDApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('Testing/TestingsApprovalInsert', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("Testing/GetTestingsApprovalDetailByID", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -584,13 +584,13 @@ export const TestingsApprovalInsertApiCall = data => {
   }
 };
 
-export const GetReportingsListApiCall = data => {
+export const TestingsApprovalInsertApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('Reportings/GetReportingsList', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("Testing/TestingsApprovalInsert", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -604,13 +604,13 @@ export const GetReportingsListApiCall = data => {
   }
 };
 
-export const GetReportDispatchListApiCall = data => {
+export const GetReportingsListApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('ReportDispatch/GetReportDispatchList', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("Reportings/GetReportingsList", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -624,13 +624,13 @@ export const GetReportDispatchListApiCall = data => {
   }
 };
 
-export const GetReportDispatchPrintByIDApiCall = data => {
+export const GetMachiningOutwardListApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('ReportDispatch/GetReportDispatchPrintByID', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("MachiningOutward/GetMachiningOutwardList", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -644,13 +644,13 @@ export const GetReportDispatchPrintByIDApiCall = data => {
   }
 };
 
-export const GetReportDispatchPrintLabelApiCall = data => {
+export const GetMachiningOutwardInwardDetailByIDApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('ReportDispatch/GetReportDispatchPrintLabel', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("MachiningOutward/GetMachiningOutwardInwardDetailByID", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -664,13 +664,13 @@ export const GetReportDispatchPrintLabelApiCall = data => {
   }
 };
 
-export const GetCourierDDLListApiCall = data => {
+export const GetMachiningOutwardGetPassPrintDownloadApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('Courier/GetCourierDDLList', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("MachiningOutward/GetMachiningOutwardGetPassPrintDownload", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -684,13 +684,14 @@ export const GetCourierDDLListApiCall = data => {
   }
 };
 
-export const GetMaterialDispatchListApiCall = data => {
+//
+export const GetReportDispatchListApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('MaterialDispatch/GetMaterialDispatchList', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("ReportDispatch/GetReportDispatchList", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -704,13 +705,13 @@ export const GetMaterialDispatchListApiCall = data => {
   }
 };
 
-export const GetMaterialDispatchPrintByIDApiCall = data => {
+export const GetReportDispatchPrintByIDApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
       api
-        .post('MaterialDispatch/GetMaterialDispatchPrintByID', data)
-        .then(response => {
-          console.log('Response' + JSON.stringify(response.body));
+        .post("ReportDispatch/GetReportDispatchPrintByID", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
           if (response.body.IsSuccess) {
             resolve(response.body);
           } else {
@@ -723,5 +724,236 @@ export const GetMaterialDispatchPrintByIDApiCall = data => {
     reject(error);
   }
 };
-// Courier/GetCourierDDLList
 
+export const GetReportDispatchPrintLabelApiCall = (data) => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post("ReportDispatch/GetReportDispatchPrintLabel", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const GetCourierDDLListApiCall = (data) => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post("Courier/GetCourierDDLList", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const GetMaterialDispatchListApiCall = (data) => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post("MaterialDispatch/GetMaterialDispatchList", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const GetMaterialDispatchPrintByIDApiCall = (data) => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post("MaterialDispatch/GetMaterialDispatchPrintByID", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const GetSampleRequestFormDetailDownloadApiCall = (data) => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post("ControlCenter/GetSampleRequestFormDetailDownload", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const GetLabFormDetailDownloadApiCall = (data) => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post("ControlCenter/GetLabFormDetailDownload", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const GetControlCenterInwardStatisticsListApiCall = (data) => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post("ControlCenter/GetControlCenterInwardStatisticsList", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const GetChatBoxListApiCall = (data) => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post("ChatBox/GetChatBoxList", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            console.log("response body IsSuccess ---- TRUE");
+            resolve(response.body);
+          } else {
+            console.log("response body IsSuccess ---- FALSE");
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    console.log("error ===>>>> ", error);
+    reject(error);
+  }
+};
+
+export const GetEmployeeDDLListApiCall = (data) => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post("Employee/GetEmployeeDDLList", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            console.log("response body IsSuccess ---- TRUE");
+            resolve(response.body);
+          } else {
+            console.log("response body IsSuccess ---- FALSE");
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    console.log("error ===>>>> ", error);
+    reject(error);
+  }
+};
+
+export const ChatBoxEmployeeMessageInsertApiCall = (data, isFormData) => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post("ChatBox/ChatBoxEmployeeMessageInsert", data, isFormData)
+
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
+export const GetTestingListApiCall = (data) => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post("Testing/GetTestingList", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            console.log("response body IsSuccess ---- TRUE");
+            resolve(response.body);
+          } else {
+            console.log("response body IsSuccess ---- FALSE");
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    console.log("error ===>>>> ", error);
+    reject(error);
+  }
+};
+
+
+// Testing/GetTestingList

@@ -15,7 +15,7 @@ export const BaseColor = {
   grayColor: "#9B9B9B",
   dividerColor: "#BDBDBD",
   primaryColor: "#FCC783",
-  fieldColor: "#f6f6f6",
+  fieldColor: "#828282",
   yellowColor: "#FDC60A",
   navyBlue: "#3C5A99",
   kashmir: "#5D6D7E",
@@ -28,7 +28,7 @@ export const BaseColor = {
   accentColor: "#4A90A4",
   darkColor: "#202020",
   mainTransp: "#4f5354",
-  Card: "#f5f5f7",
+  Card: "#eeeeee",
   HeaderColor: "#eeeeee",
   borderColor: "#828282",
   darkGraycolor: "#797979",
@@ -38,5 +38,6 @@ export const BaseColor = {
   orange: "#ffa500",
   approved : '#3f984b',
   unapproved: '#47a493',
-  pending: '#d9807c'
+  pending: '#d9807c',
+  bg: '#18a5950a',
 };

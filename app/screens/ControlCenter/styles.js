@@ -52,7 +52,7 @@ export default StyleSheet.create({
     width: moderateScale(30),
     height: moderateScale(30),
     marginTop: 0,
-    marginRight: 5,
+    marginRight: 12,
   },
 
   contain: {

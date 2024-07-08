@@ -1,11 +1,9 @@
-import * as React from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
+import * as React from "react";
 
 const apiAxios = axios.create({
   baseURL: "http://124.123.122.224:814/api/",
-  // baseURL: "http://192.168.0.200:814/api/",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -15,29 +13,30 @@ const apiAxios = axios.create({
 class NetworkUtils {
   constructor(options, navigation) {
     this.baseUrl = options.baseUrl;
-    this.signalRBaseUrl = options.signalRBaseUrl;
     this.navigation = navigation;
   }
 
   get(endpoint) {
     console.log(this.baseUrl + "" + endpoint);
-    // return this.requestHttpJSON('GET', this.baseUrl + endpoint, null);
     return apiAxios.get(endpoint);
   }
 
-  post(endpoint, params, isFormData) {
-    console.log(this.baseUrl + "" + endpoint + " " + params);
-    return apiAxios.post(endpoint, params, isFormData);
+  post(endpoint, params, isFormData = false) {
+    const config = {
+      headers: {
+        ...(isFormData && { "Content-Type": "multipart/form-data" }),
+      },
+    };
+    console.log(this.baseUrl + "" + endpoint, params, config);
+    return apiAxios.post(this.baseUrl + endpoint, params, config);
   }
 
   put(endpoint, params) {
-    // return this.requestHttpJSON('PUT', this.baseUrl + endpoint, params);
-    return apiAxios.put(endpoint, params);
+    return apiAxios.put(this.baseUrl + endpoint, params);
   }
 
   delete(endpoint, params) {
-    // return this.requestHttpJSON('DELETE', this.baseUrl + endpoint, params);
-    return apiAxios.delete(endpoint, params);
+    return apiAxios.delete(this.baseUrl + endpoint, { data: params });
   }
 }
 
@@ -54,14 +53,11 @@ apiAxios.interceptors.request.use(
   }
 );
 
-// Define the structure of a retry queue item
 const refreshAndRetryQueue = [];
-// Flag to prevent multiple token refresh requests
 let isRefreshing = false;
 
 apiAxios.interceptors.response.use(
   (response) => {
-    // return response;
     return { statusCode: response.status, body: response.data };
   },
   async (error) => {
@@ -78,47 +74,33 @@ apiAxios.interceptors.response.use(
               RefreshToken: refreshToken,
             }
           );
-          console.log("Refresh token Responce =====>>> : ", response?.data);
           if (response?.data?.IsSuccess) {
-            console.log("Refresh token Responce:", response);
             const newToken = response.data.Token;
             await AsyncStorage.setItem("Token", newToken);
             const newRefreshToken = response.data.RefreshToken;
             await AsyncStorage.setItem("RefreshToken", newRefreshToken);
-            console.log("Authorization Set Start 1==>>");
             apiAxios.defaults.headers.common[
               "Authorization"
             ] = `Bearer ${newToken}`;
-            console.log("Authorization Set Start 2==>>");
             originalRequest.headers.Authorization = `Bearer ${newToken}`;
-            console.log("Authorization Set Done==>>");
-            // Retry all requests in the queue with the new token
             refreshAndRetryQueue.forEach(({ config, resolve, reject }) => {
               apiAxios
                 .request(config)
                 .then((res) => resolve(res))
                 .catch((err) => reject(err));
             });
-            console.log("refreshAndRetryQueue Loop Done==>>");
-            // Clear the queue
             refreshAndRetryQueue.length = 0;
-
             return apiAxios(originalRequest);
           } else {
-            //logout & redirect to login screen
             LogoutAndRedirectToLogin();
           }
         } catch (error) {
-          // Handle refresh token error
           LogoutAndRedirectToLogin();
           throw error;
-          // console.error("Refresh token error:", error);
-          // return Promise.reject(error);
         } finally {
           isRefreshing = false;
         }
       }
-      // Add the original request to the queue
       return new Promise((resolve, reject) => {
         refreshAndRetryQueue.push({ config: originalRequest, resolve, reject });
       });
@@ -135,7 +117,6 @@ export function navigate(name, params) {
 }
 
 export const LogoutAndRedirectToLogin = () => {
-  console.log("Logout ===>>>");
   AsyncStorage.clear();
   navigate("AuthNavigator");
 };

@@ -28,7 +28,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Testing = ({ navigation, route }) => {
   useEffect(() => {
-    // GetInwardApprovalDetailByIDApi();
     getData();
   }, []);
   const [TA, setTA] = useState(false);

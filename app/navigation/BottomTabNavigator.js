@@ -7,6 +7,8 @@ import ProfileNavigator from "./ProfileNavigator";
 import ControlCenterNavigator from "./ControlCenterNavigator";
 import MISNavigator from "./MISNavigator";
 import { verticalScale } from "../config/scaling";
+import ChatNavigator from "./ChatNavigator";
+import LogNavigator from "./LogNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -41,7 +43,7 @@ export function BottomTabNavigator() {
         component={DashboardNavigator}
         initialParams={{ screenType: 1 }}
         options={{
-          tabBarLabel: "Dashboard",
+          tabBarLabel: "Home",
           unmountOnBlur: true,
           tabBarIcon: ({ color, size, focused }) => (
             <View
@@ -73,7 +75,7 @@ export function BottomTabNavigator() {
         component={ControlCenterNavigator}
         initialParams={{ screenType: 2 }}
         options={{
-          tabBarLabel: "Control Center",
+          tabBarLabel: "Process",
           unmountOnBlur: true,
           tabBarIcon: ({ color, size, focused }) => (
             <View
@@ -87,6 +89,72 @@ export function BottomTabNavigator() {
             >
               <Image
                 source={focused ? Images.a_cc : Images.cc}
+                tintColor={
+                  focused ? BaseColor.buttonGradient1 : BaseColor.blackColor
+                }
+                style={{
+                  resizeMode: "contain",
+                  width: focused ? 16 : 22,
+                  marginTop: -18,
+                }}
+              />
+            </View>
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="ChatNavigator"
+        component={ChatNavigator}
+        initialParams={{ screenType: 4 }}
+        options={{
+          tabBarLabel: "Chat",
+          unmountOnBlur: true,
+          tabBarIcon: ({ color, size, focused }) => (
+            <View
+              style={{
+                backgroundColor: focused ? "#18a5942e" : BaseColor.whiteColor,
+                width: 50,
+                height: 28,
+                borderRadius: 20,
+                alignItems: "center",
+              }}
+            >
+              <Image
+                source={focused ? Images.a_chat : Images.chat}
+                tintColor={
+                  focused ? BaseColor.buttonGradient1 : BaseColor.blackColor
+                }
+                style={{
+                  resizeMode: "contain",
+                  width: focused ? 16 : 22,
+                  marginTop: -18,
+                }}
+              />
+            </View>
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="LogNavigator"
+        component={LogNavigator}
+        initialParams={{ screenType: 4 }}
+        options={{
+          tabBarLabel: "Log",
+          unmountOnBlur: true,
+          tabBarIcon: ({ color, size, focused }) => (
+            <View
+              style={{
+                backgroundColor: focused ? "#18a5942e" : BaseColor.whiteColor,
+                width: 50,
+                height: 28,
+                borderRadius: 20,
+                alignItems: "center",
+              }}
+            >
+              <Image
+                source={focused ? Images.a_Activitylog : Images.activityLog}
                 tintColor={
                   focused ? BaseColor.buttonGradient1 : BaseColor.blackColor
                 }
@@ -120,39 +188,6 @@ export function BottomTabNavigator() {
             >
               <Image
                 source={focused ? Images.a_ms : Images.ms}
-                tintColor={
-                  focused ? BaseColor.buttonGradient1 : BaseColor.blackColor
-                }
-                style={{
-                  resizeMode: "contain",
-                  width: focused ? 16 : 22,
-                  marginTop: -18,
-                }}
-              />
-            </View>
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="Profile"
-        component={ProfileNavigator}
-        initialParams={{ screenType: 4 }}
-        options={{
-          tabBarLabel: "Profile",
-          unmountOnBlur: true,
-          tabBarIcon: ({ color, size, focused }) => (
-            <View
-              style={{
-                backgroundColor: focused ? "#18a5942e" : BaseColor.whiteColor,
-                width: 50,
-                height: 28,
-                borderRadius: 20,
-                alignItems: "center",
-              }}
-            >
-              <Image
-                source={focused ? Images.a_UserBottom : Images.UserBottom}
                 tintColor={
                   focused ? BaseColor.buttonGradient1 : BaseColor.blackColor
                 }

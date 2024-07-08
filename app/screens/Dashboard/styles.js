@@ -20,7 +20,7 @@ export default StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 12,
     paddingBottom: 60,
-    paddingTop: 0,
+    paddingTop: 5,
   },
 
   container: {flex: 1, marginBottom: 0, flexDirection:'row'},
@@ -81,18 +81,19 @@ export default StyleSheet.create({
   },
 
   cardImage1: {
-    width: moderateScale(30),
-    height: moderateScale(30),
+    width: moderateScale(36),
+    height: moderateScale(36),
     marginTop: 0,
-    marginRight:5
+    marginRight:10
   },
 
   contain: {
     height: 50,
     flexDirection: 'row',
-    backgroundColor: BaseColor.Card,
+    backgroundColor: '#fcfcfc',
     borderBottomWidth: 2,
-    borderBottomColor: BaseColor.HeaderColor,
+    borderBottomColor: BaseColor.bg,
+    elevation:1,
     paddingLeft:12,
     justifyContent: 'space-between',
   },

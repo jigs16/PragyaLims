@@ -95,7 +95,7 @@ const Profile = ({navigation}) => {
         showAlertModal={alertModal0}
         setShowAlertModal={setAlertModal0}
         message={msgModal0}></AlertModal>
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1, backgroundColor:BaseColor.whiteColor}}>
         <View
           style={{
             flex: 1,
@@ -175,21 +175,6 @@ const Profile = ({navigation}) => {
                   source={Images.ic_right_arrow_new}
                 />
               </View>
-
-              <Pressable
-                onPress={() => {
-                  navigation.navigate('Operation');
-                }}
-                style={styles.itemView}>
-                <Image style={styles.itemImg} source={Images.ic_logout1} />
-                <Text body2 darkColor style={{flex: 1}}>
-                  {'Operation'}
-                </Text>
-                <Image
-                  style={styles.rightArrow}
-                  source={Images.ic_right_arrow_new}
-                />
-              </Pressable>
 
               <Pressable
                 onPress={() => {

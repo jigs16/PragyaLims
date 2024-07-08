@@ -368,7 +368,7 @@ const MISDetails = ({ navigation, route }) => {
       CustomerIDEncrypted: Customer,
       ProjectIDEncrypted: Project,
       TCNo: TCNo,
-      CreatedByEncrypted: "",
+      CreatedByEncrypted: LoginDetails.ReferenceIDEncrypt,
     };
     console.log("Params =====>>>>>>>>>>", params);
     InwardRegisterReportExportApiCall(params)
@@ -420,7 +420,7 @@ const MISDetails = ({ navigation, route }) => {
       InwardNo: InwardNo,
       ProjectDetails: WorkDetail,
       LetterRefNo: LetterRef,
-      CreatedByEncrypted: "",
+      CreatedByEncrypted: LoginDetails.ReferenceIDEncrypt,
     };
     console.log("Params =====>>>>>>>>>>", params);
     GetProcessStatusReportExportApiCall(params)
@@ -468,7 +468,7 @@ const MISDetails = ({ navigation, route }) => {
       ToDate: ToDate,
       TCNo: TCNo,
       DispatchNo: DispatchNo,
-      CreatedByEncrypted: "",
+      CreatedByEncrypted: LoginDetails.ReferenceIDEncrypt,
     };
     console.log("Params =====>>>>>>>>>>", params);
     GetReportDispatchReportExportApiCall(params)
@@ -516,7 +516,7 @@ const MISDetails = ({ navigation, route }) => {
       ToDate: ToDate,
       TCNo: TCNo,
       DispatchNo: DispatchNo,
-      CreatedByEncrypted: "",
+      CreatedByEncrypted: LoginDetails.ReferenceIDEncrypt,
     };
     console.log("Params =====>>>>>>>>>>", params);
     GetReportDispatchMaterialExportApiCall(params)
@@ -564,7 +564,7 @@ const MISDetails = ({ navigation, route }) => {
       ToDate: ToDate,
       TCNo: TCNo,
       InwardNo: InwardNo,
-      CreatedByEncrypted: "",
+      CreatedByEncrypted: LoginDetails.ReferenceIDEncrypt,
     };
     console.log("Params =====>>>>>>>>>>", params);
     GetReportPendingTestingExportApiCall(params)

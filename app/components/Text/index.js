@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Text } from 'react-native';
 import { BaseColor, FontWeight, Typography } from '../../config';
 import fonts from '../../config/fonts';
+import { green } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
 
 const Roboto = {
   100: 'Thin',
@@ -95,6 +96,8 @@ export default function Index(props) {
     fieldColor,
     yellowColor,
     darkColor,
+    danger,
+    green,
     //numberOfLines
     numberOfLines,
     textAlign,
@@ -139,6 +142,10 @@ export default function Index(props) {
     fieldColor && { color: BaseColor.fieldColor },
     yellowColor && { color: BaseColor.yellowColor},
     darkColor && { color: BaseColor.darkColor},
+    danger && { color: BaseColor.danger},
+    green && { color: BaseColor.green},
+    ,
+    ,
     { fontFamily: fonts.Poppins_Regular, textAlign, letterSpacing: 1 },
     style && style,
   ]);
@@ -222,6 +229,8 @@ Index.propTypes = {
   fieldColor: PropTypes.bool,
   yellowColor: PropTypes.bool,
   darkColor: PropTypes.bool,
+  green: PropTypes.bool,
+  danger: PropTypes.bool,
   //numberOfLines
   numberOfLines: PropTypes.number,
   textAlign: PropTypes.string,
@@ -268,6 +277,8 @@ Index.defaultProps = {
   fieldColor: false,
   yellowColor: false,
   darkColor: false,
+  green: false,
+  danger: false,
   //numberOfLines
   numberOfLines: 10,
   textAlign: 'left',

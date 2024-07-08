@@ -793,11 +793,11 @@ const MaterialDispatch = ({ navigation }) => {
               <View style={styles.Found}>
                 <Image
                   source={Images.ic_DataFound}
-                  style={{ width: 125, height: 125, marginBottom: 20 }}
+                  style={{ width: 165, height: 165, marginBottom: 10 }}
                 />
 
                 <Text darkColor headline style={{ fontSize: 18 }}>
-                  Oops! No Data Found.
+                  No Data Found !
                 </Text>
                 <View style={{ flexDirection: "row" }}>
                   <Text
