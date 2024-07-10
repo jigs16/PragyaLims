@@ -90,5 +90,9 @@ export const Images = {
   OT_ReportPrinting: require('../assets/images/OT_ReportPrinting.png'),
   OT_Testing: require('../assets/images/OT_Testing.png'),
   OT_UplodeScanCopy: require('../assets/images/OT_UplodeScanCopy.png'),
+  labForm: require('../assets/images/labForm.png'),
+  InwardStatistics: require('../assets/images/InwardStatistics.png'),
+  ContactPerson: require('../assets/images/ContactPerson.png'),
+  SendScanCopy: require('../assets/images/SendScanCopy.png'),
 }
-// listRightArrow
+// SendScanCopy

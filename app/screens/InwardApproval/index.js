@@ -893,108 +893,111 @@ const InwardApproval = ({ navigation, route }) => {
                           },
                         ]}
                       >
-                        {InwardApprovalDetail.InwardRewiseAndRectifyActionStatus && InwardApprovalDetail.InwardCurrentStatus != 5 && (
-                          <>
-                            <View
-                              style={{
-                                flex: 1,
-                                padding: 10,
-                                paddingTop: 0,
-                                paddingBottom: 0,
-                                marginBottom: 10,
-                              }}
-                            >
-                              <Text
-                                subhead
-                                bold
-                                buttonGradient2
-                                style={{ marginBottom: 0, marginTop: 5 }}
+                        {InwardApprovalDetail.InwardRewiseAndRectifyActionStatus &&
+                          InwardApprovalDetail.InwardCurrentStatus != 5 && (
+                            <>
+                              <View
+                                style={{
+                                  flex: 1,
+                                  padding: 10,
+                                  paddingTop: 0,
+                                  paddingBottom: 0,
+                                  marginBottom: 10,
+                                }}
                               >
-                                Remarks
-                              </Text>
-                              <TextInput
-                                style={[
-                                  styles.textInput,
-                                  {
-                                    height: 100,
-                                    textAlignVertical: "top",
-                                    borderColor: BaseColor.darkGraycolor,
-                                  },
-                                ]}
-                                onChangeText={(text) => setRemarks(text)}
-                                placeholder={"Enter your Remarks"}
-                                value={Remarks}
-                                returnKeyType="next"
-                                multiline
-                              />
-                            </View>
+                                <Text
+                                  subhead
+                                  bold
+                                  buttonGradient2
+                                  style={{ marginBottom: 0, marginTop: 5 }}
+                                >
+                                  Remarks
+                                </Text>
+                                <TextInput
+                                  style={[
+                                    styles.textInput,
+                                    {
+                                      height: 100,
+                                      textAlignVertical: "top",
+                                      borderColor: BaseColor.darkGraycolor,
+                                    },
+                                  ]}
+                                  onChangeText={(text) => setRemarks(text)}
+                                  placeholder={"Enter your Remarks"}
+                                  value={Remarks}
+                                  returnKeyType="next"
+                                  multiline
+                                />
+                              </View>
 
-                            <View
-                              style={{
-                                flex: 1,
-                                flexDirection: "row",
-                                padding: 10,
-                                paddingBottom: 5,
-                                paddingTop: 5,
-                              }}
-                            >
                               <View
-                                style={{ paddingHorizontal: 4, width: "50%" }}
+                                style={{
+                                  flex: 1,
+                                  flexDirection: "row",
+                                  padding: 10,
+                                  paddingBottom: 5,
+                                  paddingTop: 5,
+                                }}
                               >
-                                <Pressable
-                                  onPress={() => {
-                                    InwardApprovalUpdateStatusApi(5);
-                                  }}
-                                  style={{
-                                    borderRadius: 8,
-                                    height: moderateScale(60),
-                                    backgroundColor: BaseColor.buttonGradient2,
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    flexDirection: "row",
-                                    // marginBottom: 10,
-                                  }}
+                                <View
+                                  style={{ paddingHorizontal: 4, width: "50%" }}
                                 >
-                                  <Image
-                                    source={Images.check}
-                                    tintColor={BaseColor.whiteColor}
-                                    style={{ width: 15, height: 15 }}
-                                  ></Image>
-                                  <Text bold footnote whiteColor>
-                                    {" Approved"}
-                                  </Text>
-                                </Pressable>
-                              </View>
-                              <View
-                                style={{ paddingHorizontal: 4, width: "50%" }}
-                              >
-                                <Pressable
-                                  onPress={() => {
-                                    InwardApprovalUpdateStatusApi(6);
-                                  }}
-                                  style={{
-                                    borderRadius: 8,
-                                    height: moderateScale(60),
-                                    backgroundColor: BaseColor.buttonGradient2,
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    flexDirection: "row",
-                                    // marginBottom: 10,
-                                  }}
+                                  <Pressable
+                                    onPress={() => {
+                                      InwardApprovalUpdateStatusApi(5);
+                                    }}
+                                    style={{
+                                      borderRadius: 8,
+                                      height: moderateScale(60),
+                                      backgroundColor:
+                                        BaseColor.buttonGradient2,
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      flexDirection: "row",
+                                      // marginBottom: 10,
+                                    }}
+                                  >
+                                    <Image
+                                      source={Images.check}
+                                      tintColor={BaseColor.whiteColor}
+                                      style={{ width: 15, height: 15 }}
+                                    ></Image>
+                                    <Text bold footnote whiteColor>
+                                      {" Approved"}
+                                    </Text>
+                                  </Pressable>
+                                </View>
+                                <View
+                                  style={{ paddingHorizontal: 4, width: "50%" }}
                                 >
-                                  <Image
-                                    source={Images.reload}
-                                    tintColor={BaseColor.whiteColor}
-                                    style={{ width: 15, height: 15 }}
-                                  ></Image>
-                                  <Text bold footnote whiteColor>
-                                    {" Rewise & Rectify"}
-                                  </Text>
-                                </Pressable>
+                                  <Pressable
+                                    onPress={() => {
+                                      InwardApprovalUpdateStatusApi(6);
+                                    }}
+                                    style={{
+                                      borderRadius: 8,
+                                      height: moderateScale(60),
+                                      backgroundColor:
+                                        BaseColor.buttonGradient2,
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      flexDirection: "row",
+                                      // marginBottom: 10,
+                                    }}
+                                  >
+                                    <Image
+                                      source={Images.reload}
+                                      tintColor={BaseColor.whiteColor}
+                                      style={{ width: 15, height: 15 }}
+                                    ></Image>
+                                    <Text bold footnote whiteColor>
+                                      {" Rewise & Rectify"}
+                                    </Text>
+                                  </Pressable>
+                                </View>
                               </View>
-                            </View>
-                          </>
-                        )}
+                            </>
+                          )}
                         <View
                           style={{
                             flex: 1,

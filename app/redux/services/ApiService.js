@@ -242,6 +242,27 @@ export const GetCustomerDDLListAJAXApiCall = (data) => {
   }
 };
 
+
+export const GetUploadScanCopiesListApiCall = (data) => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post("UploadScanCopies/GetUploadScanCopiesList", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            resolve(response.body);
+          } else {
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    reject(error);
+  }
+};
+
 export const GetVendorsDDLListApiCall = (data) => {
   try {
     return new Promise((resolve, reject) => {
@@ -955,5 +976,26 @@ export const GetTestingListApiCall = (data) => {
   }
 };
 
-
-// Testing/GetTestingList
+export const GetTCAllocationListApiCall = (data) => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post("TCAllocation/GetTCAllocationList", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            console.log("response body IsSuccess ---- TRUE");
+            resolve(response.body);
+          } else {
+            console.log("response body IsSuccess ---- FALSE");
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    console.log("error ===>>>> ", error);
+    reject(error);
+  }
+};
+// TCAllocation/GetTCAllocationList

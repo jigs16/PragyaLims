@@ -20,7 +20,7 @@ export default StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 12,
     paddingBottom: 60,
-    paddingTop: 5,
+    paddingTop: 0,
   },
 
   container: {flex: 1, marginBottom: 0, flexDirection:'row'},

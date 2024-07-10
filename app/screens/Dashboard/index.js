@@ -129,7 +129,7 @@ const Dashboard = ({ navigation }) => {
         </Pressable>
       </View>
       <LinearGradient
-        colors={[BaseColor.whiteColor, BaseColor.whiteColor]}
+        colors={[BaseColor.bg, BaseColor.bg]}
         locations={[0, 1]}
         style={styles.mainContainer}
       >

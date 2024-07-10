@@ -28,26 +28,24 @@ import { Dropdown, MultiSelect } from "react-native-element-dropdown";
 import DropdownSelected from "../../components/DropdownSelected/DropdownSelected";
 import {
   DDLGetTestMasterByCompanyIDApiApiCall,
-  GetControlCenterDataApiCall,
   GetCustomerDDLListAJAXApiCall,
   GetCustomerProjectDDLListApiCall,
   GetDDLTestMethodsByCompanyIDApiCall,
   GetDepartmentDropDownListApiCall,
   GetLabFormDetailDownloadApiCall,
   GetMaterialTypeDDLListByDepartment_ProductGroupApiApiCall,
-  GetProcessFormListDDLApiCall,
-  GetProcessFormStatusListDDLApiCall,
   GetSampleRequestFormDetailDownloadApiCall,
+  GetTCAllocationListApiCall,
   ProductGroupDropDownListByDepartmentIDApiCall,
 } from "../../redux/services/ApiService";
 import AlertModal from "../../components/AlertModal";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
 
-const ControlCenter = ({ navigation }) => {
+const TCTestAllocation = ({ navigation }) => {
   useEffect(() => {
+    GetTCAllocationListApi();
     GetCustomerDDLListAJAXApi();
-    GetProcessFormListDDLApi();
     GetDepartmentDropDownListApi();
     DDLGetTestMasterByCompanyIDApi();
     GetDDLTestMethodsByCompanyIDApi();
@@ -79,19 +77,17 @@ const ControlCenter = ({ navigation }) => {
     }).start();
   }, [isSidebarOpen]);
 
-  useEffect(() => {
-    GetControlCenterDataApi();
-  }, []);
-
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const [ControlCenterData, setControlCenterData] = useState([]);
+  const [GetTCAllocationData, setGetTCAllocationData] = useState([]);
   const [DataFound, setDataFound] = useState(0);
+  const [AuthUser, setAuthUser] = useState([]);
 
-  const GetControlCenterDataApi = async () => {
+  const GetTCAllocationListApi = async () => {
     let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
+    setAuthUser(LoginDetails);
     setIA(await AsyncStorage.getItem("InwardApprovalRequired"));
     setTA(await AsyncStorage.getItem("TestingApprovalRequired"));
     console.log(
@@ -112,7 +108,6 @@ const ControlCenter = ({ navigation }) => {
       TCNo: TcNo,
       ProjectDetails: "",
       LetterRefNo: LetterRefNumber,
-      ProcessFormID: Process,
       Status: Status,
       SampleDetail: SampleDetail,
       ULRNo: ULRNO,
@@ -124,22 +119,22 @@ const ControlCenter = ({ navigation }) => {
       TestMasterIDEncrypted: Test,
       TestMethodIDEncrypted: TestMethod,
     };
-    console.log("GetControlCenterDataApi Params =====>>>>>>>>>>", params);
-    GetControlCenterDataApiCall(params)
+    console.log("GetGetTCAllocationDataApi Params =====>>>>>>>>>>", params);
+    GetTCAllocationListApiCall(params)
       .then((res) => {
         console.log(
-          "GetControlCenterDataApi res ---->>>>>> ",
+          "GetGetTCAllocationDataApi res ---->>>>>> ",
           JSON.stringify(res)
         );
         if (res.IsSuccess) {
-          setControlCenterData(res?.controlCenterList);
-          setDataFound(res?.controlCenterList == "" ? 2 : 1);
+          setGetTCAllocationData(res?.List);
+          setDataFound(res?.List == "" ? 2 : 1);
           toggleSidebar();
           setLoading(false);
         } else {
           console.log("Faild  >>>>>>>========");
           setLoading(false);
-          setDataFound(res?.controlCenterList == "" ? 2 : 1);
+          setDataFound(res?.List == "" ? 2 : 1);
           // setMsgModal(res?.Message);
           // setAlertModal(true);
         }
@@ -175,6 +170,25 @@ const ControlCenter = ({ navigation }) => {
         if (res.IsSuccess) {
           // setLoading(false);
           setCustomerData(res?.CustomerDDLList);
+          if (
+            LoginDetails?.Permissions?.ApprovalWorkflow == 1 &&
+            LoginDetails?.Permissions?.InwardApprovalRequired == true
+          ) {
+            setStatusData([
+              { label: "TC No Allocation Pending", value: 2 },
+              { label: "TC No Allocation Draft", value: 3 },
+              { label: "TC No Allocated", value: 4 },
+              { label: "Inward Approved", value: 5 },
+              { label: "Inward Rewise & Rectify", value: 6 },
+              { label: "Inward Rejected", value: 7 },
+            ]);
+          } else {
+            setStatusData([
+              { label: "TC No Allocation Pending", value: 2 },
+              { label: "TC No Allocation Draft", value: 3 },
+              { label: "Inward Completed", value: 5 },
+            ]);
+          }
         } else {
           console.log("Faild  >>>>>>>========");
           setLoading(false);
@@ -224,82 +238,10 @@ const ControlCenter = ({ navigation }) => {
       });
   };
 
-  const [ProcessData, setProcessData] = useState([]);
-  const [Process, setProcess] = useState(0);
-  const [isFocus2, setIsFocus2] = useState(false);
-
-  const GetProcessFormListDDLApi = async () => {
-    let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
-    // setLoading(true);
-    var params = {
-      BranchIDEncrypted: LoginDetails?.BranchIDEncrypt,
-      CompanyIDEncrypted: LoginDetails?.CompanyIDEncrypt,
-      LoginIDEncrypted: LoginDetails?.LoginIDEncrypt,
-    };
-    console.log("GetProcessFormListDDLApi Params =====>>>>>>>>>>", params);
-    GetProcessFormListDDLApiCall(params)
-      .then((res) => {
-        console.log(
-          "GetProcessFormListDDLApi res ---->>>>>> ",
-          JSON.stringify(res)
-        );
-        if (res.IsSuccess) {
-          // setLoading(false);
-          setProcessData(res?.ListOfProcessForm);
-        } else {
-          console.log("Faild  >>>>>>>========");
-          setLoading(false);
-          setMsgModal(res?.Message);
-          setAlertModal(true);
-        }
-      })
-      .catch((error) => {
-        setLoading(false);
-        setMsgModal(error.Message);
-        setAlertModal(true);
-      });
-  };
-
   const [Status, setStatus] = useState("");
   const [selectedStatusList, setSelectedStatusList] = useState([]);
   const [StatusData, setStatusData] = useState([]);
   const [isFocus3, setIsFocus3] = useState(false);
-
-  const GetProcessFormStatusListDDLApi = async (ProcessFormID) => {
-    let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
-    setLoading(true);
-    var params = {
-      BranchIDEncrypted: LoginDetails?.BranchIDEncrypt,
-      CompanyIDEncrypted: LoginDetails?.CompanyIDEncrypt,
-      LoginIDEncrypted: LoginDetails?.LoginIDEncrypt,
-      ProcessFormID: ProcessFormID,
-    };
-    console.log(
-      "GetProcessFormStatusListDDLApi Params =====>>>>>>>>>>",
-      params
-    );
-    GetProcessFormStatusListDDLApiCall(params)
-      .then((res) => {
-        console.log(
-          "GetProcessFormStatusListDDLApi res ---->>>>>> ",
-          JSON.stringify(res)
-        );
-        if (res.IsSuccess) {
-          setLoading(false);
-          setStatusData(res?.ListOfProcessFormStatus);
-        } else {
-          console.log("Faild  >>>>>>>========");
-          setLoading(false);
-          setMsgModal(res?.Message);
-          setAlertModal(true);
-        }
-      })
-      .catch((error) => {
-        setLoading(false);
-        setMsgModal(error.Message);
-        setAlertModal(true);
-      });
-  };
 
   const [DepartmentData, setDepartmentData] = useState([]);
   const [Department, setDepartment] = useState("");
@@ -307,10 +249,10 @@ const ControlCenter = ({ navigation }) => {
 
   const GetDepartmentDropDownListApi = async () => {
     let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
-    // setLoading(true);
     var params = {
       CompanyIDEncrypted: LoginDetails?.CompanyIDEncrypt,
     };
+
     console.log("GetDepartmentDropDownListApi Params =====>>>>>>>>>>", params);
     GetDepartmentDropDownListApiCall(params)
       .then((res) => {
@@ -629,7 +571,7 @@ const ControlCenter = ({ navigation }) => {
             ></Image>
           );
         }}
-        title={"Control Center"}
+        title={"TC / Test Allocation"}
         onPressRight={toggleSidebar}
         renderRight={() => {
           return (
@@ -700,7 +642,7 @@ const ControlCenter = ({ navigation }) => {
               />
             </Pressable>
             <Text headline style={{ flex: 1, color: BaseColor.blackColor }}>
-              Filter - Control Center
+              Filter - TC / Test Allocation
             </Text>
           </View>
           <KeyboardAwareScrollView
@@ -909,42 +851,6 @@ const ControlCenter = ({ navigation }) => {
             />
 
             <Text darkColor bold style={{ marginTop: moderateScale(15) }}>
-              {"Process"}
-            </Text>
-            <Dropdown
-              style={[styles.dropdown, isFocus2 && {}]}
-              placeholderStyle={[
-                styles.placeholderStyle,
-                { color: BaseColor.borderColor },
-              ]}
-              selectedTextStyle={[
-                styles.selectedTextStyle,
-                { color: "#000000" },
-              ]}
-              renderItem={(item, selected) => (
-                <DropdownSelected
-                  item={item?.ProcessFormName}
-                  selected={selected}
-                />
-              )}
-              data={ProcessData}
-              maxHeight={300}
-              labelField="ProcessFormName"
-              valueField="ProcessFormID"
-              placeholder={!isFocus2 ? "Select Process" : "..."}
-              search
-              searchPlaceholder={"Search"}
-              value={Process}
-              onFocus={() => setIsFocus2(true)}
-              onBlur={() => setIsFocus2(false)}
-              onChange={(item) => {
-                setProcess(item.ProcessFormID);
-                GetProcessFormStatusListDDLApi(item.ProcessFormID);
-                setIsFocus2(false);
-              }}
-            />
-
-            <Text darkColor bold style={{ marginTop: moderateScale(15) }}>
               {"Status"}
             </Text>
 
@@ -959,15 +865,12 @@ const ControlCenter = ({ navigation }) => {
                 { color: "#000000" },
               ]}
               renderItem={(item, selected) => (
-                <DropdownSelected
-                  item={item?.ProcessFormStatusName}
-                  selected={selected}
-                />
+                <DropdownSelected item={item?.label} selected={selected} />
               )}
               data={StatusData}
               maxHeight={500}
-              labelField="ProcessFormStatusName"
-              valueField="ProcessFormStatusID"
+              labelField="label"
+              valueField="value"
               placeholder={!isFocus3 ? "Select Status" : "..."}
               search
               searchPlaceholder={"Search"}
@@ -986,7 +889,7 @@ const ControlCenter = ({ navigation }) => {
             <View
               style={{
                 borderTopWidth: 2,
-                borderTopColor:BaseColor.buttonGradient2,
+                borderTopColor: BaseColor.buttonGradient2,
                 marginTop: moderateScale(32),
                 marginBottom: moderateScale(10),
               }}
@@ -1224,7 +1127,7 @@ const ControlCenter = ({ navigation }) => {
 
           <Button
             onPress={() => {
-              GetControlCenterDataApi();
+              GetTCAllocationListApi();
             }}
             style={{
               marginVertical: moderateScale(30),
@@ -1274,14 +1177,14 @@ const ControlCenter = ({ navigation }) => {
 
         <ScrollView>
           <View style={{ flex: 1, marginBottom: 65 }}>
-            {ControlCenterData?.map((item, index) => (
+            {GetTCAllocationData?.map((item, index) => (
               <Pressable
-                onPress={() => {
-                  navigation.navigate("InwardApproval", {
-                    InwardIDEncrypted: item.InwardIDEncrypted,
-                    ViewType: "ViewOnly",
-                  });
-                }}
+                // onPress={() => {
+                //   navigation.navigate("InwardApproval", {
+                //     InwardIDEncrypted: item.InwardIDEncrypted,
+                //     ViewType: "ViewOnly",
+                //   });
+                // }}
                 style={{
                   paddingBottom: moderateScale(10),
                   borderRadius: 10,
@@ -1316,7 +1219,12 @@ const ControlCenter = ({ navigation }) => {
                         )}
                       </View>
                     </View>
-
+                    <Text darkColor bold>
+                      Inward Status -{" "}
+                      <Text caption1 darkColor>
+                        {item.InwardStatus}
+                      </Text>
+                    </Text>
                     <Text darkColor bold>
                       Customer -{" "}
                       <Text caption1 darkColor>
@@ -1330,205 +1238,93 @@ const ControlCenter = ({ navigation }) => {
                       </Text>
                     </Text>
                     <Text darkColor bold>
-                      LR No -{" "}
+                      TC No -{" "}
                       <Text caption1 darkColor>
-                        {item.LetterRefNo}
+                        {item.TCNos}
                       </Text>
                     </Text>
-                    <View style={{ flexDirection: "row" }}>
-                      {item.InwardCurrentStatus >= 4 && (
-                        <View style={{ flexDirection: "row" }}>
-                          <Pressable
-                            onPress={() => {
-                              GetSampleRequestFormDetailDownloadApi(
-                                item.InwardIDEncrypted
-                              );
-                            }}
-                          >
-                            <Image
-                              source={Images.cc}
-                              tintColor={BaseColor.darkColor}
-                              style={[
-                                styles.cardImage,
-                                {
-                                  width: moderateScale(30),
-                                  height: moderateScale(30),
-                                  marginTop: 8,
-                                  marginRight: 14,
-                                },
-                              ]}
-                            />
-                          </Pressable>
-                          <Pressable
-                            onPress={() => {
-                              GetLabFormDetailDownloadApi(
-                                item.InwardIDEncrypted
-                              );
-                            }}
-                          >
-                            <Image
-                              source={Images.labForm}
-                              tintColor={BaseColor.darkColor}
-                              style={[
-                                styles.cardImage,
-                                {
-                                  width: moderateScale(30),
-                                  height: moderateScale(30),
-                                  marginTop: 8,
-                                  marginRight: 14,
-                                },
-                              ]}
-                            />
-                          </Pressable>
-                        </View>
-                      )}
-
-                      {item.InwardCurrentStatus > 1 && (
-                        <Pressable
-                          onPress={() => {
-                            navigation.navigate("InwardStatistics", {
-                              InwardID: item.InwardIDEncrypted,
-                            });
-                          }}
-                        >
-                          <Image
-                            source={Images.InwardStatistics}
-                            tintColor={BaseColor.darkColor}
-                            style={[
-                              styles.cardImage,
-                              {
-                                width: moderateScale(30),
-                                height: moderateScale(30),
-                                marginTop: 8,
-                                marginRight: 14,
-                              },
-                            ]}
-                          />
-                        </Pressable>
-                      )}
-                      <Pressable
-                        onPress={() => {
-                          navigation.navigate("InwardContactPersons", {
-                            ListOfContactPersons: item.ListOfContactPersons,
-                          });
-                        }}
-                      >
-                        <Image
-                          source={Images.ContactPerson}
-                          tintColor={BaseColor.darkColor}
-                          style={[
-                            styles.cardImage,
-                            {
-                              width: moderateScale(30),
-                              height: moderateScale(30),
-                              marginTop: 8,
-                              marginRight: 14,
-                            },
-                          ]}
-                        />
-                      </Pressable>
-                      <Image
-                        source={Images.SendScanCopy}
-                        tintColor={BaseColor.darkColor}
-                        style={[
-                          styles.cardImage,
-                          {
-                            width: moderateScale(30),
-                            height: moderateScale(30),
-                            marginTop: 8,
-                            marginRight: 14,
-                          },
-                        ]}
-                      />
-                    </View>
                   </View>
                   <View style={{}}>
-                    {
-                      // (item.InwardCurrentStatus === 4 ||
-                      //   item.InwardCurrentStatus > 4)
-                      IA == 1 && item.TCAllocationActionStatus == 2 ? (
-                        <Pressable
-                          onPress={() => {
-                            navigation.navigate("InwardApproval", {
-                              InwardIDEncrypted: item.InwardIDEncrypted,
-                              ViewType: "ApprovalOnly",
-                            });
-                          }}
-                          style={{
-                            borderWidth: 1,
-                            borderColor:
-                              item.InwardApprovedActionStatus === 1
-                                ? BaseColor.red
-                                : item.InwardApprovedActionStatus === 2
-                                ? BaseColor.green
-                                : BaseColor.orange,
-                            // item.InwardCurrentStatus === 4 ||
-                            // item.InwardCurrentStatus < 4
-                            //   ? BaseColor.red
-                            //   : BaseColor.green,
-                            width: 35,
-                            height: 25,
-                            alignItems: "center",
-                            justifyContent: "center",
-                            borderRadius: 6,
-                            marginBottom: 7,
-                          }}
-                        >
-                          <Text
+                    {item?.InwardCurrentStatus >= 5 &&
+                    item?.InwardCurrentStatus != 6 ? (
+                      <>
+                        {(AuthUser?.UserType !== 1 ||
+                          AuthUser?.Permissions?.IsInwardApprover) &&
+                        AuthUser?.Permissions?.ApprovalWorkflow == 1 &&
+                        AuthUser?.Permissions?.InwardApprovalRequired ==
+                          true ? (
+                          <Pressable
+                            onPress={() => {
+                              navigation.navigate("InwardApproval", {
+                                InwardIDEncrypted: item.InwardIDEncrypted,
+                                ViewType: "ApprovalOnly",
+                              });
+                            }}
                             style={{
-                              color:
-                                item.InwardApprovedActionStatus === 1
-                                  ? BaseColor.red
-                                  : item.InwardApprovedActionStatus === 2
-                                  ? BaseColor.green
-                                  : BaseColor.orange,
-                              // item.InwardCurrentStatus === 4 ||
-                              // item.InwardCurrentStatus < 4
-                              //   ? BaseColor.red
-                              //   : BaseColor.green,
+                              borderWidth: 1,
+                              borderColor: BaseColor.green,
+                              width: 35,
+                              height: 25,
+                              alignItems: "center",
+                              justifyContent: "center",
+                              borderRadius: 6,
+                              marginBottom: 7,
                             }}
                           >
-                            IA
-                          </Text>
-                        </Pressable>
-                      ) : null
-                    }
-
-                    {TA == 1 && item.TestingActionStatus > 1 && (
-                      <Pressable
-                        onPress={() => {
-                          navigation.navigate("Testing", {
-                            ListOfInwardMaterials: item.ListOfInwardMaterials,
-                          });
-                        }}
-                        style={{
-                          borderWidth: 1,
-                          borderColor:
-                            item.TestingActionStatus === 1
-                              ? BaseColor.red
-                              : item.TestingActionStatus === 2
-                              ? BaseColor.green
-                              : BaseColor.orange,
-                          width: 35,
-                          height: 24,
-                          alignItems: "center",
-                          justifyContent: "center",
-                          borderRadius: 6,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            color:
-                              item.TestingActionStatus === 1
-                                ? BaseColor.red
-                                : item.TestingActionStatus === 2
-                                ? BaseColor.green
-                                : BaseColor.orange,
-                          }}
-                        >
-                          T
-                        </Text>
-                      </Pressable>
+                            <Text
+                              style={{
+                                color: BaseColor.green,
+                              }}
+                            >
+                              IA
+                            </Text>
+                          </Pressable>
+                        ) : (
+                          ""
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {item?.InwardCurrentStatus == 4 &&
+                        (AuthUser?.UserType !== 1 ||
+                          AuthUser?.Permissions?.IsInwardApprover) &&
+                        AuthUser?.Permissions?.ApprovalWorkflow == 1 &&
+                        AuthUser?.Permissions?.InwardApprovalRequired ==
+                          true ? (
+                          <Pressable
+                            onPress={() => {
+                              navigation.navigate("InwardApproval", {
+                                InwardIDEncrypted: item.InwardIDEncrypted,
+                                ViewType: "ApprovalOnly",
+                              });
+                            }}
+                            style={{
+                              borderWidth: 1,
+                              borderColor: BaseColor.orange,
+                              width: 35,
+                              height: 25,
+                              alignItems: "center",
+                              justifyContent: "center",
+                              borderRadius: 6,
+                              marginBottom: 7,
+                            }}
+                          >
+                            <Text
+                              style={{
+                                color: BaseColor.orange,
+                                // item.InwardCurrentStatus === 4 ||
+                                // item.InwardCurrentStatus < 4
+                                //   ? BaseColor.red
+                                //   : BaseColor.green,
+                              }}
+                            >
+                              IA
+                            </Text>
+                          </Pressable>
+                        ) : (
+                          ""
+                        )}
+                      </>
                     )}
                   </View>
                 </View>
@@ -1578,4 +1374,4 @@ const ControlCenter = ({ navigation }) => {
   );
 };
 
-export default ControlCenter;
+export default TCTestAllocation;

@@ -28,7 +28,7 @@ export const BaseColor = {
   accentColor: "#4A90A4",
   darkColor: "#202020",
   mainTransp: "#4f5354",
-  Card: "#eeeeee",
+  Card: "#ffffff",
   HeaderColor: "#eeeeee",
   borderColor: "#828282",
   darkGraycolor: "#797979",

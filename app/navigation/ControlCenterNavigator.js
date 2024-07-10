@@ -9,14 +9,14 @@ import Testing from "../screens/Testing";
 import InwardStatistics from "../screens/InwardStatistics";
 import InwardContactPersons from "../screens/InwardContactPersons";
 import WorkProcess from "../screens/WorkProcess";
-import Operation from "../screens/Operation";
 import ReportPrinting from "../screens/ReportPrinting";
 import ReportDispatch from "../screens/ReportDispatch";
 import MaterialDispatch from "../screens/MaterialDispatch";
-import Inward from "../screens/Inward";
 import MachiningOutward from "../screens/MachiningOutward";
 import MachiningOutwardDetails from "../screens/MachiningOutwardDetails";
 import TestingList from "../screens/TestingList";
+import UploadScancopy from "../screens/UploadScancopy";
+import TCTestAllocation from "../screens/TCTestAllocation";
 
 const Stack = createNativeStackNavigator();
 const ControlCenterNavigator = () => {
@@ -32,14 +32,6 @@ const ControlCenterNavigator = () => {
         <Stack.Screen
           name="WorkProcess"
           component={WorkProcess}
-          options={{
-            headerShown: false,
-          }}
-        />
-
-        <Stack.Screen
-          name="Operation"
-          component={Operation}
           options={{
             headerShown: false,
           }}
@@ -118,14 +110,6 @@ const ControlCenterNavigator = () => {
         />
 
         <Stack.Screen
-          name="Inward"
-          component={Inward}
-          options={{
-            headerShown: false,
-          }}
-        />
-
-        <Stack.Screen
           name="MachiningOutward"
           component={MachiningOutward}
           options={{
@@ -144,6 +128,22 @@ const ControlCenterNavigator = () => {
         <Stack.Screen
           name="TestingList"
           component={TestingList}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="UploadScancopy"
+          component={UploadScancopy}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="TCTestAllocation"
+          component={TCTestAllocation}
           options={{
             headerShown: false,
           }}

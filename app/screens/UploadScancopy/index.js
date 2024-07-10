@@ -28,16 +28,17 @@ import { Dropdown, MultiSelect } from "react-native-element-dropdown";
 import DropdownSelected from "../../components/DropdownSelected/DropdownSelected";
 import {
   DDLGetTestMasterByCompanyIDApiApiCall,
-  GetDepartmentDropDownListApiCall,
-  GetTestingListApiCall,
+  GetCustomerDDLListAJAXApiCall,
+  GetUploadScanCopiesListApiCall,
 } from "../../redux/services/ApiService";
 import AlertModal from "../../components/AlertModal";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
 
-const TestingList = ({ navigation }) => {
+const UploadScancopy = ({ navigation }) => {
   useEffect(() => {
-    GetDepartmentDropDownListApi();
+    GetUploadScanCopiesListApi();
+    GetCustomerDDLListAJAXApi();
     DDLGetTestMasterByCompanyIDApi();
     toggleSidebar();
   }, []);
@@ -47,7 +48,9 @@ const TestingList = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [InwardNumber, setInwardNumber] = useState("");
   const [TcNo, setTcNo] = useState("");
-  const [ULRNO, setULRNO] = useState("");
+  const [SampleDetail, setSampleDetail] = useState("");
+  const [ScanBarcode, setScanBarcode] = useState("");
+
   const [IA, setIA] = useState(0);
   const [TA, setTA] = useState(0);
 
@@ -63,18 +66,14 @@ const TestingList = ({ navigation }) => {
     }).start();
   }, [isSidebarOpen]);
 
-  useEffect(() => {
-    GetTestingListApi();
-  }, []);
-
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const [TestingListData, setTestingListData] = useState([]);
+  const [ListOfUploadScanCopies, setListOfUploadScanCopies] = useState([]);
   const [DataFound, setDataFound] = useState(0);
 
-  const GetTestingListApi = async () => {
+  const GetUploadScanCopiesListApi = async () => {
     let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
     setIA(await AsyncStorage.getItem("InwardApprovalRequired"));
     setTA(await AsyncStorage.getItem("TestingApprovalRequired"));
@@ -92,30 +91,29 @@ const TestingList = ({ navigation }) => {
       CompanyIDEncrypted: LoginDetails?.CompanyIDEncrypt,
       TCNo: TcNo,
       InwardNo: InwardNumber,
-      TestingStatus: Status,
-      TPIRequired: TPIRequired,
-      DepartmentIDEncrypted: Department,
-      TestMasterIDEncrypted: Test,
       FromDate: InwardFromDate,
       ToDate: InwardToDate,
-      EmployeeIDEncrypted: LoginDetails.ReferenceIDEncrypt,
+      SampleDetail: SampleDetail,
+      ScanBarcode: ScanBarcode,
+      MailSent: MailSent,
+      CustomerIDEncrypted: Customer,
     };
-    console.log("GetTestingListDataApi Params =====>>>>>>>>>>", params);
-    GetTestingListApiCall(params)
+    console.log("GetListOfUploadScanCopiesApi Params =====>>>>>>>>>>", params);
+    GetUploadScanCopiesListApiCall(params)
       .then((res) => {
         console.log(
-          "GetTestingListDataApi res ---->>>>>> ",
+          "GetListOfUploadScanCopiesApi res ---->>>>>> ",
           JSON.stringify(res)
         );
         if (res.IsSuccess) {
-          setTestingListData(res?.List);
-          setDataFound(res?.List == "" ? 2 : 1);
+          setListOfUploadScanCopies(res?.ListOfUploadScanCopies);
+          setDataFound(res?.ListOfUploadScanCopies == "" ? 2 : 1);
           toggleSidebar();
           setLoading(false);
         } else {
           console.log("Faild  >>>>>>>========");
           setLoading(false);
-          setDataFound(res?.List == "" ? 2 : 1);
+          setDataFound(res?.ListOfUploadScanCopies == "" ? 2 : 1);
           // setMsgModal(res?.Message);
           // setAlertModal(true);
         }
@@ -128,40 +126,6 @@ const TestingList = ({ navigation }) => {
   };
 
   // ---------------------Activity Log Sidebar Start---------------------
-
-  const [DepartmentData, setDepartmentData] = useState([]);
-  const [Department, setDepartment] = useState("");
-  const [isFocus4, setIsFocus4] = useState(false);
-
-  const GetDepartmentDropDownListApi = async () => {
-    let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
-    // setLoading(true);
-    var params = {
-      CompanyIDEncrypted: LoginDetails?.CompanyIDEncrypt,
-    };
-    console.log("GetDepartmentDropDownListApi Params =====>>>>>>>>>>", params);
-    GetDepartmentDropDownListApiCall(params)
-      .then((res) => {
-        console.log(
-          "GetDepartmentDropDownListApi res ---->>>>>> ",
-          JSON.stringify(res)
-        );
-        if (res.IsSuccess) {
-          // setLoading(false);
-          setDepartmentData(res?.List);
-        } else {
-          console.log("Faild  >>>>>>>========");
-          setLoading(false);
-          setMsgModal(res?.Message);
-          setAlertModal(true);
-        }
-      })
-      .catch((error) => {
-        setLoading(false);
-        setMsgModal(error.Message);
-        setAlertModal(true);
-      });
-  };
 
   const [TestData, setTestData] = useState([]);
   const [Test, setTest] = useState("");
@@ -257,23 +221,48 @@ const TestingList = ({ navigation }) => {
   };
 
   const [isFocus2, setIsFocus2] = useState(false);
-  const [TPIRequired, setTPIRequired] = useState(-1);
-  const TPIRequiredData = [
+  const [MailSent, setMailSent] = useState(-1);
+  const MailSentData = [
     { label: "All", value: -1 },
     { label: "Yes", value: 1 },
     { label: "No", value: 0 },
   ];
 
-  const [isFocus3, setIsFocus3] = useState(false);
-  const [Status, setStatus] = useState("1,2,3");
-  const [selectedStatusList, setSelectedStatusList] = useState([1, 2, 3]);
-  const TestingStatusData = [
-    { label: "Pending", value: 1 },
-    { label: "Draft Save", value: 2 },
-    { label: "Unapproved", value: 3 },
-    { label: "Approved", value: 4 },
-    { label: "Rewise & Rectify", value: 5 },
-  ];
+  const [Customer, setCustomer] = useState("");
+  const [isFocus, setIsFocus] = useState(false);
+  const [CustomerData, setCustomerData] = useState([]);
+
+  const GetCustomerDDLListAJAXApi = async () => {
+    let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
+    // setLoading(true);
+    var params = {
+      CompanyIDEncrypted: LoginDetails?.CompanyIDEncrypt,
+      TPIFlag: -1,
+      SearchValue: "",
+    };
+    console.log("GetCustomerDDLListAJAXApi Params =====>>>>>>>>>>", params);
+    GetCustomerDDLListAJAXApiCall(params)
+      .then((res) => {
+        console.log(
+          "GetCustomerDDLListAJAXApi res ---->>>>>> ",
+          JSON.stringify(res)
+        );
+        if (res.IsSuccess) {
+          setLoading(false);
+          setCustomerData(res?.CustomerDDLList);
+        } else {
+          console.log("Faild  >>>>>>>========");
+          setLoading(false);
+          setMsgModal(res?.Message);
+          setAlertModal(true);
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        setMsgModal(error.Message);
+        setAlertModal(true);
+      });
+  };
 
   return (
     <>
@@ -291,7 +280,7 @@ const TestingList = ({ navigation }) => {
             ></Image>
           );
         }}
-        title={"Testing"}
+        title={"Upload Scan Copy"}
         onPressRight={toggleSidebar}
         renderRight={() => {
           return (
@@ -362,7 +351,7 @@ const TestingList = ({ navigation }) => {
               />
             </Pressable>
             <Text headline style={{ flex: 1, color: BaseColor.blackColor }}>
-              Filter - Testing
+              Filter - Upload Scan Copy
             </Text>
           </View>
           <KeyboardAwareScrollView
@@ -411,150 +400,7 @@ const TestingList = ({ navigation }) => {
             />
 
             <Text darkColor bold style={{ marginTop: moderateScale(15) }}>
-              Test Status
-            </Text>
-            <MultiSelect
-              style={[styles.dropdown, isFocus3 && {}]}
-              placeholderStyle={[
-                styles.placeholderStyle,
-                { color: BaseColor.borderColor },
-              ]}
-              selectedTextStyle={[
-                styles.selectedTextStyle,
-                { color: "#000000" },
-              ]}
-              renderItem={(item, selected) => (
-                <DropdownSelected item={item?.label} selected={selected} />
-              )}
-              data={TestingStatusData}
-              maxHeight={500}
-              labelField="label"
-              valueField="value"
-              placeholder={!isFocus3 ? "Select Status" : "..."}
-              search
-              searchPlaceholder={"Search"}
-              value={selectedStatusList}
-              onFocus={() => setIsFocus3(true)}
-              onBlur={() => setIsFocus3(false)}
-              selectedStyle={styles.selectedStyle}
-              onChange={(item) => {
-                setSelectedStatusList(item);
-                console.log("====================================");
-                console.log(item);
-                console.log("====================================");
-                const selectedIds = item.join(",");
-                setStatus(selectedIds);
-                console.log("===============selectedIds=====================");
-                console.log(selectedIds);
-                console.log("====================================");
-                setIsFocus3(false);
-              }}
-            />
-
-            <Text darkColor bold style={{ marginTop: moderateScale(15) }}>
-              TPI Required
-            </Text>
-            <Dropdown
-              style={[styles.dropdown, isFocus2 && {}]}
-              placeholderStyle={[
-                styles.placeholderStyle,
-                { color: BaseColor.borderColor },
-              ]}
-              selectedTextStyle={[
-                styles.selectedTextStyle,
-                { color: "#000000" },
-              ]}
-              renderItem={(item, selected) => (
-                <DropdownSelected item={item?.label} selected={selected} />
-              )}
-              data={TPIRequiredData}
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder={!isFocus2 ? "Select Scan Copy" : "..."}
-              //   search
-              //   searchPlaceholder={"Search"}
-              value={TPIRequired}
-              onFocus={() => setIsFocus2(true)}
-              onBlur={() => setIsFocus2(false)}
-              onChange={(item) => {
-                setTPIRequired(item.value);
-                setIsFocus2(false);
-              }}
-            />
-
-            <Text darkColor bold style={{ marginTop: moderateScale(15) }}>
-              {"Department"}
-            </Text>
-            <Dropdown
-              style={[styles.dropdown, isFocus4 && {}]}
-              placeholderStyle={[
-                styles.placeholderStyle,
-                { color: BaseColor.borderColor },
-              ]}
-              selectedTextStyle={[
-                styles.selectedTextStyle,
-                { color: "#000000" },
-              ]}
-              renderItem={(item, selected) => (
-                <DropdownSelected
-                  item={item?.DepartmentName}
-                  selected={selected}
-                />
-              )}
-              data={DepartmentData}
-              maxHeight={300}
-              labelField="DepartmentName"
-              valueField="DepartmentIDEncrypted"
-              placeholder={!isFocus4 ? "Select Department" : "..."}
-              search
-              searchPlaceholder={"Search"}
-              value={Department}
-              onFocus={() => setIsFocus4(true)}
-              onBlur={() => setIsFocus4(false)}
-              onChange={(item) => {
-                setDepartment(item.DepartmentIDEncrypted);
-                ProductGroupDropDownListByDepartmentIDApi(
-                  item.DepartmentIDEncrypted
-                );
-                setIsFocus4(false);
-              }}
-            />
-
-            <Text darkColor bold style={{ marginTop: moderateScale(15) }}>
-              {"Test"}
-            </Text>
-            <Dropdown
-              style={[styles.dropdown, isFocus7 && {}]}
-              placeholderStyle={[
-                styles.placeholderStyle,
-                { color: BaseColor.borderColor },
-              ]}
-              selectedTextStyle={[
-                styles.selectedTextStyle,
-                { color: "#000000" },
-              ]}
-              renderItem={(item, selected) => (
-                <DropdownSelected item={item?.TestName} selected={selected} />
-              )}
-              data={TestData}
-              maxHeight={300}
-              labelField="TestName"
-              valueField="TestMasterIDEncrypted"
-              placeholder={!isFocus7 ? "Select Test" : "..."}
-              search
-              searchPlaceholder={"Search"}
-              value={Test}
-              onFocus={() => setIsFocus7(true)}
-              onBlur={() => setIsFocus7(false)}
-              onChange={(item) => {
-                setTest(item.TestMasterIDEncrypted);
-                setIsFocus7(false);
-              }}
-            />
-
-            <Text darkColor bold style={{ marginTop: moderateScale(15) }}>
-              Testing Date
+              From Date - To Date
             </Text>
 
             <View style={{ flexDirection: "row", flex: 1 }}>
@@ -623,11 +469,114 @@ const TestingList = ({ navigation }) => {
                 </Pressable>
               </View>
             </View>
+
+            <Text darkColor bold style={{ marginTop: moderateScale(15) }}>
+              Sample Detail
+            </Text>
+            <TextInput
+              style={{
+                marginTop: moderateScale(10),
+                borderColor: BaseColor.darkGraycolor,
+                color: BaseColor.darkGraycolor,
+                height: moderateScale(58),
+              }}
+              value={SampleDetail}
+              onChangeText={(text) => setSampleDetail(text)}
+              placeholderTextColor={BaseColor.grayColor}
+              inputStyle={{ color: BaseColor.blackColor }}
+              iconLeft={Images.ic_search}
+              placeholder={"Search Sample Detail"}
+            />
+
+            <Text darkColor bold style={{ marginTop: moderateScale(15) }}>
+              {"Customer"}
+            </Text>
+            <Dropdown
+              style={[styles.dropdown, isFocus && {}]}
+              placeholderStyle={[
+                styles.placeholderStyle,
+                { color: BaseColor.borderColor },
+              ]}
+              selectedTextStyle={[
+                styles.selectedTextStyle,
+                { color: "#000000" },
+              ]}
+              renderItem={(item, selected) => (
+                <DropdownSelected
+                  item={item?.CustomerName}
+                  selected={selected}
+                />
+              )}
+              data={CustomerData}
+              maxHeight={300}
+              labelField="CustomerName"
+              valueField="CustomerIDEncrypted"
+              placeholder={!isFocus ? "Select Customer" : "..."}
+              search
+              searchPlaceholder={"Search"}
+              value={Customer}
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
+              onChange={(item) => {
+                setCustomer(item.CustomerIDEncrypted);
+                setIsFocus(false);
+              }}
+            />
+
+            <Text darkColor bold style={{ marginTop: moderateScale(15) }}>
+              Scan Barcode
+            </Text>
+            <TextInput
+              style={{
+                marginTop: moderateScale(10),
+                borderColor: BaseColor.darkGraycolor,
+                color: BaseColor.darkGraycolor,
+                height: moderateScale(58),
+              }}
+              value={SampleDetail}
+              onChangeText={(text) => setScanBarcode(text)}
+              placeholderTextColor={BaseColor.grayColor}
+              inputStyle={{ color: BaseColor.blackColor }}
+              iconLeft={Images.ic_search}
+              placeholder={"Search Scan Barcode"}
+            />
+
+            <Text darkColor bold style={{ marginTop: moderateScale(15) }}>
+              Mail Sent
+            </Text>
+            <Dropdown
+              style={[styles.dropdown, isFocus2 && {}]}
+              placeholderStyle={[
+                styles.placeholderStyle,
+                { color: BaseColor.borderColor },
+              ]}
+              selectedTextStyle={[
+                styles.selectedTextStyle,
+                { color: "#000000" },
+              ]}
+              renderItem={(item, selected) => (
+                <DropdownSelected item={item?.label} selected={selected} />
+              )}
+              data={MailSentData}
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={!isFocus2 ? "Select Mail Sent" : "..."}
+              //   search
+              //   searchPlaceholder={"Search"}
+              value={MailSent}
+              onFocus={() => setIsFocus2(true)}
+              onBlur={() => setIsFocus2(false)}
+              onChange={(item) => {
+                setMailSent(item.value);
+                setIsFocus2(false);
+              }}
+            />
           </KeyboardAwareScrollView>
 
           <Button
             onPress={() => {
-              GetTestingListApi();
+              GetUploadScanCopiesListApi();
             }}
             style={{
               marginVertical: moderateScale(30),
@@ -677,7 +626,7 @@ const TestingList = ({ navigation }) => {
 
         <ScrollView>
           <View style={{ flex: 1, marginBottom: 65 }}>
-            {TestingListData?.map((item, index) => (
+            {ListOfUploadScanCopies?.map((item, index) => (
               <Pressable
                 onPress={() => {
                   // navigation.navigate("InwardApproval", {
@@ -715,84 +664,85 @@ const TestingList = ({ navigation }) => {
                       }}
                     >
                       <View style={{ flex: 1 }}>
-                        {/* {item.InwardCurrentStatus == 1 ? (
-                          <Text darkColor bold>
-                            Draft Saved
-                          </Text>
-                        ) : ( */}
-                          <Text darkColor bold>
-                            {item.InwardNo}
-                          </Text>
+                        <Text darkColor bold>
+                          {item.InwardNo}
+                        </Text>
                         {/* )} */}
                       </View>
                     </View>
 
                     <Text darkColor bold>
-                    Sample Detail -{" "}
+                      Customer -{" "}
+                      <Text caption1 darkColor>
+                        {item.CustomerName}
+                      </Text>
+                    </Text>
+
+                    <Text darkColor bold>
+                      Test -{" "}
+                      <Text caption1 darkColor>
+                        {item.TestName}
+                      </Text>
+                    </Text>
+
+                    <Text darkColor bold>
+                    Uploaded By -{" "}
+                      <Text caption1 darkColor>
+                        {item.CreatedBy +' | '+ item.CreatedOnDate}
+                      </Text>
+                    </Text>
+
+                    <Text darkColor bold>
+                      Sample Detail -{" "}
                       <Text caption1 darkColor>
                         {item.SampleDetail}
                       </Text>
                     </Text>
-                    <View
+
+                    <Text darkColor bold>
+                      Mail Send -{" "}
+                      <Text caption1 darkColor>
+                        {item.IsMailSend == false ? "No" : "Yes"}
+                      </Text>
+                    </Text>
+                  </View>
+                  {/* <View style={{}}>
+                    <Pressable
+                      // onPress={() => {
+                      //   navigation.navigate("TestingApproval", {
+                      //     InwardMaterialIDEncrypted:
+                      //       item.InwardMaterialIDEncrypted,
+                      //   });
+                      // }}
                       style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
+                        borderWidth: 1,
+                        borderColor:
+                          item.TestingActionStatus === 1
+                            ? BaseColor.green // BaseColor.red
+                            : item.TestingActionStatus === 2
+                            ? BaseColor.green //BaseColor.green
+                            : BaseColor.green, //BaseColor.orange,
+                        width: 35,
+                        height: 24,
                         alignItems: "center",
+                        justifyContent: "center",
+                        borderRadius: 6,
                       }}
                     >
-                    <Text darkColor bold>
-                      TPI Required -{" "}
-                      <Text caption1 darkColor>
-                        {item.IsTPIRequired == 'false' ? 'No' : 'Yes'}
-                      </Text>
-                    </Text>
-                    <Text darkColor bold>
-                      EDD -{" "}
-                      <Text caption1 darkColor>
-                        {item.EDD}
-                      </Text>
-                    </Text>
-                    </View>
-                  </View>
-                  <View style={{}}>
-                    {/* {TA == 1 && item.TestingActionStatus > 1 && ( */}
-                      <Pressable
-                        onPress={() => {
-                          navigation.navigate("TestingApproval", {
-                            InwardMaterialIDEncrypted:
-                              item.InwardMaterialIDEncrypted,
-                          });
-                        }}
+                      <Text
                         style={{
-                          borderWidth: 1,
-                          borderColor:
+                          color:
                             item.TestingActionStatus === 1
-                              ? BaseColor.green // BaseColor.red
+                              ? BaseColor.green //BaseColor.red
                               : item.TestingActionStatus === 2
-                              ? BaseColor.green //BaseColor.green
-                              : BaseColor.green, //BaseColor.orange,
-                          width: 35,
-                          height: 24,
-                          alignItems: "center",
-                          justifyContent: "center",
-                          borderRadius: 6,
+                              ? BaseColor.green
+                              : BaseColor.green, // BaseColor.orange
                         }}
                       >
-                        <Text
-                          style={{
-                            color:
-                              item.TestingActionStatus === 1
-                                ? BaseColor.green //BaseColor.red
-                                : item.TestingActionStatus === 2
-                                ? BaseColor.green
-                                : BaseColor.green, // BaseColor.orange
-                          }}
-                        >
-                          T
-                        </Text>
-                      </Pressable>
-                    {/* )} */}
-                  </View>
+                        T
+                      </Text>
+                    </Pressable>
+                  </View> */}
                 </View>
               </Pressable>
             ))}
@@ -840,4 +790,4 @@ const TestingList = ({ navigation }) => {
   );
 };
 
-export default TestingList;
+export default UploadScancopy;

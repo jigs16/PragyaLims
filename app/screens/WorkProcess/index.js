@@ -19,7 +19,7 @@ import {
   TextInput,
 } from "../../components";
 import Header from "../../components/Header";
-import { BaseColor, BaseStyle, Images } from "../../config";
+import { BaseColor, BaseStyle, FontWeight, Images } from "../../config";
 import LinearGradient from "react-native-linear-gradient";
 import { moderateScale, verticalScale } from "../../config/scaling";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -97,7 +97,11 @@ const WorkProcess = ({ navigation }) => {
         setShowAlertModal={setAlertModal0}
         message={msgModal0}
       ></AlertModal>
-      <SafeAreaView style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
+      <LinearGradient
+        colors={[BaseColor.bg, BaseColor.bg]}
+        locations={[0, 1]}
+        style={{ flex: 1 }}
+      >
         <View
           style={{
             flex: 1,
@@ -126,75 +130,283 @@ const WorkProcess = ({ navigation }) => {
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
             >
-              <Pressable
-                onPress={() => {
-                  navigation.navigate("Inward");
-                }}
-                style={styles.itemView}
-              >
-                <Image
-                  style={styles.itemImg}
-                  source={Images.WP_Inward}
-                  tintColor={BaseColor.buttonGradient2}
-                  resizeMode={'contain'}
-                />
-                <Text body2 darkColor style={{ flex: 1 }}>
-                  {"Inward"}
+              <View style={styles.itemView}>
+                <Text
+                  bold
+                  callout
+                  style={{
+                    marginBottom: 5,
+                    paddingLeft: 5,
+                    fontSize: 14.5,
+                    flex: 1,
+                    color: BaseColor.darkColor,
+                  }}
+                >
+                  {"Inward / Machining Outward"}
                 </Text>
-                <Image
-                  style={styles.rightArrow}
-                  tintColor={BaseColor.buttonGradient2}
-                  source={Images.listRightArrow}
-                />
-              </Pressable>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginTop: 20,
+                  }}
+                >
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("ControlCenter");
+                    }}
+                    style={{ alignItems: "center", width: "33.33%" }}
+                  >
+                    <Image
+                      source={Images.IW_MaterialInward}
+                      tintColor={BaseColor.buttonGradient1}
+                      style={[
+                        styles.cardImage,
+                        {
+                          width: moderateScale(50),
+                          height: moderateScale(50),
+                          marginBottom: 8,
+                        },
+                      ]}
+                    />
+                    <Text
+                      darkColor
+                      caption2
+                      textAlign={"center"}
+                      style={{ fontSize: 12.5 }}
+                    >
+                      Material Inward
+                    </Text>
+                  </Pressable>
 
-              <Pressable
-                onPress={() => {
-                  navigation.navigate("MachiningOutward");
-                }}
-                style={styles.itemView}
-              >
-                <Image
-                  style={styles.itemImg}
-                  source={Images.WP_MachingOutward}
-                  tintColor={BaseColor.buttonGradient2}
-                  resizeMode={'contain'}
-                />
-                <Text body2 darkColor style={{ flex: 1 }}>
-                  {"Machining Outward"}
-                </Text>
-                <Image
-                  style={styles.rightArrow}
-                  tintColor={BaseColor.buttonGradient2}
-                  source={Images.listRightArrow}
-                />
-              </Pressable>
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("TCTestAllocation");
+                    }}
+                    style={{ alignItems: "center", width: "33.33%" }}
+                  >
+                    <Image
+                      source={Images.IW_TCAllocation}
+                      tintColor={BaseColor.buttonGradient1}
+                      style={[
+                        styles.cardImage,
+                        {
+                          width: moderateScale(50),
+                          height: moderateScale(50),
+                          marginBottom: 8,
+                        },
+                      ]}
+                    />
+                    <Text
+                      darkColor
+                      caption2
+                      textAlign={"center"}
+                      style={{ fontSize: 12.5 }}
+                    >
+                      {"TC Allocation"}
+                    </Text>
+                  </Pressable>
 
-              <Pressable
-                onPress={() => {
-                  navigation.navigate("Operation");
-                }}
-                style={styles.itemView}
-              >
-                <Image
-                  style={styles.itemImg}
-                  source={Images.WP_Operation}
-                  tintColor={BaseColor.buttonGradient2}
-                  resizeMode={'contain'}
-                />
-                <Text body2 darkColor style={{ flex: 1 }}>
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("MachiningOutward");
+                    }}
+                    style={{ alignItems: "center", width: "33.33%" }}
+                  >
+                    <Image
+                      source={Images.WP_MachingOutward}
+                      tintColor={BaseColor.buttonGradient1}
+                      style={[
+                        styles.cardImage,
+                        {
+                          width: moderateScale(50),
+                          height: moderateScale(50),
+                          marginBottom: 8,
+                        },
+                      ]}
+                    />
+                    <Text
+                      darkColor
+                      caption2
+                      textAlign={"center"}
+                      style={{ fontSize: 12.5 }}
+                    >
+                      {"Machining Outward"}
+                    </Text>
+                  </Pressable>
+                </View>
+              </View>
+
+              <View style={styles.itemView}>
+                <Text
+                  bold
+                  callout
+                  style={{
+                    marginBottom: 5,
+                    paddingLeft: 5,
+                    fontSize: 14.5,
+                    flex: 1,
+                    color: BaseColor.darkColor,
+                  }}
+                >
                   {"Operation"}
                 </Text>
-                <Image
-                  style={styles.rightArrow}
-                  tintColor={BaseColor.buttonGradient2}
-                  source={Images.listRightArrow}
-                />
-              </Pressable>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginTop: 20,
+                  }}
+                >
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("TestingList");
+                    }}
+                    style={{ alignItems: "center", width: "33.33%" }}
+                  >
+                    <Image
+                      source={Images.OT_Testing}
+                      tintColor={BaseColor.buttonGradient1}
+                      style={[
+                        styles.cardImage,
+                        {
+                          width: moderateScale(50),
+                          height: moderateScale(50),
+                          marginBottom: 8,
+                        },
+                      ]}
+                    />
+                    <Text
+                      darkColor
+                      caption2
+                      textAlign={"center"}
+                      style={{ fontSize: 12.5 }}
+                    >
+                      {"Testing"}
+                    </Text>
+                  </Pressable>
+
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("ReportPrinting");
+                    }}
+                    style={{ alignItems: "center", width: "33.33%" }}
+                  >
+                    <Image
+                      source={Images.OT_ReportPrinting}
+                      tintColor={BaseColor.buttonGradient1}
+                      style={[
+                        styles.cardImage,
+                        {
+                          width: moderateScale(50),
+                          height: moderateScale(50),
+                          marginBottom: 8,
+                        },
+                      ]}
+                    />
+                    <Text
+                      darkColor
+                      caption2
+                      textAlign={"center"}
+                      style={{ fontSize: 12.5 }}
+                    >
+                      {"Report Printing"}
+                    </Text>
+                  </Pressable>
+
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("ReportDispatch");
+                    }}
+                    style={{ alignItems: "center", width: "33.33%" }}
+                  >
+                    <Image
+                      source={Images.OT_DispatchReport}
+                      tintColor={BaseColor.buttonGradient1}
+                      style={[
+                        styles.cardImage,
+                        {
+                          width: moderateScale(50),
+                          height: moderateScale(50),
+                          marginBottom: 8,
+                        },
+                      ]}
+                    />
+                    <Text
+                      darkColor
+                      caption2
+                      textAlign={"center"}
+                      style={{ fontSize: 12.5 }}
+                    >
+                      {"Dispatch Report"}
+                    </Text>
+                  </Pressable>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginTop: 20,
+                  }}
+                >
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("MaterialDispatch");
+                    }}
+                    style={{ alignItems: "center", width: "33.33%" }}
+                  >
+                    <Image
+                      source={Images.OT_DispatchMaterial}
+                      tintColor={BaseColor.buttonGradient1}
+                      style={[
+                        styles.cardImage,
+                        {
+                          width: moderateScale(50),
+                          height: moderateScale(50),
+                          marginBottom: 8,
+                        },
+                      ]}
+                    />
+                    <Text
+                      darkColor
+                      caption2
+                      textAlign={"center"}
+                      style={{ fontSize: 12.5 }}
+                    >
+                      {"Dispatch Material"}
+                    </Text>
+                  </Pressable>
+
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("UploadScancopy");
+                    }}
+                    style={{ alignItems: "center", width: "33.33%" }}
+                  >
+                    <Image
+                      source={Images.OT_UplodeScanCopy}
+                      tintColor={BaseColor.buttonGradient1}
+                      style={[
+                        styles.cardImage,
+                        {
+                          width: moderateScale(50),
+                          height: moderateScale(50),
+                          marginBottom: 8,
+                        },
+                      ]}
+                    />
+                    <Text
+                      darkColor
+                      caption2
+                      textAlign={"center"}
+                      style={{ fontSize: 12.5 }}
+                    >
+                      {"Upload Scan Copy"}
+                    </Text>
+                  </Pressable>
+                </View>
+              </View>
             </ScrollView>
           </View>
         </View>
-      </SafeAreaView>
+      </LinearGradient>
     </>
   );
 };
