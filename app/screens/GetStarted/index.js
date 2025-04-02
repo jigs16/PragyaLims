@@ -67,7 +67,7 @@ const GetStarted = ({ navigation }) => {
     } else {
       navigation.replace("SignIn", {
         screenType: "",
-      });
+      }); 
     }
   };
 
