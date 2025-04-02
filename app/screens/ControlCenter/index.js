@@ -831,8 +831,8 @@ const ControlCenter = ({ navigation }) => {
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}
               onChange={(item) => {
-                setCustomer(item.CustomerIDEncrypted);
-                GetCustomerProjectDDLListApi(item.CustomerIDEncrypted);
+                setCustomer(item?.CustomerIDEncrypted);
+                GetCustomerProjectDDLListApi(item?.CustomerIDEncrypted);
                 setIsFocus(false);
               }}
             />
@@ -867,7 +867,7 @@ const ControlCenter = ({ navigation }) => {
               onFocus={() => setIsFocus1(true)}
               onBlur={() => setIsFocus1(false)}
               onChange={(item) => {
-                setProject(item.CustomerProjectIDEncrypt);
+                setProject(item?.CustomerProjectIDEncrypt);
                 setIsFocus1(false);
               }}
             />
@@ -938,8 +938,8 @@ const ControlCenter = ({ navigation }) => {
               onFocus={() => setIsFocus2(true)}
               onBlur={() => setIsFocus2(false)}
               onChange={(item) => {
-                setProcess(item.ProcessFormID);
-                GetProcessFormStatusListDDLApi(item.ProcessFormID);
+                setProcess(item?.ProcessFormID);
+                GetProcessFormStatusListDDLApi(item?.ProcessFormID);
                 setIsFocus2(false);
               }}
             />
@@ -977,7 +977,7 @@ const ControlCenter = ({ navigation }) => {
               selectedStyle={styles.selectedStyle}
               onChange={(item) => {
                 setSelectedStatusList(item);
-                const selectedIds = item.join(",");
+                const selectedIds = item?.join(",");
                 setStatus(selectedIds);
                 setIsFocus3(false);
               }}
@@ -1076,9 +1076,9 @@ const ControlCenter = ({ navigation }) => {
               onFocus={() => setIsFocus4(true)}
               onBlur={() => setIsFocus4(false)}
               onChange={(item) => {
-                setDepartment(item.DepartmentIDEncrypted);
+                setDepartment(item?.DepartmentIDEncrypted);
                 ProductGroupDropDownListByDepartmentIDApi(
-                  item.DepartmentIDEncrypted
+                  item?.DepartmentIDEncrypted
                 );
                 setIsFocus4(false);
               }}
@@ -1114,9 +1114,9 @@ const ControlCenter = ({ navigation }) => {
               onFocus={() => setIsFocus5(true)}
               onBlur={() => setIsFocus5(false)}
               onChange={(item) => {
-                setMaterialGroup(item.ProductGroupIDEncrypt);
+                setMaterialGroup(item?.ProductGroupIDEncrypt);
                 GetMaterialTypeDDLListByDepartment_ProductGroupApi(
-                  item.ProductGroupIDEncrypt
+                  item?.ProductGroupIDEncrypt
                 );
                 setIsFocus5(false);
               }}
@@ -1152,7 +1152,7 @@ const ControlCenter = ({ navigation }) => {
               onFocus={() => setIsFocus6(true)}
               onBlur={() => setIsFocus6(false)}
               onChange={(item) => {
-                setMaterialType(item.MaterialTypeIDEncrypted);
+                setMaterialType(item?.MaterialTypeIDEncrypted);
                 setIsFocus6(false);
               }}
             />
@@ -1184,7 +1184,7 @@ const ControlCenter = ({ navigation }) => {
               onFocus={() => setIsFocus7(true)}
               onBlur={() => setIsFocus7(false)}
               onChange={(item) => {
-                setTest(item.TestMasterIDEncrypted);
+                setTest(item?.TestMasterIDEncrypted);
                 setIsFocus7(false);
               }}
             />
@@ -1216,7 +1216,7 @@ const ControlCenter = ({ navigation }) => {
               onFocus={() => setIsFocus8(true)}
               onBlur={() => setIsFocus8(false)}
               onChange={(item) => {
-                setTestMethod(item.TestMethodIDEncrypted);
+                setTestMethod(item?.TestMethodIDEncrypted);
                 setIsFocus8(false);
               }}
             /> */}
@@ -1242,7 +1242,7 @@ const ControlCenter = ({ navigation }) => {
       )}
 
       <LinearGradient
-        colors={[BaseColor.whiteColor, BaseColor.whiteColor]}
+        colors={[BaseColor.bg, BaseColor.bg]}
         locations={[0, 1]}
         style={{
           flex: 1,
@@ -1278,7 +1278,7 @@ const ControlCenter = ({ navigation }) => {
               <Pressable
                 onPress={() => {
                   navigation.navigate("InwardApproval", {
-                    InwardIDEncrypted: item.InwardIDEncrypted,
+                    InwardIDEncrypted: item?.InwardIDEncrypted,
                     ViewType: "ViewOnly",
                   });
                 }}
@@ -1305,13 +1305,13 @@ const ControlCenter = ({ navigation }) => {
                       }}
                     >
                       <View style={{ flex: 1 }}>
-                        {item.InwardCurrentStatus == 1 ? (
+                        {item?.InwardCurrentStatus == 1 ? (
                           <Text darkColor bold>
                             Draft Saved
                           </Text>
                         ) : (
                           <Text darkColor bold>
-                            {item.InwardNo + " | " + item.InwardDate}
+                            {item?.InwardNo + " | " + item?.InwardDate}
                           </Text>
                         )}
                       </View>
@@ -1320,28 +1320,28 @@ const ControlCenter = ({ navigation }) => {
                     <Text darkColor bold>
                       Customer -{" "}
                       <Text caption1 darkColor>
-                        {item.CustomerName}
+                        {item?.CustomerName}
                       </Text>
                     </Text>
                     <Text darkColor bold>
                       Project -{" "}
                       <Text caption1 darkColor>
-                        {item.ProjectName}
+                        {item?.ProjectName}
                       </Text>
                     </Text>
                     <Text darkColor bold>
                       LR No -{" "}
                       <Text caption1 darkColor>
-                        {item.LetterRefNo}
+                        {item?.LetterRefNo}
                       </Text>
                     </Text>
                     <View style={{ flexDirection: "row" }}>
-                      {item.InwardCurrentStatus >= 4 && (
+                      {item?.InwardCurrentStatus >= 4 && (
                         <View style={{ flexDirection: "row" }}>
                           <Pressable
                             onPress={() => {
                               GetSampleRequestFormDetailDownloadApi(
-                                item.InwardIDEncrypted
+                                item?.InwardIDEncrypted
                               );
                             }}
                           >
@@ -1362,7 +1362,7 @@ const ControlCenter = ({ navigation }) => {
                           <Pressable
                             onPress={() => {
                               GetLabFormDetailDownloadApi(
-                                item.InwardIDEncrypted
+                                item?.InwardIDEncrypted
                               );
                             }}
                           >
@@ -1383,11 +1383,11 @@ const ControlCenter = ({ navigation }) => {
                         </View>
                       )}
 
-                      {item.InwardCurrentStatus > 1 && (
+                      {item?.InwardCurrentStatus > 1 && (
                         <Pressable
                           onPress={() => {
                             navigation.navigate("InwardStatistics", {
-                              InwardID: item.InwardIDEncrypted,
+                              InwardID: item?.InwardIDEncrypted,
                             });
                           }}
                         >
@@ -1409,7 +1409,7 @@ const ControlCenter = ({ navigation }) => {
                       <Pressable
                         onPress={() => {
                           navigation.navigate("InwardContactPersons", {
-                            ListOfContactPersons: item.ListOfContactPersons,
+                            ListOfContactPersons: item?.ListOfContactPersons,
                           });
                         }}
                       >
@@ -1444,26 +1444,26 @@ const ControlCenter = ({ navigation }) => {
                   </View>
                   <View style={{}}>
                     {
-                      // (item.InwardCurrentStatus === 4 ||
-                      //   item.InwardCurrentStatus > 4)
-                      IA == 1 && item.TCAllocationActionStatus == 2 ? (
+                      // (item?.InwardCurrentStatus === 4 ||
+                      //   item?.InwardCurrentStatus > 4)
+                      IA == 1 && item?.TCAllocationActionStatus == 2 ? (
                         <Pressable
                           onPress={() => {
                             navigation.navigate("InwardApproval", {
-                              InwardIDEncrypted: item.InwardIDEncrypted,
+                              InwardIDEncrypted: item?.InwardIDEncrypted,
                               ViewType: "ApprovalOnly",
                             });
                           }}
                           style={{
                             borderWidth: 1,
                             borderColor:
-                              item.InwardApprovedActionStatus === 1
+                              item?.InwardApprovedActionStatus === 1
                                 ? BaseColor.red
-                                : item.InwardApprovedActionStatus === 2
+                                : item?.InwardApprovedActionStatus === 2
                                 ? BaseColor.green
                                 : BaseColor.orange,
-                            // item.InwardCurrentStatus === 4 ||
-                            // item.InwardCurrentStatus < 4
+                            // item?.InwardCurrentStatus === 4 ||
+                            // item?.InwardCurrentStatus < 4
                             //   ? BaseColor.red
                             //   : BaseColor.green,
                             width: 35,
@@ -1477,13 +1477,13 @@ const ControlCenter = ({ navigation }) => {
                           <Text
                             style={{
                               color:
-                                item.InwardApprovedActionStatus === 1
+                                item?.InwardApprovedActionStatus === 1
                                   ? BaseColor.red
-                                  : item.InwardApprovedActionStatus === 2
+                                  : item?.InwardApprovedActionStatus === 2
                                   ? BaseColor.green
                                   : BaseColor.orange,
-                              // item.InwardCurrentStatus === 4 ||
-                              // item.InwardCurrentStatus < 4
+                              // item?.InwardCurrentStatus === 4 ||
+                              // item?.InwardCurrentStatus < 4
                               //   ? BaseColor.red
                               //   : BaseColor.green,
                             }}
@@ -1494,19 +1494,19 @@ const ControlCenter = ({ navigation }) => {
                       ) : null
                     }
 
-                    {TA == 1 && item.TestingActionStatus > 1 && (
+                    {TA == 1 && item?.TestingActionStatus > 1 && (
                       <Pressable
                         onPress={() => {
                           navigation.navigate("Testing", {
-                            ListOfInwardMaterials: item.ListOfInwardMaterials,
+                            ListOfInwardMaterials: item?.ListOfInwardMaterials,
                           });
                         }}
                         style={{
                           borderWidth: 1,
                           borderColor:
-                            item.TestingActionStatus === 1
+                            item?.TestingActionStatus === 1
                               ? BaseColor.red
-                              : item.TestingActionStatus === 2
+                              : item?.TestingActionStatus === 2
                               ? BaseColor.green
                               : BaseColor.orange,
                           width: 35,
@@ -1519,9 +1519,9 @@ const ControlCenter = ({ navigation }) => {
                         <Text
                           style={{
                             color:
-                              item.TestingActionStatus === 1
+                              item?.TestingActionStatus === 1
                                 ? BaseColor.red
-                                : item.TestingActionStatus === 2
+                                : item?.TestingActionStatus === 2
                                 ? BaseColor.green
                                 : BaseColor.orange,
                           }}

@@ -17,7 +17,7 @@ export default StyleSheet.create({
 
   mainContainer: {
     flex: 1,
-    paddingHorizontal: 12,
+    paddingHorizontal: 6,
     paddingVertical: 12,
     paddingBottom: 0,
   },
@@ -40,15 +40,18 @@ export default StyleSheet.create({
     paddingBottom: moderateScale(0),
     borderRadius: 8,
     borderWidth:2,
-    borderColor: BaseColor.Card,
-    marginBottom: 10,
+    borderColor: BaseColor.whiteColor,
+    backgroundColor: BaseColor.whiteColor,
+    marginBottom: 12,
+    width:'100%'
   },
   itemView: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
     padding: 8,
-    paddingLeft: 12,
+    paddingLeft: 10,
     paddingRight: 12,
-    alignItems: 'center',
+    paddingBottom: 5,
+    // alignItems: 'center',
   },
   imageContainer: {
     backgroundColor: '#fdeccc',
@@ -57,9 +60,8 @@ export default StyleSheet.create({
     
   },
   cardImage: {
-    width: moderateScale(70),
-    height: moderateScale(70),
-    marginTop: 0,
-    marginRight: 15,
+    width: moderateScale(65),
+    height: moderateScale(65),
+    marginBottom: 10,
   },
 });

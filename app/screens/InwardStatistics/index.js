@@ -46,7 +46,7 @@ const InwardStatistics = ({ navigation, route }) => {
   };
 
   return (
-    <View style={{ backgroundColor: BaseColor.whiteColor, flex: 1 }}>
+    <View style={{ backgroundColor: BaseColor.bg, flex: 1 }}>
       <Loader loading={loading} />
 
       <AlertModal
@@ -72,7 +72,7 @@ const InwardStatistics = ({ navigation, route }) => {
         title={"Inward Statistics"}
       ></Header>
       <LinearGradient
-        colors={[BaseColor.whiteColor, BaseColor.whiteColor]}
+        colors={[BaseColor.bg, BaseColor.bg]}
         locations={[0, 1]}
         style={{
           flex: 1,
@@ -88,7 +88,7 @@ const InwardStatistics = ({ navigation, route }) => {
               <View
                 onPress={() => {
                   navigation.navigate("InwardApproval", {
-                    InwardIDEncrypted: item.InwardIDEncrypted,
+                    InwardIDEncrypted: item?.InwardIDEncrypted,
                     ViewType: "ViewOnly",
                   });
                 }}
@@ -101,13 +101,13 @@ const InwardStatistics = ({ navigation, route }) => {
                 }}
               >
                 <Text darkColor bold>
-                  {item.InwardNo + " | " + item.TCNo}
+                  {item?.InwardNo + " | " + item?.TCNo}
                 </Text>
 
                 <View style={{ flexDirection: "row" }}>
                   <Text darkColor bold style={{ flex: 1 }}>
                     Inward -{" "}
-                    {item.IsInwardDone ? (
+                    {item?.IsInwardDone ? (
                       <Text caption1 green>
                         {"Done"}
                       </Text>
@@ -120,7 +120,7 @@ const InwardStatistics = ({ navigation, route }) => {
 
                   <Text darkColor bold>
                     Inward Approved -{" "}
-                    {item.IsInwardApproved ? (
+                    {item?.IsInwardApproved ? (
                       <Text caption1 green>
                         {"Done"}
                       </Text>
@@ -136,7 +136,7 @@ const InwardStatistics = ({ navigation, route }) => {
                   Test Details :-
                 </Text>
                 <View style={{ paddingLeft: 12, marginTop: 5 }}>
-                  {item.ListOfTests?.map((item, index) => (
+                  {item?.ListOfTests?.map((item, index) => (
                     <>
                       <View style={{ flexDirection: "row" }}>
                         <Text caption1 darkColor>
@@ -144,11 +144,11 @@ const InwardStatistics = ({ navigation, route }) => {
                         </Text>
 
                         <Text caption1 darkColor>
-                          {item.TestName}{" "}
+                          {item?.TestName}{" "}
                         </Text>
                       </View>
                       <View style={{ flexDirection: "row", marginBottom: 4 }}>
-                        {item.IsTestingDone ? (
+                        {item?.IsTestingDone ? (
                           <Text caption1 green style={{ paddingLeft: 15 }}>
                             {"Testing"}
                           </Text>
@@ -160,7 +160,7 @@ const InwardStatistics = ({ navigation, route }) => {
                         <Text caption1 darkColor>
                           {"  |  "}
                         </Text>
-                        {item.IsTestingApproved ? (
+                        {item?.IsTestingApproved ? (
                           <Text caption1 green>
                             {"Approved"}
                           </Text>
@@ -177,7 +177,7 @@ const InwardStatistics = ({ navigation, route }) => {
                 <View style={{ flexDirection: "row" }}>
                   <Text darkColor bold style={{ flex: 1 }}>
                     Dispatch Material -{" "}
-                    {item.IsMaterialDispatch ? (
+                    {item?.IsMaterialDispatch ? (
                       <Text caption1 green>
                         {"Done"}
                       </Text>
@@ -190,7 +190,7 @@ const InwardStatistics = ({ navigation, route }) => {
 
                   <Text darkColor bold>
                     Printing -{" "}
-                    {item.IsPrintingDone ? (
+                    {item?.IsPrintingDone ? (
                       <Text caption1 green>
                         {"Done"}
                       </Text>
@@ -204,17 +204,17 @@ const InwardStatistics = ({ navigation, route }) => {
 
                 <Text darkColor bold>
                   Dispatch Report -{" "}
-                  {item.IsReportDispatchDone ? (
+                  {item?.IsReportDispatchDone ? (
                     <Text caption1 green>
                       Done
-                      {item.CourierName != "" && (
+                      {item?.CourierName != "" && (
                         <Text caption1 darkColor>
-                          {" | " + item.CourierName}
+                          {" | " + item?.CourierName}
                         </Text>
                       )}
-                      {item.CourierDispatchNo != "" && (
+                      {item?.CourierDispatchNo != "" && (
                         <Text caption1 darkColor>
-                          {" | " + item.CourierDispatchNo}
+                          {" | " + item?.CourierDispatchNo}
                         </Text>
                       )}
                     </Text>
@@ -229,39 +229,39 @@ const InwardStatistics = ({ navigation, route }) => {
                   Re-Test / Amendment / Rewise :-
                 </Text>
                 <View style={{ paddingLeft: 12, marginTop: 5 }}>
-                  {item.ListOfReTests?.map((item, index) => (
+                  {item?.ListOfReTests?.map((item, index) => (
                     <>
                       <View style={{ flexDirection: "row" }}>
                         <Text caption1 darkColor>
                           {"⦿ "}
                         </Text>
                         <Text caption1 darkColor>
-                          {item.TestName}
+                          {item?.TestName}
 
                           <Text caption1 buttonGradient2>
                             {" - Retest on " +
-                              item.RetestDate +
+                              item?.RetestDate +
                               " by " +
-                              item.RetestBy}
+                              item?.RetestBy}
                           </Text>
                         </Text>
                       </View>
                     </>
                   ))}
-                  {item.ListOfRewise?.map((item, index) => (
+                  {item?.ListOfRewise?.map((item, index) => (
                     <>
                       <View style={{ flexDirection: "row" }}>
                         <Text caption1 darkColor>
                           {"⦿ "}
                         </Text>
                         <Text caption1 darkColor>
-                          {item.RewiseNo}
+                          {item?.RewiseNo}
                         </Text>
                         <Text caption1 buttonGradient2>
                           {" - Rewise on " +
-                            item.RewiseDate +
+                            item?.RewiseDate +
                             " by " +
-                            item.RewiseBy}
+                            item?.RewiseBy}
                         </Text>
                       </View>
                     </>

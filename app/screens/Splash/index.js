@@ -39,7 +39,7 @@ const Splash = ({ navigation }) => {
 
   return (
     <LinearGradient
-      colors={[BaseColor.whiteColor, BaseColor.whiteColor]}
+      colors={[BaseColor.bg, BaseColor.bg]}
       style={{
         flex: 1,
         alignItems: "center",

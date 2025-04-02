@@ -102,16 +102,16 @@ const MachiningOutwardDetails = ({ navigation, route }) => {
             alignItems: "center",
           },
         ]}
-        onPress={() => toggleExpand(item.MachiningConfigurationIDEncrypt)}
+        onPress={() => toggleExpand(item?.MachiningConfigurationIDEncrypt)}
       >
         <Text whiteColor bold callout style={{ flex: 1, fontSize: 16 }}>
-          {item.ProcessName}
+          {item?.ProcessName}
         </Text>
         <Text whiteColor>
-          {expandedItemId === item.MachiningConfigurationIDEncrypt ? "▲" : "▼"}
+          {expandedItemId === item?.MachiningConfigurationIDEncrypt ? "▲" : "▼"}
         </Text>
       </TouchableOpacity>
-      {expandedItemId === item.MachiningConfigurationIDEncrypt && (
+      {expandedItemId === item?.MachiningConfigurationIDEncrypt && (
         <View
           style={{
             padding: 5,
@@ -124,20 +124,20 @@ const MachiningOutwardDetails = ({ navigation, route }) => {
           <Text subhead bold darkColor style={{ fontSize: 14 }}>
             {"Process : "}{" "}
             <Text subhead darkColor style={{ fontSize: 13 }}>
-              {item.ProcessName}
+              {item?.ProcessName}
             </Text>
           </Text>
 
           <Text subhead bold darkColor style={{ fontSize: 14 }}>
             {"TC No : "}{" "}
             <Text subhead darkColor style={{ fontSize: 13 }}>
-              {item.TCNo}
+              {item?.TCNo}
             </Text>
           </Text>
           <Text subhead bold darkColor style={{ fontSize: 14 }}>
             {"Note : "}{" "}
             <Text subhead darkColor style={{ fontSize: 13 }}>
-              {item.MachiningNote}
+              {item?.MachiningNote}
             </Text>
           </Text>
 
@@ -145,14 +145,14 @@ const MachiningOutwardDetails = ({ navigation, route }) => {
             <Text subhead bold darkColor style={{ fontSize: 14, flex: 1 }}>
               {"Length : "}{" "}
               <Text subhead darkColor style={{ fontSize: 13 }}>
-                {item.Length}
+                {item?.Length}
               </Text>
             </Text>
 
             <Text subhead bold darkColor style={{ fontSize: 14 }}>
               {"Qty : "}{" "}
               <Text subhead darkColor style={{ fontSize: 13 }}>
-                {item.Qty}
+                {item?.Qty}
               </Text>
             </Text>
           </View>
@@ -161,14 +161,14 @@ const MachiningOutwardDetails = ({ navigation, route }) => {
             <Text subhead bold darkColor style={{ fontSize: 14, flex: 1 }}>
               {"Thickness : "}{" "}
               <Text subhead darkColor style={{ fontSize: 13 }}>
-                {item.Thickness}
+                {item?.Thickness}
               </Text>
             </Text>
 
             <Text subhead bold darkColor style={{ fontSize: 14 }}>
               {"Status : "}{" "}
               <Text subhead darkColor style={{ fontSize: 13 }}>
-                {item.OutwardStatusName}
+                {item?.OutwardStatusName}
               </Text>
             </Text>
           </View>
@@ -189,7 +189,7 @@ const MachiningOutwardDetails = ({ navigation, route }) => {
         setShowAlertModal={setAlertModal}
         message={msgModal}
       ></AlertModal>
-      <SafeAreaView style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: BaseColor.bg }}>
         <View
           style={{
             flex: 1,
@@ -286,7 +286,7 @@ const MachiningOutwardDetails = ({ navigation, route }) => {
 
                 <FlatList
                   data={MachiningOutwardDetails}
-                  keyExtractor={(item) => item.MachiningConfigurationIDEncrypt}
+                  keyExtractor={(item) => item?.MachiningConfigurationIDEncrypt}
                   renderItem={renderItem}
                   contentContainerStyle={styles.list}
                 />

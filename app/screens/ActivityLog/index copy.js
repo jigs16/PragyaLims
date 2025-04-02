@@ -74,7 +74,7 @@ const ActivityLog = ({ navigation }) => {
         }}
       >
         <Image
-          source={{ uri: item.EmployeePhoto }}
+          source={{ uri: item?.EmployeePhoto }}
           style={{
             width: 50,
             height: 50,
@@ -84,16 +84,16 @@ const ActivityLog = ({ navigation }) => {
         />
         <View style={{ flex: 1 }}>
           <Text body2 bold buttonGradient1>
-            {item.Header}
+            {item?.Header}
           </Text>
           <Text caption1 style={{ marginTop: 5, color: "#000" }}>
-            {item.Line1}
+            {item?.Line1}
           </Text>
           <Text caption1 darkColor>
-            {item.Line2}
+            {item?.Line2}
           </Text>
           <Text caption1 grayColor>
-            {item.ActivityLogDate}
+            {item?.ActivityLogDate}
           </Text>
         </View>
       </View>

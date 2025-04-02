@@ -68,7 +68,7 @@ const Testing = ({ navigation, route }) => {
       ></AlertModal>
 
       <LinearGradient
-        colors={[BaseColor.whiteColor, BaseColor.whiteColor]}
+        colors={[BaseColor.bg, BaseColor.bg]}
         locations={[0, 1]}
         style={{
           flex: 1,
@@ -98,7 +98,7 @@ const Testing = ({ navigation, route }) => {
                     onPress={() => {
                       navigation.navigate("TestingApproval", {
                         InwardMaterialIDEncrypted:
-                          item.InwardMaterialIDEncrypted,
+                          item?.InwardMaterialIDEncrypted,
                       });
                     }}
                     style={{
@@ -124,24 +124,24 @@ const Testing = ({ navigation, route }) => {
                       <Text darkColor bold>
                         TC No -{" "}
                         <Text footnote darkColor>
-                          {item.TCNo}
+                          {item?.TCNo}
                         </Text>
                       </Text>
                     </View>
-                    {item.tcTestingActionStatus > 1 && (
+                    {item?.tcTestingActionStatus > 1 && (
                       <Pressable
                         onPress={() => {
                           navigation.navigate("TestingApproval", {
                             InwardMaterialIDEncrypted:
-                              item.InwardMaterialIDEncrypted,
+                              item?.InwardMaterialIDEncrypted,
                           });
                         }}
                         style={{
                           borderWidth: 1,
                           borderColor:
-                            item.tcTestingApprovedActionStatus === 1
+                            item?.tcTestingApprovedActionStatus === 1
                               ? BaseColor.red
-                              : item.tcTestingApprovedActionStatus === 2
+                              : item?.tcTestingApprovedActionStatus === 2
                               ? BaseColor.green
                               : BaseColor.orange,
                           width: 35,
@@ -154,9 +154,9 @@ const Testing = ({ navigation, route }) => {
                         <Text
                           style={{
                             color:
-                              item.tcTestingApprovedActionStatus === 1
+                              item?.tcTestingApprovedActionStatus === 1
                                 ? BaseColor.red
-                                : item.tcTestingApprovedActionStatus === 2
+                                : item?.tcTestingApprovedActionStatus === 2
                                 ? BaseColor.green
                                 : BaseColor.orange,
                           }}
@@ -173,13 +173,13 @@ const Testing = ({ navigation, route }) => {
                   </Pressable>
 
                   <Text darkColor bold style={{ marginBottom: 6 }}>
-                    {item.InwardNo} | {item.TCDate}
+                    {item?.InwardNo} | {item?.TCDate}
                   </Text>
 
                   <Text darkColor bold>
                     Sample Detail :{" "}
                     <Text footnote darkColor style={{}}>
-                      {item.SampleDetail}
+                      {item?.SampleDetail}
                     </Text>
                   </Text>
 

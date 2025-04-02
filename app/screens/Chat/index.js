@@ -9,30 +9,32 @@ import {
   View,
   ScrollView,
   PermissionsAndroid,
+  Modal,
 } from "react-native";
-import { Loader, Text, Image } from "../../components";
+import CheckBox from "@react-native-community/checkbox";
+import { Loader, Text, Image, Button } from "../../components";
 import { BaseColor, Images } from "../../config";
-import { moderateScale } from "../../config/scaling";
 import styles from "./styles";
-import { withDecay } from "react-native-reanimated";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Icons from "react-native-vector-icons/MaterialCommunityIcons";
 import {
+  ChatBoxEmployeeMessageDeleteApiCall,
   ChatBoxEmployeeMessageInsertApiCall,
   GetChatBoxListApiCall,
   GetEmployeeDDLListApiCall,
 } from "../../redux/services/ApiService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AlertModal from "../../components/AlertModal";
-import DropdownSelected from "../../components/DropdownSelected/DropdownSelected";
-import { Dropdown, MultiSelect } from "react-native-element-dropdown";
 import { launchImageLibrary } from "react-native-image-picker";
 import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
+import * as signalR from "@microsoft/signalr";
+import "react-native-url-polyfill/auto";
+import { useChatContext } from "./ChatProvider";
 
-const Chat = () => {
+const Chat = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [alertModal, setAlertModal] = useState(false);
   const [msgModal, setMsgModal] = useState("");
@@ -42,13 +44,9 @@ const Chat = () => {
   const maxLines = 2.5; // Maximum number of lines
   const [selectedCustomer, setSelectedCustomer] = useState("all");
 
-  const [Customer, setCustomer] = useState([]);
-  const [SelectedReceiverID, setSelectedReceiverID] = useState("all");
-  const [isFocus, setIsFocus] = useState(false);
-  const [CustomerData, setCustomerData] = useState([]);
-
+  const [SelectedReceiverID, setSelectedReceiverID] = useState("");
+  const [isSelected, setSelection] = useState(false);
   const [employeeOptions, setEmployeeOptions] = useState([]);
-  const [employeeOptionsNotAll, setEmployeeOptionsNotAll] = useState([]);
 
   const handleContentSizeChange = (event) => {
     const { contentSize } = event.nativeEvent;
@@ -74,14 +72,14 @@ const Chat = () => {
     }
   };
 
-  const [imageUri, setImageUri] = useState("");
+  const [imageUri, setImageUri] = useState(null);
   const [FileName, setFileName] = useState("");
   const maxSize = 20 * 1024 * 1024;
   const [fileError, setFileError] = useState(null);
 
   const handleAttachment = () => {
     const options = {
-      mediaType: "photo",
+      mediaType: "mixed",
       maxWidth: 300,
       maxHeight: 300,
       quality: 1,
@@ -125,24 +123,10 @@ const Chat = () => {
     (msg) => selectedCustomer === "all" || msg.customer === selectedCustomer
   );
 
-  // const handleSend = () => {
-  //   if (message.trim()) {
-  //     setMessages((prevMessages) => [
-  //       ...prevMessages,
-  //       {
-  //         id: Date.now().toString(),
-  //         text: message,
-  //         customer: selectedCustomer,
-  //         sender: "me",
-  //       },
-  //     ]);
-  //     setMessage("");
-  //   }
-  // };
-
   useEffect(() => {
     if (flatListRef.current && messages.length > 0) {
-      flatListRef.current.scrollToEnd({ animated: true });
+      //flatListRef.current.scrollToEnd({ animated: true });
+      flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
     }
   }, [messages]);
 
@@ -152,8 +136,10 @@ const Chat = () => {
   }, []);
 
   const [Login, setLogin] = useState([]);
+
   const GetChatBoxListApi = async () => {
     let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
+    setLoginData(JSON.parse(await AsyncStorage.getItem("LoginDetails")));
     setLogin(LoginDetails);
     console.log(LoginDetails);
     // setLoading(true);
@@ -175,7 +161,41 @@ const Chat = () => {
           JSON.stringify(res)
         );
         if (res.IsSuccess) {
-          setMessages(res.List);
+          setMessage("");
+          const keysToKeep = [
+            "ChatBoxIDEncrypt",
+            "SenderIDEncrypt",
+            "ReceiverIDEncrypt",
+            "ChatMessage",
+            "ChatFilePath",
+            "ChatFileName",
+            "ChatDate",
+            "ChatDateTime",
+            "ChatDateWeek",
+            "IsRead",
+            "ReadDate",
+            "BatchID",
+            "SenderName",
+            "SenderEmployeePhoto",
+            "ReceiverName",
+            "ReceiverEmployeePhoto",
+            "MessageType",
+            "IsDelete",
+          ];
+
+          const filterMassageList = res.List.map((item) => {
+            const filteredItem = {};
+            keysToKeep.forEach((key) => {
+              if (item?.hasOwnProperty(key)) {
+                filteredItem[key] = item[key];
+              }
+            });
+            return filteredItem;
+          });
+          // setMessages(res.List);
+          setMessages(res.List.reverse());
+          console.log("filterMassageList ", filterMassageList);
+
           setLoading(false);
         } else {
           console.log("Faild  >>>>>>>========");
@@ -208,30 +228,24 @@ const Chat = () => {
         );
         if (res.IsSuccess) {
           const employeeOptions = [
-            { EmployeeName: "All", EmployeeIDEncrypted: "-1" },
             ...res?.EmployeeList?.filter(
               (x) => x?.EmployeeIDEncrypted !== LoginDetails?.ReferenceIDEncrypt
             ).map((item) => ({
-              EmployeeName: item.EmployeeName + " (" + item.DepartmentName + ")",
-              EmployeeIDEncrypted: item.EmployeeIDEncrypted,
+              EmployeeName:
+                item?.EmployeeName + " (" + item?.DepartmentName + ")",
+              EmployeeIDEncrypted: item?.EmployeeIDEncrypted,
               DepartmentName: item?.DepartmentName,
             })),
           ];
           setEmployeeOptions(employeeOptions);
-          console.log('====================================');
+          setSelectedReceiverID(
+            employeeOptions
+              .map((employee) => employee.EmployeeIDEncrypted)
+              .join(",")
+          );
+          console.log("====================================");
           console.log(employeeOptions);
-          console.log('====================================');
-
-          const employeeOptionsnotall = [
-            ...res?.EmployeeList?.filter(
-              (x) => x?.EmployeeIDEncrypted !== LoginDetails?.ReferenceIDEncrypt
-            ).map((item) => ({
-              EmployeeName: item.EmployeeName + " (" + item.DepartmentName + ")",
-              EmployeeIDEncrypted: item.EmployeeIDEncrypted,
-              DepartmentName: item?.DepartmentName,
-            })),
-          ];
-          setEmployeeOptionsNotAll(employeeOptionsnotall);
+          console.log("====================================");
 
           // setMyLoginID(LoginDetails.ReferenceIDEncrypt);
           // setCustomerData(res.EmployeeList);
@@ -248,24 +262,104 @@ const Chat = () => {
       });
   };
 
-  
+  const downloadFile = (ChatFilePath) => {
+    Linking.openURL(ChatFilePath)
+      .then(() => {
+        console.log(`File ${ChatFilePath} downloaded`);
+      })
+      .catch((error) => {
+        console.error(`Failed to download file ${ChatFilePath}: ${error}`);
+      });
+  };
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedDepartments, setSelectedDepartments] = useState([]);
+  const [selectedDepartments1, setSelectedDepartments1] = useState([]);
+  const [selectedContact, setSelectedContact] = useState([]);
+
+  const [checkedItems, setCheckedItems] = useState({});
+
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
+  const handleCheckboxChange = (departmentName) => {
+    setCheckedItems((prevState) => ({
+      ...prevState,
+      [departmentName]: !prevState[departmentName],
+    }));
+  };
+
+  const AllhandleCheckboxChange = () => {
+    if (isSelected) {
+      setSelection(false);
+    } else {
+      setSelection(true);
+      setSelectedDepartments([]);
+      setSelectedDepartments1([]);
+      setSelectedContact([]);
+    }
+  };
+
+  const handleSubmit = () => {
+    const selected = Object.keys(checkedItems).filter(
+      (dep) => checkedItems[dep]
+    );
+    console.log("checkedItems ", checkedItems);
+    const selectedEmployeeIDEncrypted = employeeOptions
+      .filter((employee) => checkedItems[employee.EmployeeName])
+      .map((employee) => employee.EmployeeIDEncrypted);
+
+    console.log("selected ", selected);
+    console.log("selectedEmployeeIDEncrypted ", selectedEmployeeIDEncrypted);
+
+    setSelectedDepartments(selected);
+    setSelectedDepartments1(selectedEmployeeIDEncrypted);
+    setSelectedContact(
+      employeeOptions.filter((employee) => checkedItems[employee.EmployeeName])
+    );
+    setModalVisible(false);
+  };
+
+  const getDateTimeInfoByDate = () => {
+    // Create Date objects for comparison
+    const currentDate = new Date();
+    const inputDate = new Date();
+
+    // Function to format time in hh:mm:ss format
+    const formatTime = (inputDate) => {
+      const timeString = inputDate.toLocaleTimeString();
+      const formattedTime = timeString.replace(/:\d+ /, " "); // Remove seconds
+      return formattedTime.padStart(8, "0");
+    };
+
+    if (inputDate.toDateString() === currentDate.toDateString()) {
+      return "Today | " + formatTime(inputDate);
+    }
+  };
+  const result = getDateTimeInfoByDate();
+
   const ChatBoxEmployeeMessageInsertApi = async () => {
     let LoginDetails = JSON.parse(await AsyncStorage.getItem("LoginDetails"));
     let currentDate = new Date();
     const formattedDate = moment(currentDate).format("YYYY-MM-DD HH:mm:ss");
 
-    if (Customer == "") {
+    if (selectedDepartments1 == "" && !isSelected) {
       setMsgModal("Please Select Contact for Send Message");
       setAlertModal(true);
     } else {
       setLoading(true);
-      let guid = uuidv4(); // BatchID created
-      // setAlertModal(true);
-      // setMsgModal(guid);
+      let guid = uuidv4();
 
       const params = new FormData();
       params.append("SenderIDEncrypt", LoginDetails.ReferenceIDEncrypt);
-      params.append("ReceiverIDs", SelectedReceiverID);
+      params.append(
+        "ReceiverIDs",
+        isSelected ? SelectedReceiverID : selectedDepartments1.join(", ")
+      );
       params.append("ChatMessage", message);
       params.append("ChatDateTime", formattedDate);
       params.append("ChatBoxFile", imageUri);
@@ -283,8 +377,50 @@ const Chat = () => {
         .then((res) => {
           console.log("Response Complaint Insert", res);
           if (res.IsSuccess) {
+            console.log("====================================");
+            console.log("Success");
+            console.log("====================================");
+            let MultiEmployeeMsgList = [];
+            MultiEmployeeMsgList = selectedContact?.map((item) => {
+              const labelWithoutParentheses =
+                item?.EmployeeName.split("(")[0]?.trim();
+              const departmentNameFirstFive = item?.DepartmentName?.substring(
+                0,
+                5
+              );
+              return {
+                ChatBoxIDEncrypt: "",
+                SenderIDEncrypt: "",
+                ReceiverIDEncrypt: isSelected ? "" : item?.EmployeeIDEncrypted,
+                ChatMessage: message,
+                ChatFilePath: "",
+                ChatFileName: FileName,
+                ChatSendFile: imageUri,
+                ChatDate: result,
+                ChatDateTime: "",
+                ChatDateWeek: "",
+                IsRead: false,
+                ReadDate: "",
+                BatchID: guid,
+                SenderName: "",
+                SenderEmployeePhoto: "",
+                ReceiverName: isSelected ? "All" : labelWithoutParentheses,
+                ReceiverEmployeePhoto: "",
+                SenderDepartmentName: "",
+                ReceiverDepartmentName:
+                  item?.DepartmentName?.length > 5
+                    ? departmentNameFirstFive + "..."
+                    : departmentNameFirstFive,
+                IsAll: isSelected ? true : false,
+                SenderNameTitle: "",
+                ReceiverNameTitle: "",
+                MessageType: FileName ? 3 : 2,
+              };
+            });
+            let newList = [...MultiEmployeeMsgList, ...messages];
+            setMessages(newList);
+            console.log("messages Final ", messages);
             setLoading(false);
-            GetChatBoxListApi();
           } else {
             setLoading(false);
             setMsgModal(res.Massage);
@@ -297,24 +433,80 @@ const Chat = () => {
     }
   };
 
-  const [myLoginID, setMyLoginID] = useState("");
-
-  const filteredCustomerData = CustomerData.filter(
-    (item) => item.EmployeeIDEncrypted !== myLoginID
-  );
-
-  const downloadFile = (ChatFilePath) => {
-    Linking.openURL(ChatFilePath)
-      .then(() => {
-        console.log(`File ${ChatFilePath} downloaded`);
+  //ChatBoxEmployeeMessageDeleteApi
+  const ChatBoxEmployeeMessageDeleteApi = async (item) => {
+    setLoading(true);
+    var params = {
+      BatchID: item?.BatchID,
+      EmployeeIDEncrypted: item?.ReceiverIDEncrypt
+        ? item?.ReceiverIDEncrypt
+        : "",
+      ModifiedByEncrypt: LoginData?.ReferenceIDEncrypt,
+    };
+    console.log(
+      "ChatBoxEmployeeMessageDeleteApi Params =====>>>>>>>>>>",
+      params
+    );
+    ChatBoxEmployeeMessageDeleteApiCall(params)
+      .then((res) => {
+        console.log(
+          "ChatBoxEmployeeMessageDeleteApi res ---->>>>>> ",
+          JSON.stringify(res)
+        );
+        if (res.IsSuccess) {
+          setLoading(false);
+        } else {
+          console.log("Faild  >>>>>>>========");
+          setLoading(false);
+          setMsgModal(res?.Message);
+          setAlertModal(true);
+        }
       })
       .catch((error) => {
-        console.error(`Failed to download file ${ChatFilePath}: ${error}`);
+        setLoading(false);
+        setMsgModal(error.Message);
+        setAlertModal(true);
       });
   };
 
+  const { chat, deleteMessageBatchID } = useChatContext();
+  const [LoginData, setLoginData] = useState([]);
+
+  useEffect(() => {
+    if (chat) {
+      console.log("Wow chat", chat);
+      console.log("Wow...", LoginData?.ReferenceIDEncrypt);
+      if (
+        chat?.filter(
+          (x) => x?.ReceiverIDEncrypt == LoginData?.ReferenceIDEncrypt
+        )?.length > 0
+      ) {
+        console.log("abcd");
+        chat
+          ?.filter((x) => x?.ReceiverIDEncrypt == LoginData?.ReferenceIDEncrypt)
+          ?.map((item) => {
+            setMessages([
+              { ...item, MessageType: item?.MessageType == 2 ? 1 : 4 },
+              ...messages,
+            ]);
+          });
+      }
+    }
+  }, [chat]);
+
+  useEffect(() => {
+    if (deleteMessageBatchID) {
+      deleteMessageBatchID?.filter((x) =>
+          x?.BatchID != deleteMessageBatchID &&
+          x?.ReceiverIDEncrypt == LoginData?.ReferenceIDEncrypt
+      );
+
+      setMessages(...messages);
+    }
+  }, [deleteMessageBatchID]);
+
   return (
-    <View style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
+    <View style={{ flex: 1, backgroundColor: BaseColor.bg }}>
       <Loader loading={loading} />
 
       <AlertModal
@@ -323,14 +515,43 @@ const Chat = () => {
         message={msgModal}
       ></AlertModal>
 
-      <View style={{ flex: 0.79, paddingHorizontal: 10 }}>
+      <View style={styles.headerContainer}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+        >
+          <Image
+            source={Images.ic_back}
+            style={{ width: 25, height: 25, resizeMode: "cover" }}
+            tintColor={BaseColor.darkColor}
+          />
+        </TouchableOpacity>
+        <Image
+          source={{
+            uri: "http://124.123.122.224:814/Resources/DefaultImages/DefaultUserPhoto.jpg",
+          }}
+          style={styles.avatar}
+        />
+        <View style={styles.infoContainer}>
+          <Text style={styles.name}>
+            {selectedDepartments == "" && !isSelected
+              ? "Select Contact Person"
+              : isSelected == true
+              ? "All"
+              : selectedDepartments.join(", ")}
+          </Text>
+          <Text style={styles.status}>Online</Text>
+        </View>
+      </View>
+      <View style={{ flex: 1, paddingHorizontal: 10, paddingBottom: 5 }}>
         <FlatList
           ref={flatListRef}
-          data={filteredMessages.reverse()} // Reverse to show latest messages at the bottom
+          data={filteredMessages} // Reverse to show latest messages at the bottom
           renderItem={({ item }) => (
-            <ScrollView>
-              <View style={{ alignItems: "flex-end" }}>
-                {item.SenderIDEncrypt === Login.ReferenceIDEncrypt && (
+            <View style={{ paddingTop: 2 }}>
+              {item?.MessageType == 2 || item?.MessageType == 3 ? (
+                <View style={{ alignItems: "flex-end" }}>
+                  {/* {item?.SenderIDEncrypt === Login.ReferenceIDEncrypt && ( */}
                   <View
                     style={{
                       flexDirection: "row",
@@ -339,7 +560,7 @@ const Chat = () => {
                     <View
                       style={[
                         styles.messageContainer,
-                        item.SenderIDEncrypt === Login.ReferenceIDEncrypt
+                        item?.SenderIDEncrypt === Login.ReferenceIDEncrypt
                           ? styles.sentMessage
                           : styles.receivedMessage,
                         ,
@@ -347,14 +568,14 @@ const Chat = () => {
                       ]}
                     >
                       <Text
-                        green
+                        darkColor
                         bold
                         caption2
                         style={[
                           styles.messageText,
                           {
                             alignSelf:
-                              item.SenderIDEncrypt === Login.ReferenceIDEncrypt
+                              item?.SenderIDEncrypt === Login.ReferenceIDEncrypt
                                 ? "flex-end"
                                 : "flex-start",
                             marginBottom: 4,
@@ -362,24 +583,24 @@ const Chat = () => {
                           },
                         ]}
                       >
-                        {item.IsAll ? "all" : item.ReceiverName}
-                        {!item.IsAll && (
-                          <Text
-                            darkColor
-                            bold
-                            caption2
-                            style={[styles.messageText, { fontSize: 14 }]}
-                          >
-                            {" (" + item.ReceiverDepartmentName + ")"}
-                          </Text>
-                        )}
+                        {item?.IsAll
+                          ? "all"
+                          : item?.ReceiverName +
+                            " (" +
+                            item?.ReceiverDepartmentName +
+                            ")"}
                       </Text>
-                      {item.ChatFilePath != "" && (
+
+                      {item?.ChatFilePath != "" && (
                         <Pressable
                           onPress={() => {
-                            downloadFile(item.ChatFilePath);
+                            downloadFile(item?.ChatFilePath);
                           }}
-                          style={{ flexDirection: "row", alignItems: "center" }}
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            flex: 1,
+                          }}
                         >
                           <Image
                             source={Images.ic_download}
@@ -391,10 +612,10 @@ const Chat = () => {
                             footnote
                             style={[
                               styles.messageText,
-                              { fontSize: 11, flex: 1, left: 5 },
+                              { fontSize: 11, left: 5 },
                             ]}
                           >
-                            {item.ChatFileName}
+                            {item?.ChatFileName}
                           </Text>
                         </Pressable>
                       )}
@@ -404,93 +625,124 @@ const Chat = () => {
                         footnote
                         style={[styles.messageText, { fontSize: 14 }]}
                       >
-                        {item.ChatMessage.trim()}
+                        {item?.ChatMessage.trim()}
                       </Text>
 
-                      {item.SenderIDEncrypt === Login.ReferenceIDEncrypt ? (
-                        <Text
-                          fieldColor
-                          overline
-                          style={[
-                            styles.messageText,
-                            {
-                              alignSelf:
-                                item.SenderIDEncrypt ===
-                                Login.ReferenceIDEncrypt
-                                  ? "flex-end"
-                                  : "flex-start",
-                              fontSize: 11,
-                            },
-                          ]}
-                        >
-                          {item.ChatDate}
-                        </Text>
-                      ) : (
-                        <Text
-                          whiteColor
-                          overline
-                          style={[
-                            styles.messageText,
-                            {
-                              alignSelf:
-                                item.SenderIDEncrypt ===
-                                Login.ReferenceIDEncrypt
-                                  ? "flex-end"
-                                  : "flex-start",
-                              fontSize: 10,
-                            },
-                          ]}
-                        >
-                          {item.ChatDate}
-                        </Text>
-                      )}
+                      <Text
+                        fieldColor
+                        overline
+                        style={[
+                          styles.messageText,
+                          {
+                            alignSelf:
+                              item?.SenderIDEncrypt === Login.ReferenceIDEncrypt
+                                ? "flex-end"
+                                : "flex-start",
+                            fontSize: 11,
+                          },
+                        ]}
+                      >
+                        {item?.ChatDate}
+                      </Text>
                     </View>
-                    <>
+                    <View style={{ alignItems: "center" }}>
                       <Pressable>
-                        <Image
-                          source={{ uri: item.SenderEmployeePhoto }}
-                          style={{
-                            width: 40,
-                            height: 40,
-                            borderRadius: 50,
-                            marginVertical: 5,
-                          }}
-                        />
+                        {item?.SenderEmployeePhoto != "" ? (
+                          <Image
+                            source={{ uri: item?.SenderEmployeePhoto }}
+                            style={{
+                              width: 40,
+                              height: 40,
+                              borderRadius: 50,
+                              marginVertical: 5,
+                            }}
+                          />
+                        ) : (
+                          <View
+                            style={{
+                              width: 40,
+                              height: 40,
+                              borderRadius: 50,
+                              marginVertical: 5,
+                              backgroundColor: BaseColor.darkGraycolor,
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Text
+                              body1
+                              bold
+                              whiteColor
+                              style={{ fontSize: 14, letterSpacing: 2 }}
+                              textAlign={"center"}
+                            >
+                              {item?.ReceiverName.substring(0, 2).toUpperCase()}
+                            </Text>
+                          </View>
+                        )}
                       </Pressable>
-                      {/* <Pressable>
+                      <Pressable
+                        onPress={() => {
+                          ChatBoxEmployeeMessageDeleteApi(item);
+                        }}
+                      >
                         <Image
-                          source={Images.ic_DataFound}
+                          source={Images.delete}
+                          tintColor={BaseColor.danger}
                           style={{
                             width: 20,
                             height: 20,
-                            borderRadius: 50,
-                            marginVertical: 5,
+                            // borderRadius: 50,
+                            marginVertical: 3,
                           }}
                         />
-                      </Pressable> */}
-                    </>
+                      </Pressable>
+                    </View>
                   </View>
-                )}
-              </View>
-
-              <View>
-                {item.SenderIDEncrypt != Login.ReferenceIDEncrypt && (
+                  {/* )} */}
+                </View>
+              ) : item?.MessageType == 1 ? (
+                <View>
+                  {/* {item?.SenderIDEncrypt != Login.ReferenceIDEncrypt && ( */}
                   <View
                     style={{
                       flexDirection: "row",
                     }}
                   >
                     <Pressable>
-                      <Image
-                        source={{ uri: item.SenderEmployeePhoto }}
-                        style={{
-                          width: 40,
-                          height: 40,
-                          borderRadius: 50,
-                          marginRight: 5,
-                          marginVertical: 5,
-                        }}
-                      />
+                      {item?.SenderEmployeePhoto != "" ? (
+                        <Image
+                          source={{ uri: item?.SenderEmployeePhoto }}
+                          style={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: 50,
+                            marginRight: 5,
+                            marginVertical: 5,
+                          }}
+                        />
+                      ) : (
+                        <View
+                          style={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: 50,
+                            marginRight: 5,
+                            marginVertical: 5,
+                            backgroundColor: BaseColor.darkGraycolor,
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Text
+                            body1
+                            bold
+                            whiteColor
+                            style={{ fontSize: 14, letterSpacing: 2 }}
+                          >
+                            {item?.SenderName?.substring(0, 2)?.toUpperCase()}
+                          </Text>
+                        </View>
+                      )}
                     </Pressable>
                     <View
                       style={[
@@ -501,7 +753,7 @@ const Chat = () => {
                       ]}
                     >
                       <Text
-                        yellowColor
+                        darkColor
                         bold
                         caption2
                         style={[
@@ -513,23 +765,18 @@ const Chat = () => {
                           },
                         ]}
                       >
-                        {item.SenderName}
-
-                        <Text
-                          darkColor
-                          bold
-                          caption2
-                          style={[styles.messageText, { fontSize: 14 }]}
-                        >
-                          {" (" + item.ReceiverDepartmentName + ")"}
-                        </Text>
+                        {item?.SenderName}
                       </Text>
-                      {item.ChatFilePath != "" && (
+                      {item?.ChatFilePath != "" && (
                         <Pressable
                           onPress={() => {
-                            downloadFile(item.ChatFilePath);
+                            downloadFile(item?.ChatFilePath);
                           }}
-                          style={{ flexDirection: "row", alignItems: "center" }}
+                          style={{
+                            flexDirection: "row",
+                            flex: 1,
+                            alignItems: "center",
+                          }}
                         >
                           <Image
                             source={Images.ic_download}
@@ -541,10 +788,10 @@ const Chat = () => {
                             footnote
                             style={[
                               styles.messageText,
-                              { fontSize: 11, flex: 1, left: 5 },
+                              { fontSize: 11, left: 5 },
                             ]}
                           >
-                            {item.ChatFileName}
+                            {item?.ChatFileName}
                           </Text>
                         </Pressable>
                       )}
@@ -554,101 +801,193 @@ const Chat = () => {
                         footnote
                         style={[styles.messageText, { fontSize: 14 }]}
                       >
-                        {item.ChatMessage.trim()}
+                        {item?.ChatMessage.trim()}
                       </Text>
 
                       <Text
-                        whiteColor
+                        fieldColor
                         overline
                         style={[
                           styles.messageText,
                           {
                             alignSelf:
-                              item.SenderIDEncrypt === Login.ReferenceIDEncrypt
+                              item?.SenderIDEncrypt === Login.ReferenceIDEncrypt
                                 ? "flex-end"
                                 : "flex-start",
                             fontSize: 10,
                           },
                         ]}
                       >
-                        {item.ChatDate}
+                        {item?.ChatDate}
                       </Text>
                     </View>
                   </View>
-                )}
-              </View>
-            </ScrollView>
+                  {/* )} */}
+                </View>
+              ) : (
+                item?.MessageType == 4 && (
+                  <View>
+                    {/* {item?.SenderIDEncrypt != Login.ReferenceIDEncrypt && ( */}
+                    <View
+                      style={{
+                        flexDirection: "row",
+                      }}
+                    >
+                      <Pressable>
+                        {item?.SenderEmployeePhoto != "" ? (
+                          <Image
+                            source={{ uri: item?.SenderEmployeePhoto }}
+                            style={{
+                              width: 40,
+                              height: 40,
+                              borderRadius: 50,
+                              marginRight: 5,
+                              marginVertical: 5,
+                            }}
+                          />
+                        ) : (
+                          <View
+                            style={{
+                              width: 40,
+                              height: 40,
+                              borderRadius: 50,
+                              marginRight: 5,
+                              marginVertical: 5,
+                              backgroundColor: BaseColor.darkGraycolor,
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Text
+                              body1
+                              bold
+                              whiteColor
+                              style={{ fontSize: 14, letterSpacing: 2 }}
+                            >
+                              {item?.SenderNameTitle.substring(
+                                0,
+                                2
+                              ).toUpperCase()}
+                            </Text>
+                          </View>
+                        )}
+                      </Pressable>
+                      <View
+                        style={[
+                          styles.messageContainer,
+                          styles.receivedMessage,
+                          ,
+                          { marginRight: 5 },
+                        ]}
+                      >
+                        <Text
+                          darkColor
+                          bold
+                          caption2
+                          style={[
+                            styles.messageText,
+                            {
+                              alignSelf: "flex-start",
+                              marginBottom: 4,
+                              fontSize: 14,
+                            },
+                          ]}
+                        >
+                          {item?.SenderNameTitle}
+                        </Text>
+                        {item?.ChatFilePath != "" && (
+                          <Pressable
+                            onPress={() => {
+                              downloadFile(item?.ChatFilePath);
+                            }}
+                            style={{
+                              flexDirection: "row",
+                              flex: 1,
+                              alignItems: "center",
+                            }}
+                          >
+                            <Image
+                              source={Images.ic_download}
+                              tintColor={BaseColor.darkColor}
+                              style={{ width: 32, height: 32, marginBottom: 5 }}
+                            />
+                            <Text
+                              darkColor
+                              footnote
+                              style={[
+                                styles.messageText,
+                                { fontSize: 11, left: 5 },
+                              ]}
+                            >
+                              {item?.ChatFileName}
+                            </Text>
+                          </Pressable>
+                        )}
+
+                        <Text
+                          darkColor
+                          footnote
+                          style={[styles.messageText, { fontSize: 14 }]}
+                        >
+                          {item?.ChatMessage.trim()}
+                        </Text>
+
+                        <Text
+                          fieldColor
+                          overline
+                          style={[
+                            styles.messageText,
+                            {
+                              alignSelf:
+                                item?.SenderIDEncrypt ===
+                                Login.ReferenceIDEncrypt
+                                  ? "flex-end"
+                                  : "flex-start",
+                              fontSize: 10,
+                            },
+                          ]}
+                        >
+                          {item?.ChatDate}
+                        </Text>
+                      </View>
+                    </View>
+                    {/* )} */}
+                  </View>
+                )
+              )}
+            </View>
           )}
-          scrollEnabled={true}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item?.id}
           style={styles.messagesList}
           inverted
-          onContentSizeChange={() => {
-            // if (messages.length > 0) {
-            //   flatListRef.current.scrollToEnd({ animated: true });
-            // }
-          }}
+          // onContentSizeChange={() => {
+          //   // if (messages.length > 0) {
+          //   //   flatListRef.current.scrollToEnd({ animated: true });
+          //   // }
+          // }}
         />
+        <View style={{ height: 120 }}></View>
       </View>
 
       <View style={styles.BottomView}>
-        <MultiSelect
-          style={[styles.dropdown, isFocus && {}]}
-          placeholderStyle={[
-            styles.placeholderStyle,
-            { color: BaseColor.borderColor },
-          ]}
-          selectedTextStyle={[{ color: "#000000" }]}
-          renderItem={(item, selected) => (
-            <DropdownSelected item={item?.EmployeeName} selected={selected} />
-          )}
-          data={employeeOptions}
-          maxHeight={500}
-          labelField="EmployeeName"
-          valueField="EmployeeIDEncrypted"
-          placeholder={!isFocus ? "Select Status" : "..."}
-          search
-          searchPlaceholder={"Search"}
-          value={Customer}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          selectedStyle={styles.selectedStyle}
-          onChange={(item) => {
-            setCustomer(item);
-            const selectedIds = item.join(",");
-            setSelectedReceiverID(selectedIds);
-            console.log("====================================");
-            console.log(item);
-            console.log("====================================");
-            setIsFocus(false);
-          }}
-        />
         {FileName != "" && (
-          <View style={{ flexDirection: "row", flex: 1 }}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Image
               source={Images.Page}
               style={{ width: 20, height: 20, top: 8, marginRight: 4 }}
               resizeMode={"contain"}
               tintColor={BaseColor.darkColor}
             />
-            <Text darkColor style={{ top: 8 }}>
-              {FileName != '' ? FileName : fileError && <Text style={{ color: 'red' }}>{fileError}</Text>}
+            <Text darkColor style={{ top: 8, flex: 1 }}>
+              {FileName != ""
+                ? FileName
+                : fileError && (
+                    <Text style={{ color: "red" }}>{fileError}</Text>
+                  )}
             </Text>
-            <Pressable
-              onPress={() => {
-                setFileName("");
-              }}
-            >
-              <Image
-                source={Images.close}
-                style={{ width: 14, height: 14, top: 12, marginLeft: 15 }}
-                resizeMode={"contain"}
-                tintColor={BaseColor.red}
-              />
-            </Pressable>
           </View>
         )}
-        <View style={{ flexDirection: "row", marginTop: 10 }}>
+        <View style={{ flexDirection: "row", marginTop: 1 }}>
           <View style={[styles.inputContainer, { height: inputHeight }]}>
             <TextInput
               style={styles.input}
@@ -658,6 +997,12 @@ const Chat = () => {
               onContentSizeChange={handleContentSizeChange}
               placeholder="Type your message..."
             />
+            <TouchableOpacity
+              onPress={openModal}
+              style={[styles.sendButton, { right: 8 }]}
+            >
+              <Icon name="user" size={20} color={BaseColor.grayColor} />
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={handleAttachment}
               style={styles.sendButton}
@@ -680,6 +1025,91 @@ const Chat = () => {
           </TouchableOpacity>
         </View>
       </View>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={closeModal}
+      >
+        <Pressable
+          style={styles.modalView}
+          onPress={() => {
+            closeModal();
+          }}
+        >
+          <Pressable
+            onPress={() => {
+              setModalVisible(true);
+            }}
+            style={styles.modalContent}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: 14,
+              }}
+            >
+              <Text darkColor style={styles.modalTitle}>
+                Select Contact
+              </Text>
+              <Pressable
+                onPress={() => {
+                  setModalVisible(false);
+                }}
+              >
+                <Image
+                  style={styles.modalCheckImg}
+                  resizeMode="contain"
+                  source={Images.ic_close}
+                ></Image>
+              </Pressable>
+            </View>
+            <ScrollView style={styles.scrollView}>
+              <View style={styles.checkboxContainer}>
+                <CheckBox
+                  value={isSelected}
+                  onValueChange={() => {
+                    AllhandleCheckboxChange();
+                  }}
+                  style={styles.checkbox}
+                />
+                <Text darkColor style={styles.checkboxLabel}>
+                  {"All"}
+                </Text>
+              </View>
+              {employeeOptions.map((employeeOptions, index) => (
+                <View key={index} style={styles.checkboxContainer}>
+                  <CheckBox
+                    value={checkedItems[employeeOptions.EmployeeName] || false}
+                    onValueChange={() =>
+                      handleCheckboxChange(employeeOptions.EmployeeName)
+                    }
+                    disabled={isSelected ? true : false}
+                  />
+                  <Pressable
+                    onPress={() => {
+                      handleCheckboxChange(employeeOptions.EmployeeName);
+                    }}
+                  >
+                    <Text darkColor style={styles.checkboxLabel}>
+                      {employeeOptions.EmployeeName}
+                    </Text>
+                  </Pressable>
+                </View>
+              ))}
+            </ScrollView>
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.submitButtonText}>Submit</Text>
+            </TouchableOpacity>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </View>
   );
 };

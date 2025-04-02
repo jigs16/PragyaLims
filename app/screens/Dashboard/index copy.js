@@ -119,7 +119,7 @@ const Dashboard = ({ navigation }) => {
             res?.TodaysTestingApprovalPendingCount
           );
           const newData = res.TestingMonthWiseData.map(
-            (item) => item.TestingCount
+            (item) => item?.TestingCount
           );
           setChartData((prevChartData) => ({
             ...prevChartData,
@@ -270,9 +270,9 @@ const Dashboard = ({ navigation }) => {
               >
                 {CustomerRenderDot(getColor(index))}
                 <Text caption1 darkColor style={{ flex: 1 }}>
-                  {item.CustomerName +
+                  {item?.CustomerName +
                     "\n" +
-                    item.TestingCount +
+                    item?.TestingCount +
                     " Testing Count"}
                 </Text>
               </View>
@@ -283,7 +283,7 @@ const Dashboard = ({ navigation }) => {
   };
 
   const CustomerPieData = GetTopCustomersData.map((item, index) => ({
-    value: item.TestingCount,
+    value: item?.TestingCount,
     color: getColor(index),
     gradientCenterColor: getColor(index),
   }));
@@ -383,7 +383,7 @@ const Dashboard = ({ navigation }) => {
               >
                 {TestsRenderDot(getColor(index))}
                 <Text caption1 darkColor style={{ flex: 1 }}>
-                  {item.TestName + "\n" + item.TestingCount + " Testing Count"}
+                  {item?.TestName + "\n" + item?.TestingCount + " Testing Count"}
                 </Text>
               </View>
             )
@@ -393,7 +393,7 @@ const Dashboard = ({ navigation }) => {
   };
 
   const TestsPieData = GetTopTestData.map((item, index) => ({
-    value: item.TestingCount,
+    value: item?.TestingCount,
     color: getColor(index),
     gradientCenterColor: getColor(index),
   }));
@@ -492,9 +492,9 @@ const Dashboard = ({ navigation }) => {
               >
                 {DepartmentRenderDot(getColor(index))}
                 <Text caption1 darkColor style={{ flex: 1 }}>
-                  {item.DepartmentName +
+                  {item?.DepartmentName +
                     "\n" +
-                    item.TestingCount +
+                    item?.TestingCount +
                     " Testing Count"}
                 </Text>
               </View>
@@ -505,7 +505,7 @@ const Dashboard = ({ navigation }) => {
   };
 
   const DepartmentPieData = GetTopDepartmentData.map((item, index) => ({
-    value: item.TestingCount,
+    value: item?.TestingCount,
     color: getColor(index),
     gradientCenterColor: getColor(index),
   }));
@@ -605,9 +605,9 @@ const Dashboard = ({ navigation }) => {
               >
                 {MachineRenderDot(getColor(index))}
                 <Text caption1 darkColor style={{ flex: 1 }}>
-                  {item.MachineName +
+                  {item?.MachineName +
                     "\n" +
-                    item.TestingCount +
+                    item?.TestingCount +
                     " Testing Count"}
                 </Text>
               </View>
@@ -618,7 +618,7 @@ const Dashboard = ({ navigation }) => {
   };
 
   const MachinePieData = GetTopMachinesData.map((item, index) => ({
-    value: item.TestingCount,
+    value: item?.TestingCount,
     color: getColor(index),
     gradientCenterColor: getColor(index),
     focused: true,
@@ -741,7 +741,7 @@ const Dashboard = ({ navigation }) => {
         }}
       >
         <Image
-          source={{ uri: item.EmployeePhoto }}
+          source={{ uri: item?.EmployeePhoto }}
           style={{
             width: 50,
             height: 50,
@@ -751,16 +751,16 @@ const Dashboard = ({ navigation }) => {
         />
         <View style={{ flex: 1 }}>
           <Text body2 bold buttonGradient1>
-            {item.Header}
+            {item?.Header}
           </Text>
           <Text caption1 style={{ marginTop: 5, color: "#000" }}>
-            {item.Line1}
+            {item?.Line1}
           </Text>
           <Text caption1 darkColor>
-            {item.Line2}
+            {item?.Line2}
           </Text>
           <Text caption1 grayColor>
-            {item.ActivityLogDate}
+            {item?.ActivityLogDate}
           </Text>
         </View>
       </View>
@@ -912,7 +912,7 @@ const Dashboard = ({ navigation }) => {
         </Pressable>
       </View>
       <LinearGradient
-        colors={[BaseColor.whiteColor, BaseColor.whiteColor]}
+        colors={[BaseColor.bg, BaseColor.bg]}
         locations={[0, 1]}
         style={styles.mainContainer}
       >

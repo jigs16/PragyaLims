@@ -40,4 +40,5 @@ export const BaseColor = {
   unapproved: '#47a493',
   pending: '#d9807c',
   bg: '#18a5950a',
+  DarkIconColor: '#2e2e2e'
 };

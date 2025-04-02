@@ -486,7 +486,7 @@ const MachiningOutward = ({ navigation }) => {
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}
               onChange={(item) => {
-                setVendor(item.VendorIDEncrypt);
+                setVendor(item?.VendorIDEncrypt);
                 setIsFocus(false);
               }}
             />
@@ -539,7 +539,7 @@ const MachiningOutward = ({ navigation }) => {
               selectedStyle={styles.selectedStyle}
               onChange={(item) => {
                 setStatus(item);
-                const selectedIds = item.join(",");
+                const selectedIds = item?.join(",");
                 setSelectedReceiverID(selectedIds);
                 setIsFocus3(false);
               }}
@@ -569,7 +569,7 @@ const MachiningOutward = ({ navigation }) => {
               onFocus={() => setIsFocus3(true)}
               onBlur={() => setIsFocus3(false)}
               onChange={(item) => {
-                const selectedIds = item.join(",");
+                const selectedIds = item?.join(",");
                 setStatus(selectedIds);
                 console.log('====================================');
                 console.log(selectedIds);
@@ -599,7 +599,7 @@ const MachiningOutward = ({ navigation }) => {
       )}
 
       <LinearGradient
-        colors={[BaseColor.whiteColor, BaseColor.whiteColor]}
+        colors={[BaseColor.bg, BaseColor.bg]}
         locations={[0, 1]}
         style={{
           flex: 1,
@@ -660,11 +660,11 @@ const MachiningOutward = ({ navigation }) => {
                     >
                       <View style={{ flex: 1 }}>
                         <Text darkColor bold>
-                          {item.VendorName}
+                          {item?.VendorName}
                         </Text>
 
                         <Text footnote darkColor style={{ marginTop: 4 }}>
-                          {item.MachiningOutwardNo + " | " + item.OutwardDate}
+                          {item?.MachiningOutwardNo + " | " + item?.OutwardDate}
                         </Text>
                       </View>
                       <View style={{ flexDirection: "row" }}>
@@ -686,7 +686,7 @@ const MachiningOutward = ({ navigation }) => {
                         <Pressable
                           onPress={() => {
                             GetMachiningOutwardGetPassPrintDownloadApi(
-                              item.MachiningOutwardIDEncrypt
+                              item?.MachiningOutwardIDEncrypt
                             );
                           }}
                         >
@@ -703,14 +703,14 @@ const MachiningOutward = ({ navigation }) => {
                     <Text darkColor bold>
                       Expected Date -{" "}
                       <Text footnote darkColor>
-                        {item.ExpectedDate}
+                        {item?.ExpectedDate}
                       </Text>
                     </Text>
 
                     <Text darkColor bold>
                       Status -{" "}
                       <Text footnote darkColor>
-                        {item.OutwardStatusName}
+                        {item?.OutwardStatusName}
                       </Text>
                     </Text>
                   </View>

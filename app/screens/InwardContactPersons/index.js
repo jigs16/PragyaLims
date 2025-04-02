@@ -15,7 +15,7 @@ const InwardContactPersons = ({ navigation, route }) => {
   const { ListOfContactPersons } = route.params;
 
   return (
-    <View style={{ backgroundColor: BaseColor.whiteColor, flex: 1 }}>
+    <View style={{ backgroundColor: BaseColor.bg, flex: 1 }}>
       <Loader loading={loading} />
 
       <AlertModal
@@ -41,7 +41,7 @@ const InwardContactPersons = ({ navigation, route }) => {
         title={"Contact Persons"}
       ></Header>
       <LinearGradient
-        colors={[BaseColor.whiteColor, BaseColor.whiteColor]}
+        colors={[BaseColor.bg, BaseColor.bg]}
         locations={[0, 1]}
         style={{
           flex: 1,
@@ -57,7 +57,7 @@ const InwardContactPersons = ({ navigation, route }) => {
               <View
                 onPress={() => {
                   navigation.navigate("InwardApproval", {
-                    InwardIDEncrypted: item.InwardIDEncrypted,
+                    InwardIDEncrypted: item?.InwardIDEncrypted,
                     ViewType: "ViewOnly",
                   });
                 }}
@@ -83,7 +83,7 @@ const InwardContactPersons = ({ navigation, route }) => {
                     tintColor={BaseColor.darkColor}
                   />
                   <Text darkColor callout bold>
-                    {item.ContactPerson}
+                    {item?.ContactPerson}
                   </Text>
                 </View>
 
@@ -101,7 +101,7 @@ const InwardContactPersons = ({ navigation, route }) => {
                     tintColor={BaseColor.darkColor}
                   />
                   <Text darkColor footnote>
-                    {item.Designation}
+                    {item?.Designation}
                   </Text>
                 </View>
 
@@ -119,7 +119,7 @@ const InwardContactPersons = ({ navigation, route }) => {
                     tintColor={BaseColor.darkColor}
                   />
                   <Text darkColor footnote>
-                    {item.EmailID}
+                    {item?.EmailID}
                   </Text>
                 </View>
 
@@ -131,7 +131,7 @@ const InwardContactPersons = ({ navigation, route }) => {
                     tintColor={BaseColor.darkColor}
                   />
                   <Text darkColor footnote>
-                    {item.MobileNo}
+                    {item?.MobileNo}
                   </Text>
                 </View>
               </View>

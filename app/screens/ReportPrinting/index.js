@@ -411,7 +411,7 @@ const ReportPrinting = ({ navigation }) => {
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}
               onChange={(item) => {
-                setCustomer(item.CustomerIDEncrypted);
+                setCustomer(item?.CustomerIDEncrypted);
                 setIsFocus(false);
               }}
             />
@@ -444,7 +444,7 @@ const ReportPrinting = ({ navigation }) => {
               onFocus={() => setIsFocus3(true)}
               onBlur={() => setIsFocus3(false)}
               onChange={(item) => {
-                setStatus(item.value);
+                setStatus(item?.value);
                 setIsFocus3(false);
               }}
             />
@@ -476,7 +476,7 @@ const ReportPrinting = ({ navigation }) => {
               onFocus={() => setIsFocus4(true)}
               onBlur={() => setIsFocus4(false)}
               onChange={(item) => {
-                setUploadScanCopy(item.value);
+                setUploadScanCopy(item?.value);
                 setIsFocus4(false);
               }}
             />
@@ -573,7 +573,7 @@ const ReportPrinting = ({ navigation }) => {
       )}
 
       <LinearGradient
-        colors={[BaseColor.whiteColor, BaseColor.whiteColor]}
+        colors={[BaseColor.bg, BaseColor.bg]}
         locations={[0, 1]}
         style={{
           flex: 1,
@@ -609,7 +609,7 @@ const ReportPrinting = ({ navigation }) => {
               <Pressable
                 onPress={() => {
                   navigation.navigate("InwardApproval", {
-                    InwardIDEncrypted: item.InwardIDEncrypted,
+                    InwardIDEncrypted: item?.InwardIDEncrypted,
                     ViewType: "ViewOnly",
                   });
                 }}
@@ -642,19 +642,19 @@ const ReportPrinting = ({ navigation }) => {
                         <Text darkColor bold>
                           TC No -{" "}
                           <Text caption1 darkColor>
-                            {item.TCNo}
+                            {item?.TCNo}
                           </Text>
                         </Text>
 
                         <Text darkColor bold>
                           Inward No -{" "}
                           <Text caption1 darkColor>
-                            {item.InwardNo}
+                            {item?.InwardNo}
                           </Text>
                         </Text>
                       </View>
                       <View style={{ flexDirection: "row" }}>
-                        {/* {item.ReportingStatusName == "Print" && (
+                        {/* {item?.ReportingStatusName == "Print" && (
                           <Pressable
                             onPress={() => {
                               setMsgModal("Coming Soon");
@@ -669,10 +669,10 @@ const ReportPrinting = ({ navigation }) => {
                             ></Image>
                           </Pressable>
                         )} */}
-                        {item.ScanCopyFilePath != "" && (
+                        {item?.ScanCopyFilePath != "" && (
                           <Pressable
                             onPress={() => {
-                              downloadFile(item.ScanCopyFilePath);
+                              downloadFile(item?.ScanCopyFilePath);
                             }}
                           >
                             <Image
@@ -689,20 +689,20 @@ const ReportPrinting = ({ navigation }) => {
                     <Text darkColor bold>
                       Sample Detail -{" "}
                       <Text caption1 darkColor>
-                        {item.SampleDetail}
+                        {item?.SampleDetail}
                       </Text>
                     </Text>
                     <Text darkColor bold>
                       EDD -{" "}
                       <Text caption1 darkColor>
-                        {item.EDD}
+                        {item?.EDD}
                       </Text>
                     </Text>
 
                     <Text darkColor bold>
                       Status -{" "}
                       <Text caption1 darkColor>
-                        {item.ReportingStatusName}
+                        {item?.ReportingStatusName}
                       </Text>
                     </Text>
                   </View>

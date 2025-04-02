@@ -501,7 +501,7 @@ const InwardApproval = ({ navigation, route }) => {
       ></AlertModal>
 
       <LinearGradient
-        colors={[BaseColor.whiteColor, BaseColor.whiteColor]}
+        colors={[BaseColor.bg, BaseColor.bg]}
         locations={[0, 1]}
         style={{
           flex: 1,

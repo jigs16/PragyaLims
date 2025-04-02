@@ -142,17 +142,17 @@ const TestingApproval = ({ navigation, route }) => {
               marginBottom: 10,
               flexDirection: "row",
               borderColor:
-                item.TestingStatusName == "Approved"
+                item?.TestingStatusName == "Approved"
                   ? BaseColor.approved
-                  : item.TestingStatusName == "Unapproved"
+                  : item?.TestingStatusName == "Unapproved"
                   ? BaseColor.unapproved
                   : BaseColor.pending,
               backgroundColor:
                 // expandedId == item?.TestingIDEncrypt
                 //   ? BaseColor.buttonGradient2 :
-                item.TestingStatusName == "Approved"
+                item?.TestingStatusName == "Approved"
                   ? BaseColor.approved
-                  : item.TestingStatusName == "Unapproved"
+                  : item?.TestingStatusName == "Unapproved"
                   ? BaseColor.unapproved
                   : BaseColor.pending,
               borderWidth: 1,
@@ -176,7 +176,7 @@ const TestingApproval = ({ navigation, route }) => {
                   fontSize: 13.5,
                 }}
               >
-                {item.TestName}
+                {item?.TestName}
               </Text>
             </View>
             <Image
@@ -191,7 +191,7 @@ const TestingApproval = ({ navigation, route }) => {
           </View>
           {isExpanded && (
             <>
-              {item.TestingStatusName != "Pending" ? (
+              {item?.TestingStatusName != "Pending" ? (
                 <View
                   style={{
                     padding: 10,
@@ -224,14 +224,14 @@ const TestingApproval = ({ navigation, route }) => {
                     >
                       {"Test Date : "}{" "}
                       <Text subhead darkColor style={{ fontSize: 13 }}>
-                        {item.TestingDate}
+                        {item?.TestingDate}
                       </Text>
                     </Text>
 
                     <Text subhead bold darkColor style={{ fontSize: 14 }}>
                       {"Qty : "}{" "}
                       <Text subhead darkColor style={{ fontSize: 13 }}>
-                        {item.TestCount}
+                        {item?.TestCount}
                       </Text>
                     </Text>
                   </View>
@@ -244,59 +244,59 @@ const TestingApproval = ({ navigation, route }) => {
                   >
                     {"Test Method : "}{" "}
                     <Text subhead darkColor style={{ fontSize: 13 }}>
-                      {item.TestMethod}
+                      {item?.TestMethod}
                     </Text>
                   </Text>
 
                   <Text subhead bold darkColor style={{ fontSize: 14 }}>
                     Material Group -{" "}
                     <Text subhead darkColor style={{ fontSize: 13 }}>
-                      {item.MaterialGroupName}
+                      {item?.MaterialGroupName}
                     </Text>
                   </Text>
 
                   <Text subhead bold darkColor style={{ fontSize: 14 }}>
                     Material Type -{" "}
                     <Text subhead darkColor style={{ fontSize: 13 }}>
-                      {item.MaterialType}
+                      {item?.MaterialType}
                     </Text>
                   </Text>
 
                   <Text subhead bold darkColor style={{ fontSize: 14 }}>
                     {"Machine : "}{" "}
                     <Text subhead darkColor style={{ fontSize: 13 }}>
-                      {item.MachineName}
+                      {item?.MachineName}
                     </Text>
                   </Text>
 
                   <Text subhead bold darkColor style={{ fontSize: 14 }}>
                     {"Reference Standard : "}{" "}
                     <Text subhead darkColor style={{ fontSize: 13 }}>
-                      {item.ReferenceStandard}
+                      {item?.ReferenceStandard}
                     </Text>
                   </Text>
 
                   <Text subhead bold darkColor style={{ fontSize: 14 }}>
                     {"Tested By : "}{" "}
                     <Text subhead darkColor style={{ fontSize: 13 }}>
-                      {item.TestedBy}
+                      {item?.TestedBy}
                     </Text>
                   </Text>
 
                   <Text subhead bold darkColor style={{ fontSize: 14 }}>
                     {"Result : "}{" "}
                     <Text subhead darkColor style={{ fontSize: 13 }}>
-                      {item.Result}
+                      {item?.Result}
                     </Text>
                   </Text>
 
                   <Text subhead bold darkColor style={{ fontSize: 14 }}>
                     {"Remarks : "}{" "}
                     <Text subhead darkColor style={{ fontSize: 13 }}>
-                      {item.Remarks}
+                      {item?.Remarks}
                     </Text>
                   </Text>
-                  {item.TestingStatusName == "Unapproved" && (
+                  {item?.TestingStatusName == "Unapproved" && (
                     <Text subhead bold darkColor style={{ fontSize: 14 }}>
                       {"Testing Status : "}
                       <Text subhead darkColor style={{ fontSize: 14 }}>
@@ -304,38 +304,38 @@ const TestingApproval = ({ navigation, route }) => {
                       </Text>
                     </Text>
                   )}
-                  {item.TestingStatusName == "Approved" && (
+                  {item?.TestingStatusName == "Approved" && (
                     <>
                       <Text subhead bold darkColor style={{ fontSize: 14 }}>
                         {"Testing Status : "}{" "}
                         <Text subhead darkColor style={{ fontSize: 14 }}>
-                          {item.TestingStatusName}
+                          {item?.TestingStatusName}
                         </Text>
                       </Text>
 
                       <Text subhead bold darkColor style={{ fontSize: 14 }}>
                         {"Approval Note : "}{" "}
                         <Text subhead darkColor style={{ fontSize: 13 }}>
-                          {item.ApprovalNote}
+                          {item?.ApprovalNote}
                         </Text>
                       </Text>
                     </>
                   )}
 
-                  {item.TestingStatusName === "Approved" ||
-                    (item.TestingStatusName === "Reject & Rectify" && (
+                  {item?.TestingStatusName === "Approved" ||
+                    (item?.TestingStatusName === "Reject & Rectify" && (
                       <>
                         <Text subhead bold darkColor style={{ fontSize: 14 }}>
                           {"Testing Status : "}{" "}
                           <Text subhead darkColor style={{ fontSize: 13 }}>
-                            {item.TestingStatusName}
+                            {item?.TestingStatusName}
                           </Text>
                         </Text>
 
                         <Text subhead bold darkColor style={{ fontSize: 14 }}>
                           {"Approval Note : "}{" "}
                           <Text subhead darkColor style={{ fontSize: 13 }}>
-                            {item.ApprovalNote}
+                            {item?.ApprovalNote}
                           </Text>
                         </Text>
                       </>
@@ -345,7 +345,7 @@ const TestingApproval = ({ navigation, route }) => {
                     onPress={() => {
                       toggleItem1(item?.TestingIDEncrypt),
                       setRemarks(""),
-                      setQty(item.TestCount);
+                      setQty(item?.TestCount);
                     }}
                   >
                     <View style={{}}>
@@ -650,7 +650,7 @@ const TestingApproval = ({ navigation, route }) => {
                               </Text>
                             </View>
                           </View>
-                          {item.ListOfParameter?.map((item, index) => (
+                          {item?.ListOfParameter?.map((item, index) => (
                             <>
                               <View
                                 style={{
@@ -673,9 +673,9 @@ const TestingApproval = ({ navigation, route }) => {
                                   darkColor
                                   style={{ fontSize: 13 }}
                                 >
-                                  {item.ParameterName}
-                                  {item.DisplayCode.length > 0 && "  -  "}
-                                  {item.DisplayCode}
+                                  {item?.ParameterName}
+                                  {item?.DisplayCode.length > 0 && "  -  "}
+                                  {item?.DisplayCode}
                                 </Text>
                               </Text>
 
@@ -697,7 +697,7 @@ const TestingApproval = ({ navigation, route }) => {
                                     darkColor
                                     style={{ fontSize: 13 }}
                                   >
-                                    {item.MinValue}
+                                    {item?.MinValue}
                                   </Text>
                                 </Text>
 
@@ -713,7 +713,7 @@ const TestingApproval = ({ navigation, route }) => {
                                     darkColor
                                     style={{ fontSize: 13 }}
                                   >
-                                    {item.MaxValue}
+                                    {item?.MaxValue}
                                   </Text>
                                 </Text>
                               </View>
@@ -736,7 +736,7 @@ const TestingApproval = ({ navigation, route }) => {
                                     darkColor
                                     style={{ fontSize: 13 }}
                                   >
-                                    {item.RangeValue}
+                                    {item?.RangeValue}
                                   </Text>
                                 </Text>
 
@@ -752,13 +752,13 @@ const TestingApproval = ({ navigation, route }) => {
                                     darkColor
                                     style={{ fontSize: 13 }}
                                   >
-                                    {item.IsNABLParameter == true
+                                    {item?.IsNABLParameter == true
                                       ? "Yes"
                                       : "No"}
                                   </Text>
                                 </Text>
                               </View>
-                              {item.ListOfTestingResult?.map((item, index) => (
+                              {item?.ListOfTestingResult?.map((item, index) => (
                                 <View
                                   style={{
                                     flexDirection: "row",
@@ -779,16 +779,16 @@ const TestingApproval = ({ navigation, route }) => {
                                       darkColor
                                       style={{ fontSize: 13 }}
                                     >
-                                      {item.ResultValue}{" "}
+                                      {item?.ResultValue}{" "}
                                     </Text>
                                   </Text>
                                   <>
                                     <Image
                                       source={Images.Normal}
                                       tintColor={
-                                        item.ConsiderResult == -1
+                                        item?.ConsiderResult == -1
                                           ? BaseColor.orange
-                                          : item.ConsiderResult == 0
+                                          : item?.ConsiderResult == 0
                                           ? BaseColor.red
                                           : BaseColor.green
                                       }
@@ -799,13 +799,13 @@ const TestingApproval = ({ navigation, route }) => {
                                         marginLeft: 10,
                                       }}
                                     ></Image>
-                                    {item.IsNABLParameter && (
+                                    {item?.IsNABLParameter && (
                                       <Image
                                         source={Images.NABL}
                                         tintColor={
-                                          item.ConsiderNABLResult == -1
+                                          item?.ConsiderNABLResult == -1
                                             ? BaseColor.orange
-                                            : item.ConsiderNABLResult == 0
+                                            : item?.ConsiderNABLResult == 0
                                             ? BaseColor.red
                                             : BaseColor.green
                                         }
@@ -823,7 +823,7 @@ const TestingApproval = ({ navigation, route }) => {
                             </>
                           ))}
 
-                          {item.TestingStatusName != "Approved" && (
+                          {item?.TestingStatusName != "Approved" && (
                             <View>
                               <View
                                 style={{
@@ -876,7 +876,7 @@ const TestingApproval = ({ navigation, route }) => {
                                       TestingsApprovalInsertApi(
                                         1,
                                         4,
-                                        item.TestingIDEncrypt
+                                        item?.TestingIDEncrypt
                                       );
                                     }}
                                     style={{
@@ -913,7 +913,7 @@ const TestingApproval = ({ navigation, route }) => {
                                       TestingsApprovalInsertApi(
                                         1,
                                         5,
-                                        item.TestingIDEncrypt
+                                        item?.TestingIDEncrypt
                                       );
                                     }}
                                     style={{
@@ -1036,7 +1036,7 @@ const TestingApproval = ({ navigation, route }) => {
       ></AlertModal>
 
       <LinearGradient
-        colors={[BaseColor.whiteColor, BaseColor.whiteColor]}
+        colors={[BaseColor.bg, BaseColor.bg]}
         locations={[0, 1]}
         style={{
           flex: 1,

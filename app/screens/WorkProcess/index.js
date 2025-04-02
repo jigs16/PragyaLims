@@ -172,7 +172,7 @@ const WorkProcess = ({ navigation }) => {
                       darkColor
                       caption2
                       textAlign={"center"}
-                      style={{ fontSize: 12.5 }}
+                      // style={{ fontSize: 12.5 }}
                     >
                       Material Inward
                     </Text>
@@ -200,7 +200,7 @@ const WorkProcess = ({ navigation }) => {
                       darkColor
                       caption2
                       textAlign={"center"}
-                      style={{ fontSize: 12.5 }}
+                      // style={{ fontSize: 12.5 }}
                     >
                       {"TC Allocation"}
                     </Text>
@@ -228,7 +228,7 @@ const WorkProcess = ({ navigation }) => {
                       darkColor
                       caption2
                       textAlign={"center"}
-                      style={{ fontSize: 12.5 }}
+                      // style={{ fontSize: 12.5 }}
                     >
                       {"Machining Outward"}
                     </Text>
@@ -278,7 +278,7 @@ const WorkProcess = ({ navigation }) => {
                       darkColor
                       caption2
                       textAlign={"center"}
-                      style={{ fontSize: 12.5 }}
+                      // style={{ fontSize: 12.5 }}
                     >
                       {"Testing"}
                     </Text>
@@ -334,9 +334,9 @@ const WorkProcess = ({ navigation }) => {
                       darkColor
                       caption2
                       textAlign={"center"}
-                      style={{ fontSize: 12.5 }}
+                      // style={{ fontSize: 12.5 }}
                     >
-                      {"Dispatch Report"}
+                      {"Dispatch\nReport"}
                     </Text>
                   </Pressable>
                 </View>
@@ -368,7 +368,7 @@ const WorkProcess = ({ navigation }) => {
                       darkColor
                       caption2
                       textAlign={"center"}
-                      style={{ fontSize: 12.5 }}
+                      // style={{ fontSize: 12.5 }}
                     >
                       {"Dispatch Material"}
                     </Text>
@@ -396,7 +396,7 @@ const WorkProcess = ({ navigation }) => {
                       darkColor
                       caption2
                       textAlign={"center"}
-                      style={{ fontSize: 12.5 }}
+                      // style={{ fontSize: 12.5 }}
                     >
                       {"Upload Scan Copy"}
                     </Text>

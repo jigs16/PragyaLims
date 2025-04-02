@@ -442,7 +442,7 @@ const TestingList = ({ navigation }) => {
                 console.log("====================================");
                 console.log(item);
                 console.log("====================================");
-                const selectedIds = item.join(",");
+                const selectedIds = item?.join(",");
                 setStatus(selectedIds);
                 console.log("===============selectedIds=====================");
                 console.log(selectedIds);
@@ -478,7 +478,7 @@ const TestingList = ({ navigation }) => {
               onFocus={() => setIsFocus2(true)}
               onBlur={() => setIsFocus2(false)}
               onChange={(item) => {
-                setTPIRequired(item.value);
+                setTPIRequired(item?.value);
                 setIsFocus2(false);
               }}
             />
@@ -513,9 +513,9 @@ const TestingList = ({ navigation }) => {
               onFocus={() => setIsFocus4(true)}
               onBlur={() => setIsFocus4(false)}
               onChange={(item) => {
-                setDepartment(item.DepartmentIDEncrypted);
+                setDepartment(item?.DepartmentIDEncrypted);
                 ProductGroupDropDownListByDepartmentIDApi(
-                  item.DepartmentIDEncrypted
+                  item?.DepartmentIDEncrypted
                 );
                 setIsFocus4(false);
               }}
@@ -548,7 +548,7 @@ const TestingList = ({ navigation }) => {
               onFocus={() => setIsFocus7(true)}
               onBlur={() => setIsFocus7(false)}
               onChange={(item) => {
-                setTest(item.TestMasterIDEncrypted);
+                setTest(item?.TestMasterIDEncrypted);
                 setIsFocus7(false);
               }}
             />
@@ -645,7 +645,7 @@ const TestingList = ({ navigation }) => {
       )}
 
       <LinearGradient
-        colors={[BaseColor.whiteColor, BaseColor.whiteColor]}
+        colors={[BaseColor.bg, BaseColor.bg]}
         locations={[0, 1]}
         style={{
           flex: 1,
@@ -681,7 +681,7 @@ const TestingList = ({ navigation }) => {
               <Pressable
                 onPress={() => {
                   // navigation.navigate("InwardApproval", {
-                  //   InwardIDEncrypted: item.InwardIDEncrypted,
+                  //   InwardIDEncrypted: item?.InwardIDEncrypted,
                   //   ViewType: "ViewOnly",
                   // });
                 }}
@@ -703,7 +703,7 @@ const TestingList = ({ navigation }) => {
                     <Text darkColor bold>
                       TC No -{" "}
                       <Text caption1 darkColor>
-                        {item.TCNo}
+                        {item?.TCNo}
                       </Text>
                     </Text>
 
@@ -715,13 +715,13 @@ const TestingList = ({ navigation }) => {
                       }}
                     >
                       <View style={{ flex: 1 }}>
-                        {/* {item.InwardCurrentStatus == 1 ? (
+                        {/* {item?.InwardCurrentStatus == 1 ? (
                           <Text darkColor bold>
                             Draft Saved
                           </Text>
                         ) : ( */}
                           <Text darkColor bold>
-                            {item.InwardNo}
+                            {item?.InwardNo}
                           </Text>
                         {/* )} */}
                       </View>
@@ -730,7 +730,7 @@ const TestingList = ({ navigation }) => {
                     <Text darkColor bold>
                     Sample Detail -{" "}
                       <Text caption1 darkColor>
-                        {item.SampleDetail}
+                        {item?.SampleDetail}
                       </Text>
                     </Text>
                     <View
@@ -743,32 +743,34 @@ const TestingList = ({ navigation }) => {
                     <Text darkColor bold>
                       TPI Required -{" "}
                       <Text caption1 darkColor>
-                        {item.IsTPIRequired == 'false' ? 'No' : 'Yes'}
+                        {item?.IsTPIRequired == 'false' ? 'No' : 'Yes'}
                       </Text>
                     </Text>
+                    {item?.EDD != '' &&(
                     <Text darkColor bold>
                       EDD -{" "}
                       <Text caption1 darkColor>
-                        {item.EDD}
+                        {item?.EDD}
                       </Text>
                     </Text>
+                    )}
                     </View>
                   </View>
                   <View style={{}}>
-                    {/* {TA == 1 && item.TestingActionStatus > 1 && ( */}
+                    {/* {TA == 1 && item?.TestingActionStatus > 1 && ( */}
                       <Pressable
                         onPress={() => {
                           navigation.navigate("TestingApproval", {
                             InwardMaterialIDEncrypted:
-                              item.InwardMaterialIDEncrypted,
+                              item?.InwardMaterialIDEncrypted,
                           });
                         }}
                         style={{
                           borderWidth: 1,
                           borderColor:
-                            item.TestingActionStatus === 1
+                            item?.TestingActionStatus === 1
                               ? BaseColor.green // BaseColor.red
-                              : item.TestingActionStatus === 2
+                              : item?.TestingActionStatus === 2
                               ? BaseColor.green //BaseColor.green
                               : BaseColor.green, //BaseColor.orange,
                           width: 35,
@@ -781,9 +783,9 @@ const TestingList = ({ navigation }) => {
                         <Text
                           style={{
                             color:
-                              item.TestingActionStatus === 1
+                              item?.TestingActionStatus === 1
                                 ? BaseColor.green //BaseColor.red
-                                : item.TestingActionStatus === 2
+                                : item?.TestingActionStatus === 2
                                 ? BaseColor.green
                                 : BaseColor.green, // BaseColor.orange
                           }}

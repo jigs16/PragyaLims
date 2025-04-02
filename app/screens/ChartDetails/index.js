@@ -119,7 +119,7 @@ const ChartDetails = ({ navigation, route }) => {
             res?.TodaysTestingApprovalPendingCount
           );
           const newData = res.TestingMonthWiseData.map(
-            (item) => item.TestingCount
+            (item) => item?.TestingCount
           );
           setChartData((prevChartData) => ({
             ...prevChartData,
@@ -269,13 +269,13 @@ const ChartDetails = ({ navigation, route }) => {
                 <View style={{ flexDirection: "row" }}>
                   {CustomerRenderDot(getColor(index))}
                   <Text footnote bold darkColor style={{ fontSize: 14 }}>
-                    {item.CustomerName + "\n"}
+                    {item?.CustomerName + "\n"}
                     <Text
                       caption1
                       darkColor
                       style={{ paddingTop: 5, lineHeight: 26, fontSize: 13 }}
                     >
-                      {item.TestingCount + " Testing Count"}
+                      {item?.TestingCount + " Testing Count"}
                     </Text>
                   </Text>
                 </View>
@@ -287,7 +287,7 @@ const ChartDetails = ({ navigation, route }) => {
   };
 
   const CustomerPieData = GetTopCustomersData.map((item, index) => ({
-    value: item.TestingCount,
+    value: item?.TestingCount,
     color: getColor(index),
     gradientCenterColor: getColor(index),
   }));
@@ -388,13 +388,13 @@ const ChartDetails = ({ navigation, route }) => {
                 <View style={{ flexDirection: "row" }}>
                   {TestsRenderDot(getColor(index))}
                   <Text footnote bold darkColor style={{ fontSize: 14 }}>
-                    {item.TestName + "\n"}
+                    {item?.TestName + "\n"}
                     <Text
                       caption1
                       darkColor
                       style={{ paddingTop: 5, lineHeight: 26 }}
                     >
-                      {item.TestingCount + " Testing Count"}
+                      {item?.TestingCount + " Testing Count"}
                     </Text>
                   </Text>
                 </View>
@@ -406,7 +406,7 @@ const ChartDetails = ({ navigation, route }) => {
   };
 
   const TestsPieData = GetTopTestData.map((item, index) => ({
-    value: item.TestingCount,
+    value: item?.TestingCount,
     color: getColor(index),
     gradientCenterColor: getColor(index),
   }));
@@ -504,13 +504,13 @@ const ChartDetails = ({ navigation, route }) => {
                 <View style={{ flexDirection: "row" }}>
                   {DepartmentRenderDot(getColor(index))}
                   <Text footnote bold darkColor style={{ fontSize: 14 }}>
-                    {item.DepartmentName + "\n"}
+                    {item?.DepartmentName + "\n"}
                     <Text
                       caption1
                       darkColor
                       style={{ paddingTop: 5, lineHeight: 26, fontSize: 13 }}
                     >
-                      {item.TestingCount + " Testing Count"}
+                      {item?.TestingCount + " Testing Count"}
                     </Text>
                   </Text>
                 </View>
@@ -522,7 +522,7 @@ const ChartDetails = ({ navigation, route }) => {
   };
 
   const DepartmentPieData = GetTopDepartmentData.map((item, index) => ({
-    value: item.TestingCount,
+    value: item?.TestingCount,
     color: getColor(index),
     gradientCenterColor: getColor(index),
   }));
@@ -618,13 +618,13 @@ const ChartDetails = ({ navigation, route }) => {
                 <View style={{ flexDirection: "row" }}>
                   {MachineRenderDot(getColor(index))}
                   <Text footnote bold darkColor style={{ fontSize: 14 }}>
-                    {item.MachineName + "\n"}
+                    {item?.MachineName + "\n"}
                     <Text
                       caption1
                       darkColor
                       style={{ paddingTop: 5, lineHeight: 26 }}
                     >
-                      {item.TestingCount + " Testing Count"}
+                      {item?.TestingCount + " Testing Count"}
                     </Text>
                   </Text>
                 </View>
@@ -636,7 +636,7 @@ const ChartDetails = ({ navigation, route }) => {
   };
 
   const MachinePieData = GetTopMachinesData.map((item, index) => ({
-    value: item.TestingCount,
+    value: item?.TestingCount,
     color: getColor(index),
     gradientCenterColor: getColor(index),
     focused: true,
@@ -733,7 +733,7 @@ const ChartDetails = ({ navigation, route }) => {
       ></AlertModal>
 
       <LinearGradient
-        colors={[BaseColor.whiteColor, BaseColor.whiteColor]}
+        colors={[BaseColor.bg, BaseColor.bg]}
         locations={[0, 1]}
         style={styles.mainContainer}
       >

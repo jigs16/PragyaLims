@@ -6,18 +6,20 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { AppState, LogBox, StatusBar, useColorScheme } from "react-native";
+import { AppState, Keyboard, LogBox, useColorScheme } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import AppNavigator from "./app/navigation/AppNavigator";
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import SpalshNavigator from "./app/navigation/SpalshNavigator";
 import { BottomTabNavigator } from "./app/navigation/BottomTabNavigator";
-import { BaseColor } from "./app/config";
 import { navigationRef } from "./app/network/networkUtils";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Loader } from "./app/components";
+import "react-native-url-polyfill/auto";
+import * as signalR from "@microsoft/signalr";
+import { ChatProvider, useChatContext } from "./app/screens/Chat/ChatProvider";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Api from "./app/network/api";
 
 const Stack = createNativeStackNavigator();
 LogBox.ignoreAllLogs();
@@ -54,15 +56,78 @@ const App = () => {
     };
   }, [appState]);
 
+  const { updateChat } = useChatContext();
+
+  useEffect(() => {
+    const handleKeyDownForm = (event) => {
+      // Handle the key down event
+      console.log("Key pressed:", event);
+    };
+
+    // Add event listener
+    const keyboardListener = Keyboard.addListener(
+      "keyboardDidShow",
+      handleKeyDownForm
+    );
+
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl(Api.navigation.signalRBaseUrl) // Replace with your actual SignalR URL
+      .build();
+
+    // Start the connection
+    connection
+      .start()
+      .then(() => {
+        console.log("SignalR connection started.");
+      })
+      .catch((error) => {
+        console.error("Error starting SignalR connection:", error);
+      });
+
+    // Subscribe to events from the server
+    connection.on("GetMessage", (message) => {
+      updateChat(message);
+
+      // Update your React state or perform any necessary action /;
+      console.log("Get New Message", message);
+    });
+
+    connection.on("ChatDeleteMessage", (message) => {
+      updateChat("", message);
+
+      // Update your React state or perform any necessary action /;
+      console.log("ChatDeleteMessage", message);
+    });
+
+    connection.on("GetUnReadMessageCount", (messageUnread) => {
+      AsyncStorage.setItem("userUnReadMessageCount", messageUnread);
+
+      // Update your React state or perform any necessary action /; 
+      console.log("Signalr Mesg", messageUnread);
+    });
+
+    connection.onclose(() => {
+      console.log("SignalR connection closed.");
+    });
+
+    // Clean up the event listener when component unmounts
+    return () => {
+      if (connection) {
+        connection.stop();
+      }
+      keyboardListener.remove();
+    };
+  }, []);
+
   return (
     <>
       {/* <GestureHandlerRootView style={{flex: 1}}> */}
       <SafeAreaView style={backgroundStyle}>
         {/* <Loader loading={isLoading} useCircularProgress={false} /> */}
-        <StatusBar
+        {/* <StatusBar
           animated={true}
           backgroundColor={backgroundStyle.backgroundColor}
-        />
+        /> */}
         <NavigationContainer ref={navigationRef}>
           <Stack.Navigator>
             <Stack.Screen
@@ -100,5 +165,12 @@ const App = () => {
     </>
   );
 };
+const WrappedApp = () => (
+  <ChatProvider>
+    <App />
+  </ChatProvider>
+);
 
-export default App;
+export default WrappedApp;
+
+// export default App;

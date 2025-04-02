@@ -24,6 +24,7 @@ import { moderateScale } from "../../config/scaling";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GetActivityLogDataApiCall } from "../../redux/services/ApiService";
 import AlertModal from "../../components/AlertModal";
+import fonts from "../../config/fonts";
 
 const ActivityLog = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -88,27 +89,45 @@ const ActivityLog = ({ navigation }) => {
           flexDirection: "row",
         }}
       >
-        <Image
-          source={{ uri: item.EmployeePhoto }}
-          style={{
-            width: 50,
-            height: 50,
-            borderRadius: 100,
-            marginRight: 10,
-          }}
-        />
+        {item?.EmployeePhoto != "" ? (
+          <Image
+            source={{ uri: item?.EmployeePhoto }}
+            style={{
+              width: 50,
+              height: 50,
+              borderRadius: 100,
+              marginRight: 10,
+            }}
+          />
+        ) : (
+          <View
+            style={{
+              width: 50,
+              height: 50,
+              borderRadius: 100,
+              marginRight: 10,
+              backgroundColor: "#eaf6f5",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text body1 bold darkGraycolor style={{ fontSize: 17,letterSpacing:2 }}>
+              {item?.Header.substring(0, 2).toUpperCase()}
+            </Text>
+          </View>
+        )}
         <View style={{ flex: 1 }}>
           <Text body2 bold buttonGradient1>
-            {item.Header}
+            {item?.Header}
           </Text>
           <Text caption1 style={{ marginTop: 5, color: "#000" }}>
-            {item.Line1}
+            {item?.Line1}
           </Text>
           <Text caption1 darkColor>
-            {item.Line2}
+            {item?.Line2}
           </Text>
           <Text caption1 grayColor>
-            {item.ActivityLogDate}
+            {item?.ActivityLogDate}
           </Text>
         </View>
       </View>
@@ -127,7 +146,7 @@ const ActivityLog = ({ navigation }) => {
         setShowAlertModal={setAlertModal}
         message={msgModal}
       ></AlertModal>
-      <SafeAreaView style={{ flex: 1, backgroundColor: BaseColor.whiteColor }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: BaseColor.bg }}>
         <View
           style={{
             flex: 1,

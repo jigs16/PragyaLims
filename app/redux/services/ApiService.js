@@ -998,4 +998,27 @@ export const GetTCAllocationListApiCall = (data) => {
     reject(error);
   }
 };
-// TCAllocation/GetTCAllocationList
+
+export const ChatBoxEmployeeMessageDeleteApiCall = (data) => {
+  try {
+    return new Promise((resolve, reject) => {
+      api
+        .post("ChatBox/ChatBoxEmployeeMessageDelete", data)
+        .then((response) => {
+          console.log("Response" + JSON.stringify(response.body));
+          if (response.body.IsSuccess) {
+            console.log("response body IsSuccess ---- TRUE");
+            resolve(response.body);
+          } else {
+            console.log("response body IsSuccess ---- FALSE");
+            resolve(response.body);
+          }
+        })
+        .catch(reject);
+    });
+  } catch (error) {
+    console.log("error ===>>>> ", error);
+    reject(error);
+  }
+};
+// ChatBox/ChatBoxEmployeeMessageDelete

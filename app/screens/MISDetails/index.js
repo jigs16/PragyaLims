@@ -802,8 +802,8 @@ const MISDetails = ({ navigation, route }) => {
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 onChange={(item) => {
-                  setCustomer(item.CustomerIDEncrypted);
-                  GetCustomerProjectDDLListApi(item.CustomerIDEncrypted);
+                  setCustomer(item?.CustomerIDEncrypted);
+                  GetCustomerProjectDDLListApi(item?.CustomerIDEncrypted);
                   setIsFocus(false);
                 }}
               />
@@ -841,7 +841,7 @@ const MISDetails = ({ navigation, route }) => {
                 onFocus={() => setIsFocus1(true)}
                 onBlur={() => setIsFocus1(false)}
                 onChange={(item) => {
-                  setProject(item.CustomerProjectIDEncrypt);
+                  setProject(item?.CustomerProjectIDEncrypt);
                   setIsFocus1(false);
                 }}
               />
@@ -960,8 +960,8 @@ const MISDetails = ({ navigation, route }) => {
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 onChange={(item) => {
-                  setCustomer(item.CustomerIDEncrypted);
-                  GetCustomerProjectDDLListApi(item.CustomerIDEncrypted);
+                  setCustomer(item?.CustomerIDEncrypted);
+                  GetCustomerProjectDDLListApi(item?.CustomerIDEncrypted);
                   setIsFocus(false);
                 }}
               />
@@ -999,7 +999,7 @@ const MISDetails = ({ navigation, route }) => {
                 onFocus={() => setIsFocus1(true)}
                 onBlur={() => setIsFocus1(false)}
                 onChange={(item) => {
-                  setProject(item.CustomerProjectIDEncrypt);
+                  setProject(item?.CustomerProjectIDEncrypt);
                   setIsFocus1(false);
                 }}
               />
@@ -1037,7 +1037,7 @@ const MISDetails = ({ navigation, route }) => {
                 onFocus={() => setIsFocus4(true)}
                 onBlur={() => setIsFocus4(false)}
                 onChange={(item) => {
-                  setDepartment(item.DepartmentIDEncrypted);
+                  setDepartment(item?.DepartmentIDEncrypted);
                   setIsFocus4(false);
                 }}
               />
@@ -1220,8 +1220,8 @@ const MISDetails = ({ navigation, route }) => {
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 onChange={(item) => {
-                  setCustomer(item.CustomerIDEncrypted);
-                  // GetCustomerProjectDDLListApi(item.CustomerIDEncrypted);
+                  setCustomer(item?.CustomerIDEncrypted);
+                  // GetCustomerProjectDDLListApi(item?.CustomerIDEncrypted);
                   setIsFocus(false);
                 }}
               />
@@ -1372,8 +1372,8 @@ const MISDetails = ({ navigation, route }) => {
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 onChange={(item) => {
-                  setCustomer(item.CustomerIDEncrypted);
-                  // GetCustomerProjectDDLListApi(item.CustomerIDEncrypted);
+                  setCustomer(item?.CustomerIDEncrypted);
+                  // GetCustomerProjectDDLListApi(item?.CustomerIDEncrypted);
                   setIsFocus(false);
                 }}
               />
@@ -1524,8 +1524,8 @@ const MISDetails = ({ navigation, route }) => {
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 onChange={(item) => {
-                  setCustomer(item.CustomerIDEncrypted);
-                  // GetCustomerProjectDDLListApi(item.CustomerIDEncrypted);
+                  setCustomer(item?.CustomerIDEncrypted);
+                  // GetCustomerProjectDDLListApi(item?.CustomerIDEncrypted);
                   setIsFocus(false);
                 }}
               />

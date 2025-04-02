@@ -27,11 +27,11 @@ export function BottomTabNavigator() {
           height: verticalScale(120),
         },
         tabBarLabelStyle: {
-          fontSize: 14, // Adjust the font size as needed
+          fontSize: 13, // Adjust the font size as needed
           marginTop: 10,
           fontWeight: "500",
           marginBottom: 8,
-          color: "#000",
+          color: BaseColor.DarkIconColor,
         },
         tabBarActiveLabelStyle: {
           fontWeight: "400",
@@ -58,7 +58,7 @@ export function BottomTabNavigator() {
               <Image
                 source={focused ? Images.a_db : Images.db}
                 tintColor={
-                  focused ? BaseColor.buttonGradient1 : BaseColor.blackColor
+                  focused ? BaseColor.buttonGradient1 : BaseColor.DarkIconColor
                 }
                 style={{
                   resizeMode: "contain",
@@ -90,7 +90,7 @@ export function BottomTabNavigator() {
               <Image
                 source={focused ? Images.a_cc : Images.cc}
                 tintColor={
-                  focused ? BaseColor.buttonGradient1 : BaseColor.blackColor
+                  focused ? BaseColor.buttonGradient1 : BaseColor.DarkIconColor
                 }
                 style={{
                   resizeMode: "contain",
@@ -123,7 +123,7 @@ export function BottomTabNavigator() {
               <Image
                 source={focused ? Images.a_chat : Images.chat}
                 tintColor={
-                  focused ? BaseColor.buttonGradient1 : BaseColor.blackColor
+                  focused ? BaseColor.buttonGradient1 : BaseColor.DarkIconColor
                 }
                 style={{
                   resizeMode: "contain",
@@ -156,7 +156,7 @@ export function BottomTabNavigator() {
               <Image
                 source={focused ? Images.a_Activitylog : Images.activityLog}
                 tintColor={
-                  focused ? BaseColor.buttonGradient1 : BaseColor.blackColor
+                  focused ? BaseColor.buttonGradient1 : BaseColor.DarkIconColor
                 }
                 style={{
                   resizeMode: "contain",

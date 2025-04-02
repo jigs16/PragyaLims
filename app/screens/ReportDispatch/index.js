@@ -572,7 +572,7 @@ const ReportDispatch = ({ navigation }) => {
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}
               onChange={(item) => {
-                setCustomer(item.CustomerIDEncrypted);
+                setCustomer(item?.CustomerIDEncrypted);
                 setIsFocus(false);
               }}
             />
@@ -625,7 +625,7 @@ const ReportDispatch = ({ navigation }) => {
               onFocus={() => setIsFocus3(true)}
               onBlur={() => setIsFocus3(false)}
               onChange={(item) => {
-                setCourier(item.CourierIDEncrypted);
+                setCourier(item?.CourierIDEncrypted);
                 setIsFocus3(false);
               }}
             />
@@ -651,7 +651,7 @@ const ReportDispatch = ({ navigation }) => {
       )}
 
       <LinearGradient
-        colors={[BaseColor.whiteColor, BaseColor.whiteColor]}
+        colors={[BaseColor.bg, BaseColor.bg]}
         locations={[0, 1]}
         style={{
           flex: 1,
@@ -687,7 +687,7 @@ const ReportDispatch = ({ navigation }) => {
               <Pressable
                 onPress={() => {
                   navigation.navigate("InwardApproval", {
-                    InwardIDEncrypted: item.InwardIDEncrypted,
+                    InwardIDEncrypted: item?.InwardIDEncrypted,
                     ViewType: "ViewOnly",
                   });
                 }}
@@ -720,14 +720,14 @@ const ReportDispatch = ({ navigation }) => {
                         <Text darkColor bold>
                           Dispatch No -{" "}
                           <Text caption1 darkColor>
-                            {item.ReportDispatchNo}
+                            {item?.ReportDispatchNo}
                           </Text>
                         </Text>
 
                         <Text darkColor bold>
                           Dispatch Date -{" "}
                           <Text caption1 darkColor>
-                            {item.ReportDispatchDate}
+                            {item?.ReportDispatchDate}
                           </Text>
                         </Text>
                       </View>
@@ -735,7 +735,7 @@ const ReportDispatch = ({ navigation }) => {
                         <Pressable
                           onPress={() => {
                             GetReportDispatchPrintByIDApi(
-                              item.ReportDispatchIDEncrypt
+                              item?.ReportDispatchIDEncrypt
                             );
                           }}
                         >
@@ -750,7 +750,7 @@ const ReportDispatch = ({ navigation }) => {
                         {/* <Pressable
                           onPress={() => {
                             GetReportDispatchPrintLabelApi(
-                              item.ReportDispatchIDEncrypt
+                              item?.ReportDispatchIDEncrypt
                             );
                           }}
                         >
@@ -767,34 +767,34 @@ const ReportDispatch = ({ navigation }) => {
                     <Text darkColor bold>
                       Customer Name -{" "}
                       <Text caption1 darkColor>
-                        {item.CustomerName}
+                        {item?.CustomerName}
                       </Text>
                     </Text>
                     <Text darkColor bold>
                       Inward No -{" "}
                       <Text caption1 darkColor>
-                        {item.InwardNo}
+                        {item?.InwardNo}
                       </Text>
                     </Text>
 
                     <Text darkColor bold>
                       Delivered To -{" "}
                       <Text caption1 darkColor>
-                        {item.ProjectName + " - " + item.ReportingTo}
+                        {item?.ProjectName + " - " + item?.ReportingTo}
                       </Text>
                     </Text>
 
                     <Text darkColor bold>
                       Delivered By -{" "}
                       <Text caption1 darkColor>
-                        {item.DeliveredBy}
+                        {item?.DeliveredBy}
                       </Text>
                     </Text>
 
                     <Text darkColor bold>
                       Courier -{" "}
                       <Text caption1 darkColor>
-                        {item.CourierName}
+                        {item?.CourierName}
                       </Text>
                     </Text>
                   </View>

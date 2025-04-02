@@ -518,7 +518,7 @@ const UploadScancopy = ({ navigation }) => {
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}
               onChange={(item) => {
-                setCustomer(item.CustomerIDEncrypted);
+                setCustomer(item?.CustomerIDEncrypted);
                 setIsFocus(false);
               }}
             />
@@ -568,7 +568,7 @@ const UploadScancopy = ({ navigation }) => {
               onFocus={() => setIsFocus2(true)}
               onBlur={() => setIsFocus2(false)}
               onChange={(item) => {
-                setMailSent(item.value);
+                setMailSent(item?.value);
                 setIsFocus2(false);
               }}
             />
@@ -594,7 +594,7 @@ const UploadScancopy = ({ navigation }) => {
       )}
 
       <LinearGradient
-        colors={[BaseColor.whiteColor, BaseColor.whiteColor]}
+        colors={[BaseColor.bg, BaseColor.bg]}
         locations={[0, 1]}
         style={{
           flex: 1,
@@ -630,7 +630,7 @@ const UploadScancopy = ({ navigation }) => {
               <Pressable
                 onPress={() => {
                   // navigation.navigate("InwardApproval", {
-                  //   InwardIDEncrypted: item.InwardIDEncrypted,
+                  //   InwardIDEncrypted: item?.InwardIDEncrypted,
                   //   ViewType: "ViewOnly",
                   // });
                 }}
@@ -652,7 +652,7 @@ const UploadScancopy = ({ navigation }) => {
                     <Text darkColor bold>
                       TC No -{" "}
                       <Text caption1 darkColor>
-                        {item.TCNo}
+                        {item?.TCNo}
                       </Text>
                     </Text>
 
@@ -665,7 +665,7 @@ const UploadScancopy = ({ navigation }) => {
                     >
                       <View style={{ flex: 1 }}>
                         <Text darkColor bold>
-                          {item.InwardNo}
+                          {item?.InwardNo}
                         </Text>
                         {/* )} */}
                       </View>
@@ -674,35 +674,35 @@ const UploadScancopy = ({ navigation }) => {
                     <Text darkColor bold>
                       Customer -{" "}
                       <Text caption1 darkColor>
-                        {item.CustomerName}
+                        {item?.CustomerName}
                       </Text>
                     </Text>
 
                     <Text darkColor bold>
                       Test -{" "}
                       <Text caption1 darkColor>
-                        {item.TestName}
+                        {item?.TestName}
                       </Text>
                     </Text>
 
                     <Text darkColor bold>
                     Uploaded By -{" "}
                       <Text caption1 darkColor>
-                        {item.CreatedBy +' | '+ item.CreatedOnDate}
+                        {item?.CreatedBy +' | '+ item?.CreatedOnDate}
                       </Text>
                     </Text>
 
                     <Text darkColor bold>
                       Sample Detail -{" "}
                       <Text caption1 darkColor>
-                        {item.SampleDetail}
+                        {item?.SampleDetail}
                       </Text>
                     </Text>
 
                     <Text darkColor bold>
                       Mail Send -{" "}
                       <Text caption1 darkColor>
-                        {item.IsMailSend == false ? "No" : "Yes"}
+                        {item?.IsMailSend == false ? "No" : "Yes"}
                       </Text>
                     </Text>
                   </View>
@@ -711,15 +711,15 @@ const UploadScancopy = ({ navigation }) => {
                       // onPress={() => {
                       //   navigation.navigate("TestingApproval", {
                       //     InwardMaterialIDEncrypted:
-                      //       item.InwardMaterialIDEncrypted,
+                      //       item?.InwardMaterialIDEncrypted,
                       //   });
                       // }}
                       style={{
                         borderWidth: 1,
                         borderColor:
-                          item.TestingActionStatus === 1
+                          item?.TestingActionStatus === 1
                             ? BaseColor.green // BaseColor.red
-                            : item.TestingActionStatus === 2
+                            : item?.TestingActionStatus === 2
                             ? BaseColor.green //BaseColor.green
                             : BaseColor.green, //BaseColor.orange,
                         width: 35,
@@ -732,9 +732,9 @@ const UploadScancopy = ({ navigation }) => {
                       <Text
                         style={{
                           color:
-                            item.TestingActionStatus === 1
+                            item?.TestingActionStatus === 1
                               ? BaseColor.green //BaseColor.red
-                              : item.TestingActionStatus === 2
+                              : item?.TestingActionStatus === 2
                               ? BaseColor.green
                               : BaseColor.green, // BaseColor.orange
                         }}

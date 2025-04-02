@@ -355,13 +355,13 @@ const Dashboard = ({ navigation }) => {
                     style={{ alignItems: "center", width: "33.33%" }}
                   >
                     <Image
-                      source={Images.activityLog}
+                      source={Images.Testing}
                       tintColor={BaseColor.buttonGradient1}
                       style={[
                         styles.cardImage,
                         {
-                          width: moderateScale(42),
-                          height: moderateScale(42),
+                          width: moderateScale(50),
+                          height: moderateScale(50),
                           marginBottom: 8,
                         },
                       ]}
@@ -380,13 +380,13 @@ const Dashboard = ({ navigation }) => {
                     style={{ alignItems: "center", width: "33.33%" }}
                   >
                     <Image
-                      source={Images.cc}
+                      source={Images.TopCustomer}
                       tintColor={BaseColor.buttonGradient1}
                       style={[
                         styles.cardImage,
                         {
-                          width: moderateScale(42),
-                          height: moderateScale(42),
+                          width: moderateScale(50),
+                          height: moderateScale(50),
                           marginBottom: 8,
                         },
                       ]}
@@ -404,13 +404,13 @@ const Dashboard = ({ navigation }) => {
                     style={{ alignItems: "center", width: "33.33%" }}
                   >
                     <Image
-                      source={Images.chat}
+                      source={Images.TopTest}
                       tintColor={BaseColor.buttonGradient1}
                       style={[
                         styles.cardImage,
                         {
-                          width: moderateScale(42),
-                          height: moderateScale(42),
+                          width: moderateScale(50),
+                          height: moderateScale(50),
                           marginBottom: 8,
                         },
                       ]}
@@ -440,13 +440,13 @@ const Dashboard = ({ navigation }) => {
                     }}
                   >
                     <Image
-                      source={Images.Page}
+                      source={Images.TopDepartment}
                       tintColor={BaseColor.buttonGradient1}
                       style={[
                         styles.cardImage,
                         {
-                          width: moderateScale(42),
-                          height: moderateScale(42),
+                          width: moderateScale(50),
+                          height: moderateScale(50),
                           marginBottom: 8,
                         },
                       ]}
@@ -469,13 +469,13 @@ const Dashboard = ({ navigation }) => {
                     }}
                   >
                     <Image
-                      source={Images.TTR}
+                      source={Images.TopMachine}
                       tintColor={BaseColor.buttonGradient1}
                       style={[
                         styles.cardImage,
                         {
-                          width: moderateScale(42),
-                          height: moderateScale(42),
+                          width: moderateScale(50),
+                          height: moderateScale(50),
                           marginBottom: 8,
                         },
                       ]}
@@ -498,13 +498,13 @@ const Dashboard = ({ navigation }) => {
                     }}
                   >
                     <Image
-                      source={Images.Page}
+                      source={Images.InwardDishpatch}
                       tintColor={BaseColor.buttonGradient1}
                       style={[
                         styles.cardImage,
                         {
-                          width: moderateScale(42),
-                          height: moderateScale(42),
+                          width: moderateScale(50),
+                          height: moderateScale(50),
                           marginBottom: 8,
                         },
                       ]}

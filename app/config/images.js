@@ -79,6 +79,9 @@ export const Images = {
   EmailID: require('../assets/images/EmailID.png'),
   PhoneNo: require('../assets/images/PhoneNo.png'),
   listRightArrow: require('../assets/images/listRightArrow.png'),
+  delete: require('../assets/images/delete.png'),
+
+  // Work Process 
 
   WP_Inward: require('../assets/images/WP_Inward.png'),
   WP_MachingOutward: require('../assets/images/WP_MachingOutward.png'),
@@ -94,5 +97,18 @@ export const Images = {
   InwardStatistics: require('../assets/images/InwardStatistics.png'),
   ContactPerson: require('../assets/images/ContactPerson.png'),
   SendScanCopy: require('../assets/images/SendScanCopy.png'),
+
+  // Dashboard
+
+  InwardDishpatch: require('../assets/images/InwardDishpatch.png'),
+  Testing: require('../assets/images/Testing.png'),
+  TopCustomer: require('../assets/images/TopCustomer.png'),
+  TopDepartment: require('../assets/images/TopDepartment.png'),
+  TopMachine: require('../assets/images/TopMachine.png'),
+  TopTest: require('../assets/images/TopTest.png'),
+
+  // MIS
+  
+  InwardRegisterr: require('../assets/images/InwardRegisterr.png'),
+  ProcessStatuss: require('../assets/images/ProcessStatuss.png'),
 }
-// SendScanCopy

@@ -24,10 +24,10 @@ export default function GetStartItem({item, index, onPress}) {
   }, []);
 
   return (
-    <ImageBackground source={item.image} style={[styles.container, {width}]}>
+    <ImageBackground source={item?.image} style={[styles.container, {width}]}>
       <View style={{marginBottom: 50}}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={[styles.description]}>{item.description}</Text>
+        <Text style={styles.title}>{item?.title}</Text>
+        <Text style={[styles.description]}>{item?.description}</Text>
 
         <Button onPress={onPress}>{index == 0 ?'SWIPE TO CONTINUE >>>' : 'GET STARTED'}</Button>
         {/* <TouchableOpacity onPress={onPress}  activeOpacity={0.6}>

@@ -96,8 +96,8 @@ const ChatBoxLIMS = ({ onClick, toggle, toggleChatBox }) => {
             ...response?.EmployeeList?.filter(
               (x) => x?.EmployeeIDEncrypted !== AuthUser?.ReferenceIDEncrypt
             ).map((item) => ({
-              label: item.EmployeeName + " (" + item.DepartmentName + ")",
-              value: item.EmployeeIDEncrypted,
+              label: item?.EmployeeName + " (" + item?.DepartmentName + ")",
+              value: item?.EmployeeIDEncrypted,
               DepartmentName: item?.DepartmentName,
             })),
           ];
@@ -107,8 +107,8 @@ const ChatBoxLIMS = ({ onClick, toggle, toggleChatBox }) => {
             ...response?.EmployeeList?.filter(
               (x) => x?.EmployeeIDEncrypted !== AuthUser?.ReferenceIDEncrypt
             ).map((item) => ({
-              label: item.EmployeeName + " (" + item.DepartmentName + ")",
-              value: item.EmployeeIDEncrypted,
+              label: item?.EmployeeName + " (" + item?.DepartmentName + ")",
+              value: item?.EmployeeIDEncrypted,
               DepartmentName: item?.DepartmentName,
             })),
           ];
@@ -758,9 +758,9 @@ const ChatBoxLIMS = ({ onClick, toggle, toggleChatBox }) => {
                                             fontSize: "11px",
                                           }}
                                         >
-                                          {item.SenderDepartmentName
+                                          {item?.SenderDepartmentName
                                             ? "(" +
-                                              item.SenderDepartmentName +
+                                              item?.SenderDepartmentName +
                                               ")"
                                             : ""}
                                         </span>
@@ -800,7 +800,7 @@ const ChatBoxLIMS = ({ onClick, toggle, toggleChatBox }) => {
                                                 fontSize: "11px",
                                               }}
                                             >
-                                              ({item.ReceiverDepartmentName})
+                                              ({item?.ReceiverDepartmentName})
                                             </span>
                                           </>
                                         ) : (
@@ -814,9 +814,9 @@ const ChatBoxLIMS = ({ onClick, toggle, toggleChatBox }) => {
                                         style={{ maxWidth: "90%" }}
                                         onClick={() => {
                                           window.open(
-                                            item.ChatFilePath
-                                              ? item.ChatFilePath
-                                              : item.ChatSendFile
+                                            item?.ChatFilePath
+                                              ? item?.ChatFilePath
+                                              : item?.ChatSendFile
                                           );
                                         }}
                                       >
@@ -918,7 +918,7 @@ const ChatBoxLIMS = ({ onClick, toggle, toggleChatBox }) => {
                                                 fontSize: "11px",
                                               }}
                                             >
-                                              ({item.ReceiverDepartmentName})
+                                              ({item?.ReceiverDepartmentName})
                                             </span>
                                           </>
                                         ) : (
@@ -1018,9 +1018,9 @@ const ChatBoxLIMS = ({ onClick, toggle, toggleChatBox }) => {
                                           className="msg_time_sendfilebox"
                                           style={{ marginTop: "0.1125rem" }}
                                         >
-                                          {item.SenderDepartmentName
+                                          {item?.SenderDepartmentName
                                             ? "(" +
-                                              item.SenderDepartmentName +
+                                              item?.SenderDepartmentName +
                                               ")"
                                             : ""}
                                         </span>
@@ -1032,9 +1032,9 @@ const ChatBoxLIMS = ({ onClick, toggle, toggleChatBox }) => {
                                         style={{ maxWidth: "90%" }}
                                         onClick={() => {
                                           window.open(
-                                            item.ChatFilePath
-                                              ? item.ChatFilePath
-                                              : item.ChatSendFile
+                                            item?.ChatFilePath
+                                              ? item?.ChatFilePath
+                                              : item?.ChatSendFile
                                           );
                                         }}
                                       >

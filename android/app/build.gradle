@@ -103,6 +103,11 @@ android {
         versionName "1.0"
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
     splits {
         abi {
             reset()
@@ -111,6 +116,7 @@ android {
             include (*reactNativeArchitectures())
         }
     }
+    
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
